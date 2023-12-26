@@ -32,11 +32,14 @@ return new class extends Migration
             $table->string('volunteeringEndDate')->nullable();
             $table->string('monthlyShare');
             $table->string('meetingDay');
+            $table->unsignedBigInteger('role_id')->nullable();
             $table->string('terms');
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
+
+            $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 
