@@ -24,6 +24,7 @@ Route::get('/', function () {
     ]);
 });
 
+// Dashboard Route for admin user
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -33,3 +34,9 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });
+
+// Special Dashboard Route for role_id 11 normal user
+Route::get('/user-dashboard', function () {
+    return Inertia::render('UserDashboard');
+})->name('user-dashboard');
+
