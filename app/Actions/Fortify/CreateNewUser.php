@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
 use Illuminate\Validation\Rule;
+use App\Models\Role;
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
@@ -19,7 +20,10 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input): User
     {
+        $role = Role::where('name', 'user')->first();
+        $input['role_id'] = $role->id;
         //dd($input);
+
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -38,6 +42,7 @@ class CreateNewUser implements CreatesNewUsers
             'volunteeringEndDay' => ['nullable', 'date'],
             'monthlyShare' => ['required', 'numeric'],
             'meetingDay' => ['required', 'string'],
+            'role_id' => ['required', 'numeric'],
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
 
@@ -60,6 +65,7 @@ class CreateNewUser implements CreatesNewUsers
             'volunteeringEndDate' => $input['volunteeringEndDate'],
             'monthlyShare' => $input['monthlyShare'],
             'meetingDay' => $input['meetingDay'],
+            'role_id' => $input['role_id'], // Assign 'main_admin' role
             'terms' => $input['terms'],
         ]);
     }
