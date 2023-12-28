@@ -7,6 +7,8 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { ref } from 'vue';
+import axios from 'axios';
 
 
 const form = useForm({
@@ -16,7 +18,7 @@ const form = useForm({
     password_confirmation: '',
     gender: '',
     state: '',
-    local: '',
+    province: '',
     address: '',
     phone: '',
     dob: '',
@@ -32,6 +34,30 @@ const form = useForm({
     terms: false,
     });
 
+const states = ref([]);
+const provinces = ref([]);
+provinces: [] // Initialize as an empty array
+
+// Fetch states from Laravel backend
+axios.get('/api/states')
+    .then(response => {
+        states.value = response.data;
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+// Function to fetch provinces based on the selected state
+const fetchProvinces = async () => {
+    if (form.state) {
+        try {
+            const response = await axios.get(`/api/provinces/${form.state}`);
+            form.provinces = response.data; // Update provinces data
+        } catch (error) {
+            console.error('Error fetching provinces:', error);
+        }
+    }
+};
 const submit = () => {
     form.post(route('register'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
@@ -133,31 +159,26 @@ const submit = () => {
                 <select
                     id="state"
                     v-model="form.state"
+                    @change="fetchProvinces"
                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 >
                     <option value="">Select State</option>
-                    <option value="state1">State 1</option>
-                    <option value="state2">State 2</option>
-                    <option value="state3">State 3</option>
-                    <!-- Add other states as options -->
+                    <option v-for="state in states" :key="state.id" :value="state.id">{{ state.name }}</option>
                 </select>
                 <InputError class="mt-2" :message="form.errors.state" />
             </div>
 
             <div class="mt-4">
-                <InputLabel for="local" value="Local" />
+                <InputLabel for="province" value="province" />
                 <select
-                    id="local"
-                    v-model="form.local"
+                    id="province"
+                    v-model="form.province"
                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 >
-                    <option value="">Select Local</option>
-                    <option value="local1">Local 1</option>
-                    <option value="local2">Local 2</option>
-                    <option value="local3">Local 3</option>
-                    <!-- Add other locals as options -->
+                    <option value="">Select province</option>
+                    <option v-for="province in form.provinces" :key="province.id" :value="province.id">{{ province.name }}</option>
                 </select>
-                <InputError class="mt-2" :message="form.errors.local" />
+                <InputError class="mt-2" :message="form.errors.province" />
             </div>
 
 
