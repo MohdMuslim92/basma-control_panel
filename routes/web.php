@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use \App\Http\Controllers\StateController;
+use \App\Http\Controllers\ProvinceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,3 +42,8 @@ Route::get('/user-dashboard', function () {
     return Inertia::render('UserDashboard');
 })->name('user-dashboard');
 
+// Route to fetch states
+Route::get('/api/states', [StateController::class, 'index']);
+
+// Route to fetch provinces by state ID
+Route::get('/api/provinces/{state}', [ProvinceController::class, 'show']);
