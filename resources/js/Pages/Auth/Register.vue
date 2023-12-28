@@ -133,9 +133,11 @@ const submit = () => {
                     <label for="male" class="inline-flex items-center">
                         <input
                             id="male"
+                            name="gender"
                             type="radio"
                             v-model="form.gender"
                             value="male"
+                            required
                             class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
                         />
                         <span class="ml-2">Male</span>
@@ -143,9 +145,11 @@ const submit = () => {
                     <label for="female" class="inline-flex items-center ml-6">
                         <input
                             id="female"
+                            name="gender"
                             type="radio"
                             v-model="form.gender"
                             value="female"
+                            required
                             class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
                         />
                         <span class="ml-2">Female</span>
@@ -161,6 +165,7 @@ const submit = () => {
                     v-model="form.state"
                     @change="fetchProvinces"
                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    required
                 >
                     <option value="">Select State</option>
                     <option v-for="state in states" :key="state.id" :value="state.id">{{ state.name }}</option>
@@ -174,6 +179,7 @@ const submit = () => {
                     id="province"
                     v-model="form.province"
                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    required
                 >
                     <option value="">Select province</option>
                     <option v-for="province in form.provinces" :key="province.id" :value="province.id">{{ province.name }}</option>
@@ -225,7 +231,10 @@ const submit = () => {
 
             <div>
                 <InputLabel for="educationLevel" value="Educational Level" />
-                <select v-model="form.educationLevel" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                <select
+                    v-model="form.educationLevel"
+                    required
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                     <option value="Non_formal_education">Non-formal education</option>
                     <option value="Elementary">Elementary</option>
                     <option value="Secondary">Secondary</option>
@@ -336,6 +345,7 @@ const submit = () => {
                 <select
                     id="meetingDay"
                     v-model="form.meetingDay"
+                    required
                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 >
                     <option value="">Select Day</option>
