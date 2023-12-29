@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { Link, router, useForm } from '@inertiajs/vue3';
 import ActionMessage from '@/Components/ActionMessage.vue';
 import FormSection from '@/Components/FormSection.vue';
@@ -8,6 +8,11 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import axios from 'axios';
+
+// Define reactive variables for states and provinces
+const states = ref([]);
+const provinces = ref([]);
 
 const props = defineProps({
     user: Object,
@@ -18,8 +23,8 @@ const form = useForm({
     name: props.user.name,
     email: props.user.email,
     gender: props.user.gender,
-    state: props.user.state,
-    local: props.user.local,
+    state_id: props.user.state_id,
+    province_id: props.user.province_id,
     address: props.user.address,
     phone: props.user.phone,
     dob: props.user.dob,
@@ -33,6 +38,51 @@ const form = useForm({
     monthlyShare: props.user.monthlyShare,
     meetingDay: props.user.meetingDay,
     photo: null,
+});
+
+// Fetch states from Laravel backend
+axios.get('/api/states')
+    .then(response => {
+        states.value = response.data;
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+// Fetch provinces based on the selected state
+const fetchProvinces = async () => {
+    if (form.state_id) { // Check the correct property for the state ID
+        try {
+            const response = await axios.get(`/api/provinces/${form.state_id}`);
+            provinces.value = response.data; // Update provinces data
+        } catch (error) {
+            console.error('Error fetching provinces:', error);
+        }
+    }
+};
+
+// Fetch provinces based on the initially selected state_id
+const fetchProvincesOnLoad = async () => {
+    if (form.state_id) {
+        try {
+            const response = await axios.get(`/api/provinces/${form.state_id}`);
+            provinces.value = response.data; // Update provinces data
+        } catch (error) {
+            console.error('Error fetching provinces:', error);
+        }
+    }
+};
+
+// Trigger fetching of provinces when the component is mounted
+onMounted(() => {
+    fetchProvincesOnLoad();
+});
+
+// Set the selected province_id from the database on page load
+onMounted(() => {
+    if (props.user.province_id) {
+        form.province_id = props.user.province_id;
+    }
 });
 
 const verificationLinkSent = ref(null);
@@ -221,24 +271,33 @@ const clearPhotoFileInput = () => {
 
             <!-- State -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel value="State" />
-                <select v-model="form.state" id="state" class="mt-1 block w-full">
-                    <option value="state1">State 1</option>
-                    <option value="state2">State 2</option>
-                    <option value="state3">State 3</option>
+                <InputLabel for="state" value="State" />
+                <select
+                    id="state"
+                    v-model="form.state_id"
+                    @change="fetchProvinces"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    required
+                >
+                    <option value="">Select State</option>
+                    <option v-for="state in states" :key="state.id" :value="state.id">{{ state.name }}</option>
                 </select>
-                <InputError :message="form.errors.state" class="mt-2" />
+                <InputError class="mt-2" :message="form.errors.state" />
             </div>
 
-            <!-- Local -->
+            <!-- Province -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel value="Local" />
-                <select v-model="form.local" id="local" class="mt-1 block w-full">
-                    <option value="local1">Local 1</option>
-                    <option value="local2">Local 2</option>
-                    <option value="local3">Local 3</option>
+                <InputLabel for="province" value="Province" />
+                <select
+                    id="province"
+                    v-model="form.province_id"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    required
+                >
+                    <option value="">Select Province</option>
+                    <option v-for="province in provinces" :key="province.id" :value="province.id">{{ province.name }}</option>
                 </select>
-                <InputError :message="form.errors.local" class="mt-2" />
+                <InputError class="mt-2" :message="form.errors.province_id" />
             </div>
 
             <!-- Address -->
@@ -286,12 +345,12 @@ const clearPhotoFileInput = () => {
             <!-- Educational Level -->
             <div class="col-span-6 sm:col-span-4">
                 <InputLabel value="Educational Level" />
-                <select v-model="form.educationLevel" id="local" class="mt-1 block w-full">
+                <select v-model="form.educationLevel" id="educationalLevel" class="mt-1 block w-full">
                     <option value="Elementary">Elementary</option>
                     <option value="Secondary">Secondary</option>
                     <option value="University">University or Above</option>
                 </select>
-                <InputError :message="form.errors.local" class="mt-2" />
+                <InputError :message="form.errors.educationLevel" class="mt-2" />
             </div>
 
             <!-- Specialization - shown only if Educational Level is University -->
@@ -406,7 +465,7 @@ const clearPhotoFileInput = () => {
             <!-- Meeting Day -->
             <div class="col-span-6 sm:col-span-4">
                 <InputLabel value="Meeting Day" />
-                <select v-model="form.meetingDay" id="local" class="mt-1 block w-full">
+                <select v-model="form.meetingDay" id="meetingDay" class="mt-1 block w-full">
                     <option value="Saturday">Saturday</option>
                     <option value="Sunday">Sunday</option>
                     <option value="Monday">Monday</option>
@@ -415,7 +474,7 @@ const clearPhotoFileInput = () => {
                     <option value="Thursday">Thursday</option>
                     <option value="Friday">Friday</option>
                 </select>
-                <InputError :message="form.errors.local" class="mt-2" />
+                <InputError :message="form.errors.meetingDay" class="mt-2" />
             </div>
 
         </template>
