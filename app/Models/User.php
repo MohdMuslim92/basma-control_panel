@@ -43,6 +43,7 @@ class User extends Authenticatable
         'monthlyShare',
         'meetingDay',
         'role_id',
+        'last_seen_at',
         'terms',
     ];
 
