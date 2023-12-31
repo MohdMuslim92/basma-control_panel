@@ -41,6 +41,7 @@ return new class extends Migration
             $table->unsignedBigInteger('status')->default(0);
             $table->string('admin_mail')->nullable();
             $table->timestamp('last_pay')->nullable();
+            $table->timestamp('last_seen_at')->nullable();
             $table->timestamps();
 
             $table->foreign('role_id')->references('id')->on('roles');
