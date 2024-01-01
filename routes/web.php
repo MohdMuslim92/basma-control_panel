@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use \App\Http\Controllers\StateController;
 use \App\Http\Controllers\ProvinceController;
+use \App\Http\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -47,3 +49,9 @@ Route::get('/api/states', [StateController::class, 'index']);
 
 // Route to fetch provinces by state ID
 Route::get('/api/provinces/{state}', [ProvinceController::class, 'show']);
+
+// Route for user list page
+Route::get('/api/users', [UserController::class, 'showUserList'])->name('users.show');
+
+// Route for user list data
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
