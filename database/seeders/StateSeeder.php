@@ -15,9 +15,24 @@ class StateSeeder extends Seeder
     {
         // Define states and insert them into the 'states' table
         $states = [
-            ['name' => 'state1'],
-            ['name' => 'state2'],
-            ['name' => 'state3'],
+            ['name' => 'البحر الأحمر'],
+            ['name' => 'الجزيرة'],
+            ['name' => 'الخرطوم'],
+            ['name' => 'الشمالية'],
+            ['name' => 'القضارف'],
+            ['name' => 'النيل الأبيض'],
+            ['name' => 'النيل الأزرق'],
+            ['name' => 'جنوب دارفور'],
+            ['name' => 'جنوب كردفان'],
+            ['name' => 'سنار'],
+            ['name' => 'شرق دارفور'],
+            ['name' => 'شمال دارفور'],
+            ['name' => 'شمال كردفان'],
+            ['name' => 'غرب دارفور'],
+            ['name' => 'كسلا'],
+            ['name' => 'نهر النيل'],
+            ['name' => 'وسط دارفور'],
+            ['name' => 'غرب كردفان'],
         ];
 
         // Insert roles into the database
