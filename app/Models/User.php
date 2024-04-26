@@ -10,6 +10,8 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use \App\Models\Role;
+use App\Models\State;
+use App\Models\Province;
 class User extends Authenticatable
 {
     use HasApiTokens;
@@ -85,5 +87,15 @@ class User extends Authenticatable
     public function admin()
     {
         return $this->hasOne(Admin::class);
+    }
+
+    public function state()
+    {
+        return $this->belongsTo(State::class, 'state_id');
+    }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'province_id');
     }
 }
