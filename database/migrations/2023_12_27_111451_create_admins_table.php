@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             // The office he belongs to
-            $table->unsignedBigInteger('office');
+            $table->unsignedBigInteger('office_id');
             // Admin is 0 means he is a member at the office, otherwise he maybe an admin or co-admin
             $table->unsignedBigInteger('admin');
             $table->dateTime('hired_at')->default(now()); // Automatically set the hired_at date
@@ -23,6 +23,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('office_id')->references('id')->on('offices')->onDelete('cascade');
         });
     }
 
