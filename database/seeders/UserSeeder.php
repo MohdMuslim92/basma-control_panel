@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
                 'volunteeringEndDate' => null,
                 'monthlyShare' => 500,
                 'meetingDay' => 'Monday',
-                'terms' => false,
+                'terms' => true,
             ]);
         }
     }
