@@ -38,7 +38,7 @@ return new class extends Migration
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             // Status: 0->inactivated, 1->active, 2->deleted...etc
-            $table->unsignedBigInteger('status')->default(0);
+            $table->unsignedBigInteger('user_status_id')->default(1);
             $table->string('admin_mail')->nullable();
             $table->timestamp('last_pay')->nullable();
             $table->timestamp('last_seen_at')->nullable();
@@ -47,6 +47,7 @@ return new class extends Migration
             $table->foreign('role_id')->references('id')->on('roles');
             $table->foreign('state_id')->references('id')->on('states');
             $table->foreign('province_id')->references('id')->on('provinces');
+            $table->foreign('user_status_id')->references('id')->on('user_statuses');
         });
     }
 
