@@ -12,6 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 use \App\Models\Role;
 use App\Models\State;
 use App\Models\Province;
+use App\Models\UserStatus;
 class User extends Authenticatable
 {
     use HasApiTokens;
@@ -45,6 +46,7 @@ class User extends Authenticatable
         'monthlyShare',
         'meetingDay',
         'role_id',
+        'user_status_id',
         'last_seen_at',
         'terms',
     ];
@@ -97,5 +99,10 @@ class User extends Authenticatable
     public function province()
     {
         return $this->belongsTo(Province::class, 'province_id');
+    }
+
+    public function userStatus()
+    {
+        return $this->belongsTo(UserStatus::class, 'user_status_id');
     }
 }
