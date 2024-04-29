@@ -14,17 +14,18 @@ class RoleSeeder extends Seeder
     {
         // Define roles and insert them into the 'roles' table
         $roles = [
-            ['name' => 'user'],
-            ['name' => 'main_admin'],
-            ['name' => 'membership'],
-            ['name' => 'it'],
-            ['name' => 'orphans'],
-            ['name' => 'Foreign_affairs'],
-            ['name' => 'executive'],
-            ['name' => 'awareness'],
-            ['name' => 'general_secretariat'],
-            ['name' => 'sub_offices'],
-            ['name' => 'financial'],
+            ['name' => 'User'],
+            ['name' => 'Membership'],
+            ['name' => 'IT'],
+            ['name' => 'Orphans Affairs'],
+            ['name' => 'Foreign Affairs'],
+            ['name' => 'Executive'],
+            ['name' => 'Awareness'],
+            ['name' => 'General Secretariat'],
+            ['name' => 'Portsudan Sub Office'],
+            ['name' => 'Wad Rawah Sub Office'],
+            ['name' => 'Financial'],
+            ['name' => 'Main Admin'],
         ];
 
         // Insert roles into the database
