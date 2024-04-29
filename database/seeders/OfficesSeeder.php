@@ -15,6 +15,7 @@ class OfficesSeeder extends Seeder
     {
         // Define offices and insert them into the 'offices' table
         $offices = [
+            ['name' => 'User'],
             ['name' => 'Membership Affairs'],
             ['name' => 'IT'],
             ['name' => 'Orphans Affairs'],
@@ -25,7 +26,6 @@ class OfficesSeeder extends Seeder
             ['name' => 'Portsudan Sub Office'],
             ['name' => 'Wad Rawah Sub Office'],
             ['name' => 'Financial'],
-            ['name' => 'User'],
         ];
 
         // Insert offices into the database

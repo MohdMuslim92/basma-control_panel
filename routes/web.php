@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use \App\Http\Controllers\StateController;
 use \App\Http\Controllers\ProvinceController;
 use \App\Http\Controllers\UserController;
+use App\Http\Controllers\OfficeController;
 
 
 /*
@@ -53,5 +54,11 @@ Route::get('/api/provinces/{state}', [ProvinceController::class, 'show']);
 // Route for user list page
 Route::get('/api/users', [UserController::class, 'showUserList'])->name('users.show');
 
+// Route for updating user role
+Route::put('/api/users/{id}', [UserController::class, 'updateRole']);
+
 // Route for user list data
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+// Route for offices list data
+Route::get('/api/offices', [OfficeController::class, 'index'])->name('offices');
