@@ -1,3 +1,12 @@
+<style scoped>
+/* Styles for notification container */
+#notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+</style>
 <template>
     <AppLayout title="Users List">
         <template #header>
@@ -50,7 +59,7 @@
                                 {{ user.admin_name }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <button @click="addToOffice(user.id)">Add</button>
+                                <button @click="addToOffice(user.id, user.name, user.role_id)">Add</button>
                             </td>
                             <td>
                                 <button @click="deleteUser(user.id)">Delete</button>
@@ -79,6 +88,26 @@
                 Next
             </button>
         </div>
+
+        <!-- UserOfficeModal component -->
+        <UserOfficeModal
+            v-if="showOfficeModal"
+            :showOfficeModal="showOfficeModal"
+            :offices="offices"
+            :selectedOffice.sync="selectedOffice"
+            :selectedUserId="selectedUserId"
+            :selectedUserName="selectedUserName"
+            :selectedUserRole="selectedUserRole"
+            :showNotification="showNotification"
+            :loadUsers="loadUsers"
+            :currentPage="currentPage"
+            @close-modal="handleCloseModal"
+        >
+        </UserOfficeModal>
+
+        <!-- Notification container -->
+        <div id="notification-container"></div>
+
     </AppLayout>
 </template>
 
@@ -86,11 +115,41 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
+import UserOfficeModal from './UserOfficeModal.vue';
 
-// Define a ref to hold the users data
+
+// Define refs and functions
 const users = ref([]);
 const currentPage = ref(1);
 const lastPage = ref(1);
+const offices = ref([]);
+const selectedUserId = ref('');
+const selectedUserName = ref('');
+const selectedUserRole = ref('');
+const showOfficeModal = ref(false);
+const selectedOffice = ref(null);
+
+// Function to add user to office
+const addToOffice = async (userId, userName, userRole) => {
+// Check if offices are already fetched
+    if (offices.value.length === 0) {
+        try {
+            const response = await axios.get('/api/offices');
+            offices.value = response.data; // Update offices with fetched data
+        } catch (error) {
+            alert('Error fetching offices, please reload the page');
+        }
+    }
+
+    if (offices.value.length > 0) {
+        selectedUserId.value = userId;
+        selectedUserName.value = userName;
+        selectedUserRole.value = userRole;
+        showOfficeModal.value = true;
+    } else {
+        alert('No offices available to add user to.');
+    }
+};
 
 // Function to fetch users based on page number
 const loadUsers = async (page) => {
@@ -100,16 +159,13 @@ const loadUsers = async (page) => {
         currentPage.value = response.data.current_page;
         lastPage.value = response.data.last_page;
 
-        console.log('Current Page:', currentPage.value);
-        console.log('Last Page:', lastPage.value);
     } catch (error) {
-        console.error(error);
+        alert('error fetching users, please reload the page');
     }
 };
 
 // Function to fetch next page
 const nextPage = () => {
-    console.log('Next button clicked');
     if (currentPage.value < lastPage.value) {
         loadUsers(currentPage.value + 1);
     }
@@ -117,7 +173,6 @@ const nextPage = () => {
 
 // Function to fetch previous page
 const prevPage = () => {
-    console.log('Previous button clicked');
     if (currentPage.value > 1) {
         loadUsers(currentPage.value - 1);
     }
@@ -128,7 +183,39 @@ onMounted(async () => {
     try {
         await loadUsers(1);
     } catch (error) {
-        console.error(error);
+        alert('Error fetching users, please reload the page');
     }
 });
+
+// Function to handle close-modal event from child component
+const handleCloseModal = (newValue) => {
+    showOfficeModal.value = false; // Update showOfficeModal when event is received
+};
+
+// Function to display a notification
+const showNotification = (message) => {
+    const notificationContainer = document.getElementById('notification-container');
+
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = message;
+
+    // Apply styles for notification
+    notification.style.backgroundColor = 'green'; // Green background
+    notification.style.color = 'white'; // White text
+    notification.style.fontWeight = 'bold'; // Bold text
+    notification.style.padding = '10px'; // Increase padding for a bigger box
+    // Append notification to container
+    notificationContainer.appendChild(notification);
+
+// Fade out and remove notification after 5 seconds
+    setTimeout(() => {
+        notification.classList.add('fade-out');
+        setTimeout(() => {
+            notification.remove();
+        }, 500); // Fading animation duration
+    }, 5000); // Notification display duration
+};
+
 </script>
