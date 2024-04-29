@@ -21,4 +21,13 @@ class UserController extends Controller
         return response()->json($users); // Return users as JSON
 
     }
+
+    public function updateRole(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $user->role_id = $request->role_id;
+        $user->save();
+
+        return response()->json($user);
+    }
 }
