@@ -9,6 +9,8 @@ use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
 use Illuminate\Validation\Rule;
 use App\Models\Role;
+use App\Events\UserRegistered;
+
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
@@ -47,7 +49,7 @@ class CreateNewUser implements CreatesNewUsers
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
 
-        return User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
@@ -69,5 +71,12 @@ class CreateNewUser implements CreatesNewUsers
             'role_id' => $input['role_id'], // Assign 'main_admin' role
             'terms' => $input['terms'],
         ]);
+        
+        // Broadcast the event
+        broadcast(new UserRegistered($user));
+        
+
+        return($user);
+    
     }
 }

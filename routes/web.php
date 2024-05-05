@@ -7,6 +7,7 @@ use \App\Http\Controllers\StateController;
 use \App\Http\Controllers\ProvinceController;
 use \App\Http\Controllers\UserController;
 use App\Http\Controllers\OfficeController;
+use App\Http\Controllers\NotificationController;
 
 
 /*
@@ -62,3 +63,6 @@ Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
 // Route for offices list data
 Route::get('/api/offices', [OfficeController::class, 'index'])->name('offices');
+
+// Route for fetching the notifications
+Route::get('/api/notifications', [NotificationController::class, 'getUserNotifications']);
