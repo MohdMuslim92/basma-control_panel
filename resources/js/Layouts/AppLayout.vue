@@ -7,6 +7,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import NotificationIcon from '../Pages/NotificationIcon.vue';
 
 defineProps({
     title: String,
@@ -144,6 +145,9 @@ const logout = () => {
                                 </Dropdown>
                             </div>
 
+                                    <NotificationIcon >
+                            
+                                    </NotificationIcon>
                             <!-- Settings Dropdown -->
                             <div class="ms-3 relative">
                                 <Dropdown align="right" width="48">
@@ -259,7 +263,11 @@ const logout = () => {
                             </div>
                         </div>
 
+                        <NotificationIcon >
+                            
+                        </NotificationIcon>
                         <div class="mt-3 space-y-1">
+
                             <ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')">
                                 Profile
                             </ResponsiveNavLink>
