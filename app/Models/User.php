@@ -13,6 +13,8 @@ use \App\Models\Role;
 use App\Models\State;
 use App\Models\Province;
 use App\Models\UserStatus;
+use App\Models\Notification;
+
 class User extends Authenticatable
 {
     use HasApiTokens;
@@ -105,4 +107,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo(UserStatus::class, 'user_status_id');
     }
+
+    public function notifications()
+    {
+        return $this->belongsToMany(Notification::class)
+        ->withPivot('read')
+        ->withTimestamps();
+    }
+
 }
