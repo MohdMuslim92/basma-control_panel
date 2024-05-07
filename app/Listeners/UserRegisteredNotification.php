@@ -21,6 +21,7 @@ class UserRegisteredNotification implements ShouldQueue
             'title' => 'New User Registration',
             'message' => 'A new user has registered: ' . $user->name,
             'user_id' => $user->id,
+            'link' => route('user.approval', ['userId' => $user->id]), // Generate link
         ]);
 
 
