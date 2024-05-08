@@ -66,3 +66,15 @@ Route::get('/api/offices', [OfficeController::class, 'index'])->name('offices');
 
 // Route for fetching the notifications
 Route::get('/api/notifications', [NotificationController::class, 'getUserNotifications']);
+
+// Route for displaying the new registered user for approval
+Route::get('/user/approval/{userId}', [UserController::class, 'approval'])->name('user.approval');
+
+// Route for updating the read status for the notification
+Route::put('/api/mark-as-read/{notificationId}', [NotificationController::class, 'markAsRead'])->name('markAsRead');
+
+// Route to update the user status and approve it, also update the user data if needed
+Route::put('/api/approve-user/{id}', [UserController::class, 'approveUser'])->name('approveUser');
+
+// Route to update the user status and reject it
+Route::put('/api/reject-user/{id}', [UserController::class, 'rejectUser'])->name('rejectUser');
