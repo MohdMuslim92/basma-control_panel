@@ -44,4 +44,45 @@ class UserController extends Controller
 
         return response()->json($user);
     }
+
+    public function approval($userId)
+    {
+        // Retrieve the user data from the database
+        $user = User::where('user_status_id', 1)->findOrFail($userId);
+
+        // Pass the user data to the view
+        return inertia::render('UserApproval', [
+            'userData' => $user ? $user->toArray() : null,
+        ]);
+
+
+    }
+
+    public function approveUser(Request $request, $id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            // Update all user data with the form data
+            $user->update($request->all());
+            // Set user_status_id to 2 for active status
+            $user->update(['user_status_id' => 2]);
+            return response()->json(['message' => 'User approved successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to approve user'], 500);
+        }
+    }
+
+    public function rejectUser(Request $request, $id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            // Update all user data with the form data
+            $user->update($request->all());
+            // Set user_status_id to 9 for reject status
+            $user->update(['user_status_id' => 9]);
+            return response()->json(['message' => 'User rejected successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to reject user'], 500);
+        }
+    }
 }
