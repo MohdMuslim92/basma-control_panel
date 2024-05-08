@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use \App\Models\User;
 use App\Models\Admin;
@@ -47,15 +48,21 @@ class UserController extends Controller
 
     public function approval($userId)
     {
-        // Retrieve the user data from the database
-        $user = User::where('user_status_id', 1)->findOrFail($userId);
+        try {
+            // Retrieve the user data from the database
+            $user = User::where('user_status_id', 1)->findOrFail($userId);
 
-        // Pass the user data to the view
-        return inertia::render('UserApproval', [
-            'userData' => $user ? $user->toArray() : null,
-        ]);
+            // Pass the user data to the view
+            return inertia::render('UserApproval', [
+                'userData' => $user ? $user->toArray() : null,
+            ]);
 
-
+        } catch (ModelNotFoundException $e) {
+            // Handle the case where the user is not found
+            return inertia::render('UserApprovalMessage', [
+                'message' => 'User Already Approved.',
+            ]);
+        }
     }
 
     public function approveUser(Request $request, $id)
