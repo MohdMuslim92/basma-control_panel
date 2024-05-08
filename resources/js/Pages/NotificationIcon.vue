@@ -29,8 +29,8 @@ const fetchNotifications = async () => {
     unreadCount.value = data.unreadCount;
     notifications.value = data.notifications;
   } catch (error) {
-    alert('Error fetching notifications, please reload the page');
-  }
+    //
+    }
 };
 
 onMounted(() => {
