@@ -1,6 +1,6 @@
 <script setup>
-import {ref} from 'vue';
-import {Head, Link, router} from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
+import {Head, Link, router, usePage} from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
 import Dropdown from '@/Components/Dropdown.vue';
@@ -26,6 +26,67 @@ const switchToTeam = (team) => {
 const logout = () => {
     router.post(route('logout'));
 };
+
+// Define a computed property to determine whether to show the Users tab
+const showUsersTab = computed(() => {
+    const userStatusId = props.auth.user.user_status_id;
+    const membershipOfficer = props.auth.user.role_id;
+  // Only show the Users tab if user_status_id is admin, super admin (7 or 8) or is a memebership officer (2)
+  return userStatusId === 7 || userStatusId === 8 || membershipOfficer == 2;
+});
+
+const { props } = usePage();
+
+const notification = ref(null);
+
+    switch (props.auth.user.user_status_id) {
+        case 1:
+            notification.value = {
+                message: 'Your account is Pending approval',
+                color: 'yellow',
+                dismissed: false,
+            };
+            break;
+        case 3:
+            notification.value = {
+                message: 'Your account is Suspended, please contact your admin',
+                color: 'red',
+                dismissed: false,
+            };
+            break;
+        case 4:
+            notification.value = {
+                message: 'Your account is Inactive, please contact your admin',
+                color: 'orange',
+                dismissed: false,
+            };
+            break;
+        case 5:
+            notification.value = {
+                message: 'Your account is Deleted, please contact your admin',
+                color: 'red',
+                dismissed: false,
+            };
+            break;
+        case 10:
+            notification.value = {
+                message: 'Your email address is not Verified, please verify your email',
+                color: 'orange',
+                dismissed: false,
+            };
+            break;
+        default:
+            notification.value = {
+                message: '',
+                color: '',
+                dismissed: true,
+            };
+    }
+
+    const dismissNotification = () => {
+        notification.value.dismissed = true;
+    };
+
 </script>
 
 <template>
@@ -60,7 +121,7 @@ const logout = () => {
                                                          :active="route().current('dashboard')">
                                                     Dashboard
                                                 </NavLink>
-                                                <NavLink :href="route('users.show')"
+                                                <NavLink v-if="showUsersTab" :href="route('users.show')"
                                                          :active="route().current('users.show')">
                                                     Users
                                                 </NavLink>
@@ -240,7 +301,7 @@ const logout = () => {
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('users.show')" :active="route().current('users.show')">
+                        <ResponsiveNavLink v-if="showUsersTab" :href="route('users.show')" :active="route().current('users.show')">
                             Users
                         </ResponsiveNavLink>
                     </div>
@@ -342,7 +403,18 @@ const logout = () => {
                     <slot name="header"/>
                 </div>
             </header>
-
+            
+            <!-- Notification Bar -->
+            <div v-if="notification && !notification.dismissed && notification.message !== ''" 
+            :class="'bg-' + notification.color + ' text-black p-4 rounded-lg shadow-lg mb-4'"
+            style="position: fixed; left: 20px; right: 20px; z-index: 9999;">
+                <div class="flex items-center justify-between">
+                    <p class="text-lg font-semibold">{{ notification.message }}</p>
+                    <button @click="dismissNotification" class="text-black hover:text-gray-200 focus:outline-none">
+                        OK
+                    </button>
+                </div>
+            </div>
             <!-- Page Content -->
             <main>
                 <slot/>
