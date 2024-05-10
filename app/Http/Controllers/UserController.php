@@ -35,16 +35,26 @@ class UserController extends Controller
         ->where('office_id', $request->role_id)
         ->first();
 
-    if (!$admin) {
-        // If the user is not an admin for the office, create a new record
-        $admin = new Admin();
-        $admin->user_id = $user->id;
-        $admin->office_id = $request->role_id;
-        $admin->save();
-    }
+        if (!$admin) {
+            // If the user is not an admin for the office, create a new record
+            $admin = new Admin();
+            $admin->user_id = $user->id;
+            $admin->office_id = $request->role_id;
+            $admin->save();
+        }
 
         return response()->json($user);
     }
+
+    public function updateOfficer(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $user->admin_mail = $request->officerMail;
+        $user->save();
+
+        return response()->json($user);
+    }
+
 
     public function approval($userId)
     {
