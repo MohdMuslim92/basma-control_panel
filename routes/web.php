@@ -7,8 +7,8 @@ use \App\Http\Controllers\StateController;
 use \App\Http\Controllers\ProvinceController;
 use \App\Http\Controllers\UserController;
 use App\Http\Controllers\OfficeController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NotificationController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -58,11 +58,17 @@ Route::get('/api/users', [UserController::class, 'showUserList'])->name('users.s
 // Route for updating user role
 Route::put('/api/users/{id}', [UserController::class, 'updateRole']);
 
+// Route for updating membership officer for a user
+Route::put('/api/users-officers/{id}', [UserController::class, 'updateOfficer']);
+
 // Route for user list data
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
 // Route for offices list data
 Route::get('/api/offices', [OfficeController::class, 'index'])->name('offices');
+
+// Route for membership officers list data
+Route::get('/api/membership-officers', [AdminController::class, 'index'])->name('officers');
 
 // Route for fetching the notifications
 Route::get('/api/notifications', [NotificationController::class, 'getUserNotifications']);

@@ -57,6 +57,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 {{ user.admin_name }}
+                                <button @click="setMembershipOfficer(user.id, user.name)">Add</button>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <button @click="addToOffice(user.id, user.name, user.role_id)">Add</button>
@@ -88,6 +89,19 @@
                 Next
             </button>
         </div>
+        <!-- MembershipOfficeModal component -->
+        <OfficersModal
+            v-if="showOfficersModal"
+            :showOfficersModal="showOfficersModal"
+            :selectedOfficer.sync="selectedOfficer"
+            :selectedUserId="selectedUserId"
+            :selectedUserName="selectedUserName"
+            :showNotification="showNotification"
+            :loadUsers="loadUsers"
+            :currentPage="currentPage"
+            @close-modal="handleCloseModal"
+        >
+        </OfficersModal>
 
         <!-- UserOfficeModal component -->
         <UserOfficeModal
@@ -116,18 +130,43 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import UserOfficeModal from './UserOfficeModal.vue';
-
+import OfficersModal from './OfficersModal.vue';
 
 // Define refs and functions
 const users = ref([]);
 const currentPage = ref(1);
 const lastPage = ref(1);
 const offices = ref([]);
+const officers = ref([]);
 const selectedUserId = ref('');
 const selectedUserName = ref('');
 const selectedUserRole = ref('');
 const showOfficeModal = ref(false);
+const showOfficersModal = ref(false);
+const showMemberOfficeModal = ref(false);
 const selectedOffice = ref(null);
+const selectedOfficer = ref(null);
+
+// Function to add user to office
+const setMembershipOfficer = async (userId, userName) => {
+// Check if offices are already fetched
+    if (offices.value.length === 0) {
+        try {
+            const response = await axios.get('/api/membership-officers');
+            officers.value = response.data; // Update officers with fetched data
+        } catch (error) {
+            alert('Error fetching membership officers, please reload the page');
+        }
+    }
+
+    if (officers.value.length > 0) {
+        selectedUserId.value = userId;
+        selectedUserName.value = userName;
+        showOfficersModal.value = true;
+    } else {
+        alert('No offices available to add user to.');
+    }
+};
 
 // Function to add user to office
 const addToOffice = async (userId, userName, userRole) => {
@@ -190,6 +229,8 @@ onMounted(async () => {
 // Function to handle close-modal event from child component
 const handleCloseModal = (newValue) => {
     showOfficeModal.value = false; // Update showOfficeModal when event is received
+    showOfficersModal.value = false; // Update showOfficersModal when event is received
+    showMemberOfficeModal.value = false; // Update showMemberOfficeModal when event is received
 };
 
 // Function to display a notification

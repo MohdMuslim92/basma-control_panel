@@ -41,6 +41,12 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $user->updateProfilePhoto($input['photo']);
         }
 
+        // Check if the email has been updated
+        if ($input['email'] !== $user->email) {
+            // Update admin_mail for users with matching admin_mail
+            User::where('admin_mail', $user->email)->update(['admin_mail' => $input['email']]);
+        }
+
         if ($input['email'] !== $user->email &&
             $user instanceof MustVerifyEmail) {
             $this->updateVerifiedUser($user, $input);
