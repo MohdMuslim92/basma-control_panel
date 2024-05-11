@@ -41,11 +41,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $user->updateProfilePhoto($input['photo']);
         }
 
-        // Check if the email has been updated
-        if ($input['email'] !== $user->email) {
-            // Update admin_mail for users with matching admin_mail
-            User::where('admin_mail', $user->email)->update(['admin_mail' => $input['email']]);
-        }
+        $old_mail = $user->email;
 
         if ($input['email'] !== $user->email &&
             $user instanceof MustVerifyEmail) {
@@ -70,6 +66,13 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'monthlyShare' => $input['monthlyShare'],
                 'meetingDay' => $input['meetingDay'],
             ])->save();
+
+            // Check if the email has been updated
+            if ($input['email'] !== $old_mail) {
+                // Update admin_mail for users with matching admin_mail
+                $log = User::where('admin_mail', $old_mail)->update(['admin_mail' => $input['email']]);
+            }
+            
         }
     }
 
