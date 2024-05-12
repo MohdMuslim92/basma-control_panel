@@ -64,6 +64,12 @@ Route::put('/api/users-officers/{id}', [UserController::class, 'updateOfficer'])
 // Route for user list data
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
+// Route for display a specific user data
+Route::get('/api/user/{id}', [UserController::class, 'displayUserDetails']);
+
+// Route for update user data
+Route::put('/api/user/{userId}', [UserController::class, 'update']);
+
 // Route for offices list data
 Route::get('/api/offices', [OfficeController::class, 'index'])->name('offices');
 
@@ -84,3 +90,6 @@ Route::put('/api/approve-user/{id}', [UserController::class, 'approveUser'])->na
 
 // Route to update the user status and reject it
 Route::put('/api/reject-user/{id}', [UserController::class, 'rejectUser'])->name('rejectUser');
+
+// Route for Admins list page
+Route::get('/api/admins', [AdminController::class, 'showAdminsList'])->name('admins.show');
