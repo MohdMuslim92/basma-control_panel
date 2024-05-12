@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use \App\Models\User;
 use App\Models\Admin;
 use Inertia\Inertia;
@@ -23,6 +24,47 @@ class UserController extends Controller
         return response()->json($users); // Return users as JSON
 
     }
+
+
+    public function update(Request $request, $id)
+    {
+        // Find the user by ID
+        $user = User::findOrFail($id);
+        
+        // Validate the request data
+        $validatedData = $request->validate([
+            // Define validation rules for each field you want to update
+            'name' => ['required', 'string', 'max:255'],
+            'gender' => ['required', 'string', 'max:6'],
+            'state_id' => ['required', 'numeric'],
+            'province_id' => ['required', 'numeric'],
+            'address' => ['required', 'string'],
+            'phone' => ['required', 'string'],
+            'dob' => ['required', 'date'],
+            'educationLevel' => ['required', Rule::in(['Non_formal_education', 'Elementary', 'Secondary', 'University'])],
+            'specialization' => ['nullable', 'string'],
+            'skills' => ['required', 'string'],
+            'alreadyVolunteering' => ['required', Rule::in(['true', 'false'])],
+            'organizationName' => ['nullable', 'string'],
+            'volunteeringStartDay' => ['nullable', 'date'],
+            'volunteeringEndDay' => ['nullable', 'date'],
+            'monthlyShare' => ['required', 'numeric'],
+            'meetingDay' => ['required', 'string'],
+        ]);
+        
+        // Update the user's information based on the validated data
+        $user->update($validatedData);
+
+        // You might want to return a response indicating success or failure
+        return response()->json(['message' => 'User information updated successfully']);
+
+    }
+
+    public function displayUserDetails($id)
+    {
+        $user = User::findOrFail($id); // Fetch the user from the database by ID
+        return Inertia::render('UserDetails', ['user' => $user]); // Pass the user data to the view
+        }
 
     public function updateRole(Request $request, $id)
     {
