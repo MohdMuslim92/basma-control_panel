@@ -23,6 +23,5 @@ class Money extends Model
 
     public function admin()
     {
-        return $this->belongsTo(User::class, 'admin_id');
-    }
-}
+        return $this->belongsTo(Admin::class);
+    }}
