@@ -49,6 +49,8 @@ class User extends Authenticatable
         'meetingDay',
         'role_id',
         'user_status_id',
+        'admin_mail',
+        'last_pay',
         'last_seen_at',
         'terms',
     ];
