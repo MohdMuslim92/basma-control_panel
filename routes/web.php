@@ -8,6 +8,7 @@ use \App\Http\Controllers\ProvinceController;
 use \App\Http\Controllers\UserController;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\MonthlyShareController;
 use App\Http\Controllers\NotificationController;
 
 /*
@@ -93,3 +94,11 @@ Route::put('/api/reject-user/{id}', [UserController::class, 'rejectUser'])->name
 
 // Route for Admins list page
 Route::get('/api/admins', [AdminController::class, 'showAdminsList'])->name('admins.show');
+
+// Route for fetching users related to the current logged in admin
+Route::get('/api/users/byAdmin', [UserController::class, 'getUsersByAdmin'])->name('userByAdmin');
+
+// Route for display the Monthly Share page that contains the users list under the current admin
+Route::get('/api/monthly-share', [MonthlyShareController::class, 'index'])->name('monthlyShare');
+
+Route::put('/api/users/{id}/pay', [MonthlyShareController::class, 'payUser'])->name('users.pay');

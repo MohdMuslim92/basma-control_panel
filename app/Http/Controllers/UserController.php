@@ -33,7 +33,7 @@ class UserController extends Controller
         
         // Validate the request data
         $validatedData = $request->validate([
-            // Define validation rules for each field you want to update
+            // Define validation rules for each field under update
             'name' => ['required', 'string', 'max:255'],
             'gender' => ['required', 'string', 'max:6'],
             'state_id' => ['required', 'numeric'],
@@ -55,7 +55,7 @@ class UserController extends Controller
         // Update the user's information based on the validated data
         $user->update($validatedData);
 
-        // You might want to return a response indicating success or failure
+        // Return a response indicating success
         return response()->json(['message' => 'User information updated successfully']);
 
     }
@@ -144,4 +144,16 @@ class UserController extends Controller
             return response()->json(['error' => 'Failed to reject user'], 500);
         }
     }
+
+     // Method to fetch users related to the admin
+     public function getUsersByAdmin(Request $request)
+     {
+         // the admin is authenticated and their ID is accessible via $request->user()->id
+         $adminMail = $request->user()->email;
+ 
+         // Fetch users related to the admin
+         $users = User::where('admin_mail', $adminMail)->get();
+
+         return response()->json($users);
+     }
 }
