@@ -102,3 +102,6 @@ Route::get('/api/users/byAdmin', [UserController::class, 'getUsersByAdmin'])->na
 Route::get('/api/monthly-share', [MonthlyShareController::class, 'index'])->name('monthlyShare');
 
 Route::put('/api/users/{id}/pay', [MonthlyShareController::class, 'payUser'])->name('users.pay');
+
+// Route to get the paid users at a specific month and year
+Route::get('/api/paid-users', [MonthlyShareController::class, 'getPaidUsers'])->name('paidUsers');
