@@ -32,6 +32,13 @@
                 <p>Paid users: {{ paidUsers.length }}</p>
                 <p>Unpaid users: {{ unpaidUsers.length }}</p>
               </div>
+              <!-- Save as PDF button -->
+              <div class="flex justify-center mb-4">
+                <button @click="saveAsPdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  Save as PDF
+                </button>
+              </div>
+              
               <button @click="toggleUserType" class="px-4 py-2 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600">
                 Show {{ isShowingPaidUsers ? 'Unpaid' : 'Paid' }} Users
               </button>
@@ -96,6 +103,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import { ref, onMounted, computed } from 'vue';
 import PaymentModal from './PaymentModal.vue'; // Import the PaymentModal component
 import axios from 'axios';
+import { createPDFTemplate } from '../pdfTemplate'; // Ensure this import is correct
 
 const users = ref([]); // Array to store users data
 const selectedUser = ref(null); // Variable to store the selected user for payment
@@ -186,6 +194,22 @@ const prevPage = () => {
   }
 };
 
+// Method to generate and download PDF
+const saveAsPdf = () => {
+  const office = "Memebership Office";
+  const headline = isShowingPaidUsers.value 
+    ? `List of Paid Users For ${selectedMonthName.value} ${selectedYear.value}`
+    : `List of Unpaid Users For ${selectedMonthName.value} ${selectedYear.value}`;
+
+  const { tableHeaders, tableBody, adminSummary } = getBodyContent();
+
+  // Create a PDF using the template
+  const pdf = createPDFTemplate(office, headline, { tableHeaders, tableBody, adminSummary });
+
+  // Save or download the PDF
+  pdf.save(`Users Shares For ${selectedMonthName.value} ${selectedYear.value}.pdf`);
+};
+
 const formatDate = (dateString) => {
   // This function format the Last Pay date as YYYY-MM-DD after remove the time
   if (!dateString) return 'User has never paid before'; // Display message if date is null or undefined
@@ -219,7 +243,37 @@ const hideReport = () => {
 const selectedMonthName = computed(() => {
   return months[selectedMonth.value - 1];
 });
+
+// Function to get the body content
+const getBodyContent = () => {
+  const tableHeaders = isShowingPaidUsers.value
+    ? ['Name', 'Payment Type']
+    : ['Name', 'Admin Name'];
+
+  const tableBody = displayedUsers.value.map((user) => {
+    return isShowingPaidUsers.value
+      ? [user.name, user.last_payment_type]
+      : [user.name, user.admin_name];
+  });
+
+  const adminUserCount = displayedUsers.value.reduce((acc, user) => {
+    if (!isShowingPaidUsers.value) {
+      acc[user.admin_name] = (acc[user.admin_name] || 0) + 1;
+    }
+    return acc;
+  }, {});
+
+  const adminSummary = Object.entries(adminUserCount).map(([admin, count]) => `${admin}: ${count}`).join('\n');
+
+  return {
+    tableHeaders,
+    tableBody,
+    adminSummary: isShowingPaidUsers.value ? '' : adminSummary
+  };
+};
+
 </script>
+
 
 <style scoped>
 .report-section-container {

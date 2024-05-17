@@ -95,12 +95,12 @@ const getBodyContent = () => {
     // Loop through admins and their users
     admins.value.forEach((admin, index) => {
         // Set font for admin name
-        bodyContent += `<b>Admin: ${admin.user.name}</b>\n`;
+        bodyContent += `Admin: ${admin.user.name}\n`;
 
         // Loop through users
         admin.users.forEach((user, idx) => {
             // Add user details
-            bodyContent += `<i>- User:</i> <b>${user.name}</b> (${user.monthlyShare})\n`;
+            bodyContent += `User: ${user.name} (${user.monthlyShare})\n`;
         });
 
         // Add padding between admins
