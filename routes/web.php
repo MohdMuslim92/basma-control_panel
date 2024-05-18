@@ -105,3 +105,6 @@ Route::put('/api/users/{id}/pay', [MonthlyShareController::class, 'payUser'])->n
 
 // Route to get the paid users at a specific month and year
 Route::get('/api/paid-users', [MonthlyShareController::class, 'getPaidUsers'])->name('paidUsers');
+
+// Route to get the shares at a specific month and year
+Route::get('/api/shares', [MonthlyShareController::class, 'getSharesReport'])->name('sharesReport');
