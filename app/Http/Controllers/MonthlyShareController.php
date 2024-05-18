@@ -95,5 +95,42 @@ class MonthlyShareController extends Controller
             'unpaidUsers' => $unpaidUsers,
         ]);
     }
-        
+
+    public function getSharesReport(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'month' => 'required|integer|between:1,12', // Ensure the month is between 1 and 12
+            'year' => 'required|integer|between:2017,2037', // Ensure the year is between 2017 and 2037
+        ]);
+
+        $month = $request->query('month');
+        $year = $request->query('year');
+
+        // Calculate the start and end dates for the query
+        $startDate = "$year-$month-01";
+        $endDate = date('Y-m-t', strtotime($startDate));
+
+        // Query the money table
+        $payments = DB::table('money')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->select('user_id', 'amount', 'type')
+            ->get();
+
+        // Compute sums and user count
+        $cash = $payments->where('type', 'Cash')->sum('amount');
+        $bankTransfer = $payments->where('type', 'Bank Transfer')->sum('amount');
+        $mobileBalance = $payments->where('type', 'Mobile Balance')->sum('amount');
+        $total = $cash + $bankTransfer + $mobileBalance;
+        $userCount = $payments->unique('user_id')->count();
+
+        return response()->json([
+            'userCount' => $userCount,
+            'cash' => $cash,
+            'bankTransfer' => $bankTransfer,
+            'mobileBalance' => $mobileBalance,
+            'total' => $total,
+        ]);
     }
+
+}
