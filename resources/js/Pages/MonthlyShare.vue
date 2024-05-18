@@ -9,6 +9,8 @@
       <!-- Report Section -->
       <div class="report-section-container">
         <div class="report-section">
+          <!-- First Section: Users Report -->
+          <h3 class="font-bold text-lg mb-2">Users Report</h3>
           <div class="flex flex-col lg:flex-row items-center lg:items-start lg:mb-4">
             <label class="mr-2 mb-2 lg:mb-0">
               Choose month and year to display users:
@@ -38,7 +40,6 @@
                   Save as PDF
                 </button>
               </div>
-              
               <button @click="toggleUserType" class="px-4 py-2 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600">
                 Show {{ isShowingPaidUsers ? 'Unpaid' : 'Paid' }} Users
               </button>
@@ -71,17 +72,73 @@
               </div>
             </div>
           </div>
+          <!-- Shares Report Section -->
+          <h3 class="font-bold text-lg mb-2 mt-8">Shares Report</h3>
+          <div class="flex flex-col lg:flex-row items-center lg:items-start lg:mb-4">
+            <label class="mr-2 mb-2 lg:mb-0">
+              Choose month and year to display shares:
+            </label>
+            <select v-model="shareMonth" class="mr-2 mb-2 lg:mb-0">
+              <option v-for="(month, index) in months" :key="index" :value="index + 1">{{ month }}</option>
+            </select>
+            <select v-model="shareYear" class="mr-2 mb-2 lg:mb-0">
+              <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
+            </select>
+            <button @click="showShares" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 mb-2 lg:mb-0">Show</button>
+          </div>
+          <!-- Display shares report -->
+          <div v-if="showSharesReport" class="shares-report relative">
+            <button @click="hideSharesReport" class="absolute top-0 right-0 mt-2 mr-2 text-xl font-bold">&times;</button>
+            <div class="flex flex-col mb-4 pt-8">
+              <div class="overflow-x-auto w-full">
+                <table class="table-auto w-full border-collapse min-w-max">
+                  <thead>
+                    <tr>
+                      <th class="border px-4 py-2">Users Count</th>
+                      <th class="border px-4 py-2">Cash</th>
+                      <th class="border px-4 py-2">Bank Transfer</th>
+                      <th class="border px-4 py-2">Mobile Balance</th>
+                      <th class="border px-4 py-2">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="border px-4 py-2">{{ sharesReport.userCount }}</td>
+                      <td class="border px-4 py-2">{{ sharesReport.cash }}</td>
+                      <td class="border px-4 py-2">{{ sharesReport.bankTransfer }}</td>
+                      <td class="border px-4 py-2">{{ sharesReport.mobileBalance }}</td>
+                      <td class="border px-4 py-2">{{ sharesReport.total }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Save as PDF button -->
+              <div class="flex justify-center mt-4">
+                <button @click="saveSharesAsPdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  Save as PDF
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <h2 class="text-2xl font-bold mb-4">Users List</h2>
-      <div v-for="user in users" :key="user.id" class="bg-white shadow-md rounded-lg overflow-hidden mb-4">
-        <div class="p-4">
-          <h3 class="text-lg font-semibold">{{ user.name }}</h3>
-          <p class="text-gray-600">Last Pay: {{ formatDate(user.last_pay) }}</p>
-          <p class="text-gray-600">Monthly Share: {{ user.monthlyShare }} SDG</p>
+      <h2 class="text-2xl font-bold mb-4 text-center">Your Users</h2>
+      <div class="max-w-4xl mx-auto">
+        <div v-for="user in paginatedUserList" :key="user.id" class="bg-white shadow-md rounded-lg overflow-hidden mb-4">
+          <div class="p-4">
+            <h3 class="text-lg font-semibold">{{ user.name }}</h3>
+            <p class="text-gray-600">Last Pay: {{ formatDate(user.last_pay) }}</p>
+            <p class="text-gray-600">Monthly Share: {{ user.monthlyShare }} SDG</p>
+          </div>
+          <div class="flex justify-end p-4">
+            <button @click="openPaymentModal(user)" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600">Pay</button>
+          </div>
         </div>
-        <div class="flex justify-end p-4">
-          <button @click="openPaymentModal(user)" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600">Pay</button>
+        <!-- Pagination Controls -->
+        <div class="flex justify-center mt-4 space-x-4">
+          <button @click="prevUserListPage" :disabled="userListCurrentPage === 1" class="px-4 py-2 bg-gray-300 text-black font-semibold rounded-md hover:bg-gray-400">Prev</button>
+          <span>Page {{ userListCurrentPage }} of {{ userListTotalPages }}</span>
+          <button @click="nextUserListPage" :disabled="userListCurrentPage === userListTotalPages" class="px-4 py-2 bg-gray-300 text-black font-semibold rounded-md hover:bg-gray-400">Next</button>
         </div>
       </div>
     </div>
@@ -116,6 +173,16 @@ const showNoDataMessage = ref(false); // Variable to control displaying "No user
 const showReportHeader = ref(false); // Variable to control displaying "Users Report" header
 const isShowingPaidUsers = ref(true); // Variable to toggle between paid and unpaid users
 
+// Users List state
+const userList = ref([]);
+const userListCurrentPage = ref(1);
+const userListPageSize = 10;
+
+const shareMonth = ref(1); // Default selected month for shares
+const shareYear = ref(new Date().getFullYear()); // Default selected year for shares
+const sharesReport = ref({}); // Variable to store shares report data
+const showSharesReport = ref(false); // Variable to control displaying shares report
+
 const currentPage = ref(1); // Current page
 const pageSize = 10; // Number of users per page
 
@@ -128,12 +195,33 @@ const fetchUsersData = async () => {
   try {
     // Make an API call to fetch users data based on the current admin
     const response = await axios.get('/api/users/byAdmin');
-    users.value = response.data; // Update the users array with the fetched data
+    userList.value = response.data;
   } catch (error) {
     alert('Error fetching users data');
   }
 };
 
+const paginatedUserList = computed(() => {
+  const start = (userListCurrentPage.value - 1) * userListPageSize;
+  const end = start + userListPageSize;
+  return userList.value.slice(start, end);
+});
+
+const userListTotalPages = computed(() => {
+  return Math.ceil(userList.value.length / userListPageSize);
+});
+
+const prevUserListPage = () => {
+  if (userListCurrentPage.value > 1) {
+    userListCurrentPage.value--;
+  }
+};
+
+const nextUserListPage = () => {
+  if (userListCurrentPage.value < userListTotalPages.value) {
+    userListCurrentPage.value++;
+  }
+};
 // Method to fetch paid users and unpaid users for selected month and year
 const showUsers = async () => {
   try {
@@ -149,6 +237,21 @@ const showUsers = async () => {
     currentPage.value = 1; // Reset to the first page
   } catch (error) {
     alert('Error fetching users data');
+  }
+};
+
+// Method to fetch shares report for selected month and year
+const showShares = async () => {
+  try {
+    // Convert shareMonth and shareYear to numbers
+    const month = shareMonth.value;
+    const year = Number(shareYear.value);
+    // Make an API call to fetch shares report based on selected month and year
+    const response = await axios.get(`/api/shares?month=${month}&year=${year}`);
+    sharesReport.value = response.data; // Update sharesReport with the fetched data
+    showSharesReport.value = true; // Show the shares report section
+  } catch (error) {
+    alert('Error fetching shares report');
   }
 };
 
@@ -194,9 +297,9 @@ const prevPage = () => {
   }
 };
 
-// Method to generate and download PDF
+// Method to generate and download PDF for users report
 const saveAsPdf = () => {
-  const office = "Memebership Office";
+  const office = "Membership Office";
   const headline = isShowingPaidUsers.value 
     ? `List of Paid Users For ${selectedMonthName.value} ${selectedYear.value}`
     : `List of Unpaid Users For ${selectedMonthName.value} ${selectedYear.value}`;
@@ -208,6 +311,20 @@ const saveAsPdf = () => {
 
   // Save or download the PDF
   pdf.save(`Users Shares For ${selectedMonthName.value} ${selectedYear.value}.pdf`);
+};
+
+// Method to generate and download PDF for shares report
+const saveSharesAsPdf = () => {
+  const office = "Membership Office";
+  const headline = `Shares Report For ${selectedMonthName.value} ${selectedYear.value}`;
+
+  const { tableHeaders, tableBody } = getSharesBodyContent();
+
+  // Create a PDF using the template
+  const pdf = createPDFTemplate(office, headline, { tableHeaders, tableBody });
+
+  // Save or download the PDF
+  pdf.save(`Shares Report For ${selectedMonthName.value} ${selectedYear.value}.pdf`);
 };
 
 const formatDate = (dateString) => {
@@ -239,12 +356,17 @@ const hideReport = () => {
   showReportHeader.value = false;
 };
 
+// Method to hide the shares report section
+const hideSharesReport = () => {
+  showSharesReport.value = false;
+};
+
 // Computed property to get the selected month name
 const selectedMonthName = computed(() => {
   return months[selectedMonth.value - 1];
 });
 
-// Function to get the body content
+// Function to get the body content for users report
 const getBodyContent = () => {
   const tableHeaders = isShowingPaidUsers.value
     ? ['Name', 'Payment Type']
@@ -272,8 +394,26 @@ const getBodyContent = () => {
   };
 };
 
-</script>
+// Function to get the body content for shares report
+const getSharesBodyContent = () => {
+  const tableHeaders = ['Users Count', 'Cash', 'Bank Transfer', 'Mobile Balance', 'Total'];
 
+  const tableBody = [
+    [
+      sharesReport.value.userCount,
+      sharesReport.value.cash,
+      sharesReport.value.bankTransfer,
+      sharesReport.value.mobileBalance,
+      sharesReport.value.total
+    ]
+  ];
+
+  return {
+    tableHeaders,
+    tableBody
+  };
+};
+</script>
 
 <style scoped>
 .report-section-container {
@@ -289,7 +429,8 @@ const getBodyContent = () => {
   border-radius: 8px;
 }
 
-.users-report {
+.users-report,
+.shares-report {
   margin-bottom: 20px;
 }
 
@@ -329,10 +470,38 @@ const getBodyContent = () => {
 }
 
 .table-auto th {
-  background-color: #f2f2f2;
+  padding-top: 12px;
+  padding-bottom: 12px;
   text-align: left;
+  background-color: #f2f2f2;
+  color: black;
 }
 
+.close-button {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 5px;
+}
+
+.shares-report, .users-report {
+  position: relative;
+}
+
+.report-section-container {
+  margin-bottom: 2rem;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+.min-w-max {
+  min-width: max-content;
+}
 /* Responsive styles */
 @media screen and (max-width: 640px) {
   .report-section-container {
