@@ -9,11 +9,11 @@ use App\Models\Money;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
-class MonthlyShareController extends Controller
+class UserSharesAndPaymentsController extends Controller
 {
     public function index()
     {
-        return Inertia::render('MonthlyShare');
+        return Inertia::render('UserSharesAndPayments');
     }
 
     public function payUser(Request $request)
