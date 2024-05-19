@@ -8,7 +8,7 @@ use Illuminate\Validation\Rule;
 use \App\Models\User;
 use App\Models\Admin;
 use Inertia\Inertia;
-
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -156,4 +156,32 @@ class UserController extends Controller
 
          return response()->json($users);
      }
+
+     public function getAddAndLeaveReport(Request $request)
+     {
+        $month = $request->query('month');
+        $year = $request->query('year');
+
+        if (!$month || !$year) {
+            return response()->json([
+                'error' => 'Month and Year are required'
+            ], 400);
+        }
+
+        $startDate = Carbon::create($year, $month, 1)->startOfMonth();
+        $endDate = Carbon::create($year, $month, 1)->endOfMonth();
+
+        $leftUsers = User::whereIn('user_status_id', [3, 5, 11])
+            ->whereBetween('gone_at', [$startDate, $endDate])
+            ->get(['id', 'name']);
+
+        $addedUsers = User::where('user_status_id', '!=', 1)
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->get(['id', 'name']);
+
+        return response()->json([
+            'addedUsers' => $addedUsers,
+            'leftUsers' => $leftUsers
+        ]);
+    }
 }
