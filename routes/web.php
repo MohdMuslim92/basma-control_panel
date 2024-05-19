@@ -8,7 +8,7 @@ use \App\Http\Controllers\ProvinceController;
 use \App\Http\Controllers\UserController;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\MonthlyShareController;
+use App\Http\Controllers\UserSharesAndPaymentsController;
 use App\Http\Controllers\NotificationController;
 
 /*
@@ -99,12 +99,15 @@ Route::get('/api/admins', [AdminController::class, 'showAdminsList'])->name('adm
 Route::get('/api/users/byAdmin', [UserController::class, 'getUsersByAdmin'])->name('userByAdmin');
 
 // Route for display the Monthly Share page that contains the users list under the current admin
-Route::get('/api/monthly-share', [MonthlyShareController::class, 'index'])->name('monthlyShare');
+Route::get('/api/user-shares-and-payment', [UserSharesAndPaymentsController::class, 'index'])->name('UserSharesAndPayments');
 
-Route::put('/api/users/{id}/pay', [MonthlyShareController::class, 'payUser'])->name('users.pay');
+Route::put('/api/users/{id}/pay', [UserSharesAndPaymentsController::class, 'payUser'])->name('users.pay');
 
 // Route to get the paid users at a specific month and year
-Route::get('/api/paid-users', [MonthlyShareController::class, 'getPaidUsers'])->name('paidUsers');
+Route::get('/api/paid-users', [UserSharesAndPaymentsController::class, 'getPaidUsers'])->name('paidUsers');
 
 // Route to get the shares at a specific month and year
-Route::get('/api/shares', [MonthlyShareController::class, 'getSharesReport'])->name('sharesReport');
+Route::get('/api/shares', [UserSharesAndPaymentsController::class, 'getSharesReport'])->name('sharesReport');
+
+// Route to get the added and left users at a specific month
+Route::get('/api/users/add-leave-report', [UserController::class, 'getAddAndLeaveReport']);

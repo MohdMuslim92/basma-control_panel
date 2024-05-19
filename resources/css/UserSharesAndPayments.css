@@ -1,0 +1,95 @@
+.shares-report {
+    margin-bottom: 20px;
+  }
+  
+  button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #999;
+    margin: 8px;
+  }
+  
+  button:hover {
+    color: #333;
+  }
+  
+  .table-auto {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table-auto th,
+  .table-auto td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .table-auto th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #f2f2f2;
+    color: black;
+  }
+  
+  .users-table {
+    width: 100%;
+  }
+  .users-table th,
+  .users-table td {
+    padding: 8px;
+    text-align: left;
+  }
+
+  .add-leave-users-report {
+    margin-bottom: 20px;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #999;
+    margin: 8px;
+  }
+  
+  .close-button:hover {
+    color: #333;
+  }
+  
+  .pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .table-auto {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table-auto th,
+  .table-auto td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .table-auto th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #f2f2f2;
+    color: black;
+  }
+  
+  .table-auto td {
+    text-align: center;
+  }
+  
+  

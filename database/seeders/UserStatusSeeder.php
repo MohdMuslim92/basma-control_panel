@@ -24,7 +24,8 @@ class UserStatusSeeder extends Seeder
             'Admin',
             'Super Admin',
             'Rejected',
-            'Unverified'
+            'Unverified',
+            'Resigned'
         ];
 
         // Loop through the status names and insert them into the statuses table
