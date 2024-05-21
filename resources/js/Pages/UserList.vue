@@ -1,71 +1,71 @@
 <template>
     <AppLayout title="Users List">
-      <template #header>
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-          User List
-        </h2>
-      </template>
-  
-      <!-- Search Component -->
-      <div class="search-wrapper">
-        <Search @update:searchQuery="setSearchQuery" />
-      </div>
-  
-      <!-- User Table Section -->
-      <div class="overflow-x-auto flex justify-center">
-        <div class="w-4/5">
-          <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-              <!-- Table headers -->
-              <thead class="bg-gray-50">
-                <tr>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Name
-                  </th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Last Seen
-                  </th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Last Pay
-                  </th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Admin Name
-                  </th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Add to Office
-                  </th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Delete
-                  </th>
-                </tr>
-              </thead>
-              <!-- Table body to display users -->
-              <tbody class="bg-white divide-y divide-gray-200">
-                <tr v-for="user in filteredUsers" :key="user.id">
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    {{ user.name }}
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    {{ user.last_seen_at }}
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    {{ user.last_pay }}
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    {{ user.admin_name }}
-                    <button @click="setMembershipOfficer(user.id, user.name)">Add</button>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <button @click="addToOffice(user.id, user.name, user.role_id)">Add</button>
-                  </td>
-                  <td>
-                    <button @click="deleteUser(user.id)">Delete</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                User List
+            </h2>
+        </template>
+
+        <!-- Search Component -->
+        <div class="search-wrapper">
+            <Search @update:searchQuery="setSearchQuery" />
         </div>
+  
+        <!-- User Table Section -->
+        <div class="overflow-x-auto flex justify-center">
+            <div class="w-4/5">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <!-- Table headers -->
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Name
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Last Seen
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Last Pay
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Admin Name
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Add to Office
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Delete
+                                </th>
+                            </tr>
+                        </thead>
+                        <!-- Table body to display users -->
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr v-for="user in filteredUsers" :key="user.id">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    {{ user.name }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    {{ user.last_seen_at }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    {{ user.last_pay }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    {{ user.admin_name }}
+                                    <button @click="setMembershipOfficer(user.id, user.name)">Add</button>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <button @click="addToOffice(user.id, user.name, user.role_id)">Add</button>
+                                </td>
+                                <td>
+                                    <button @click="deleteUser(user.id)">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
       </div>
   
       <!-- Pagination Controls -->
@@ -269,4 +269,4 @@
       }, 500); // Fading animation duration
     }, 5000); // Notification display duration
   };
-  </script>  
+  </script>
