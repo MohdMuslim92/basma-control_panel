@@ -18,8 +18,12 @@
   <div>
     <h2 class="text-2xl font-bold mb-4 text-center">Your Users</h2>
     <div class="max-w-4xl mx-auto">
+      <!-- Search Component -->
+      <div class="search-wrapper">
+        <Search @update:searchQuery="setSearchQuery" />
+      </div>
       <!-- Loop through the paginated list of users and display each user -->
-      <div v-for="user in paginatedUserList" :key="user.id" class="bg-white shadow-md rounded-lg overflow-hidden mb-4">
+      <div v-for="user in filteredUsers" :key="user.id" class="bg-white shadow-md rounded-lg overflow-hidden mb-4">
         <div class="p-4">
           <!-- Display user name -->
           <h3 class="text-lg font-semibold">{{ user.name }}</h3>
@@ -59,6 +63,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import PaymentModal from './PaymentModal.vue';
+import Search from './Search.vue';
 import axios from 'axios';
 
 // Array to hold user data
@@ -74,6 +79,9 @@ const userList = ref([]);
 const userListCurrentPage = ref(1);
 // Number of users per page
 const userListPageSize = 10;
+
+// Search query ref
+const searchQuery = ref('');
 
 // Function to fetch user data from the API
 const fetchUsersData = async () => {
@@ -96,6 +104,21 @@ const paginatedUserList = computed(() => {
 const userListTotalPages = computed(() => {
   return Math.ceil(userList.value.length / userListPageSize);
 });
+
+// Computed property to filter users based on search query
+const filteredUsers = computed(() => {
+  if (!searchQuery.value) {
+    return paginatedUserList.value;
+  }
+  return paginatedUserList.value.filter((user) =>
+    user.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+});
+
+// Function to set search query
+const setSearchQuery = (query) => {
+  searchQuery.value = query;
+};
 
 // Function to go to the previous page
 const prevUserListPage = () => {
