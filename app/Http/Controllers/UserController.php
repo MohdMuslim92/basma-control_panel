@@ -19,7 +19,7 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $users = User::paginate(10); // Fetch users with pagination (10 per page)
+        $users = User::where('user_status_id', 2)->paginate(10); // Fetch only active users with pagination (10 per page)
 
         return response()->json($users); // Return users as JSON
 
@@ -183,5 +183,31 @@ class UserController extends Controller
             'addedUsers' => $addedUsers,
             'leftUsers' => $leftUsers
         ]);
+    }
+
+    /**
+     * Delete a user by updating their status and setting the gone_at column.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteUser(Request $request, $id)
+    {
+        $request->validate([
+            'status_id' => 'required|integer',
+        ]);
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        $user->user_status_id = $request->input('status_id');
+        $user->gone_at = Carbon::now();
+        $user->save();
+
+        return response()->json(['message' => 'User deleted successfully']);
     }
 }

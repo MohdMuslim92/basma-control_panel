@@ -111,3 +111,6 @@ Route::get('/api/shares', [UserSharesAndPaymentsController::class, 'getSharesRep
 
 // Route to get the added and left users at a specific month
 Route::get('/api/users/add-leave-report', [UserController::class, 'getAddAndLeaveReport']);
+
+// Route to delete a user by changing it's user_status_id
+Route::delete('/api/users/{id}', [UserController::class, 'deleteUser'])->name('users.delete');

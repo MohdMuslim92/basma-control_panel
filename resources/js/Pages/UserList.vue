@@ -49,7 +49,7 @@
                                     {{ user.last_seen_at }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    {{ user.last_pay }}
+                                    {{ formatDate(user.last_pay) }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     {{ user.admin_name }}
@@ -59,7 +59,7 @@
                                     <button @click="addToOffice(user.id, user.name, user.role_id)">Add</button>
                                 </td>
                                 <td>
-                                    <button @click="deleteUser(user.id)">Delete</button>
+                                  <button @click="openDeleteModal(user.id, user.name)">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -115,6 +115,17 @@
         @close-modal="handleCloseModal"
       >
       </UserOfficeModal>
+      
+      <!-- DeleteUserModal component -->
+      <DeleteUserModal
+        v-if="showDeleteModal"
+        :showDeleteModal="showDeleteModal"
+        :userId="selectedUserId"
+        :userName="selectedUserName"
+        @close-modal="handleCloseModal"
+        @user-deleted="handleUserDeleted"
+      >
+    </DeleteUserModal>
   
       <!-- Notification container -->
       <div id="notification-container"></div>
@@ -126,10 +137,12 @@
   import axios from 'axios';
   import { ref, computed, onMounted } from 'vue';
   import UserOfficeModal from './UserOfficeModal.vue';
+  import DeleteUserModal from './DeleteUserModal.vue';
   import OfficersModal from './OfficersModal.vue';
   import Search from './Search.vue';
   import '../../css/Notification.css'; // Importing the Notification CSS file
   import '../../css/Search.css'; // Importing the Search CSS file
+  import  { formatDate } from '../Functions.js';
   
   // Define refs and functions
   const users = ref([]);
@@ -146,7 +159,8 @@
   const showMemberOfficeModal = ref(false);
   const selectedOffice = ref(null);
   const selectedOfficer = ref(null);
-  
+  const showDeleteModal = ref(false);
+
   const setSearchQuery = (query) => {
     searchQuery.value = query;
   };
@@ -202,6 +216,13 @@
     }
   };
   
+  // Function to open delete modal
+  const openDeleteModal = (userId, userName) => {
+    selectedUserId.value = userId;
+    selectedUserName.value = userName;
+    showDeleteModal.value = true;
+};
+
   // Function to fetch users based on page number
   const loadUsers = async (page) => {
     try {
@@ -242,6 +263,14 @@
     showOfficeModal.value = false; // Update showOfficeModal when event is received
     showOfficersModal.value = false; // Update showOfficersModal when event is received
     showMemberOfficeModal.value = false; // Update showMemberOfficeModal when event is received
+    showDeleteModal.value = false;  // Update showDeleteModal when event is received
+  };
+
+  // Function to handle user deleted event
+  const handleUserDeleted = async () => {
+    showDeleteModal.value = false;
+    await loadUsers(currentPage.value);
+    showNotification('User Deleted Successfully'); // Display notification
   };
   
   // Function to display a notification
