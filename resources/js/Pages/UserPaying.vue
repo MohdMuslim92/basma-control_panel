@@ -62,6 +62,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
+import  { formatDate } from '../Functions.js';
 import PaymentModal from './PaymentModal.vue';
 import Search from './Search.vue';
 import axios from 'axios';
@@ -132,16 +133,6 @@ const nextUserListPage = () => {
   if (userListCurrentPage.value < userListTotalPages.value) {
     userListCurrentPage.value++;
   }
-};
-
-// Function to format the date
-const formatDate = (dateString) => {
-  if (!dateString) return 'User has never paid before';
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
 };
 
 // Function to open the payment modal for a specific user
