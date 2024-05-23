@@ -1,3 +1,22 @@
+<!--
+OfficersModal Component
+This component renders a modal that allows setting a membership officer to a user. It displays a dropdown of available officers fetched from the server and provides options to confirm or cancel the action.
+
+Props:
+- officers: Array of available membership officers.
+- selectedUserId: ID of the user to whom the officer will be assigned.
+- showNotification: Function to display notifications.
+- currentPage: Current page number for pagination.
+- loadUsers: Function to reload the user list.
+- selectedOfficer: Currently selected officer for the user.
+- selectedUserName: Name of the user to whom the officer will be assigned.
+- showOfficersModal: Boolean to control the visibility of the modal.
+- selectedOffice: The office currently selected for the user (default is null).
+
+Events:
+- close-modal: Emitted to close the modal.
+-->
+
 <template>
     <!-- Modal for setting a membership officer to the user -->
     <div v-if="shouldRenderModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 overflow-auto z-50 px-4 py-6">
@@ -35,7 +54,7 @@ const props = defineProps({
     showNotification: Function,
     currentPage: Number,
     loadUsers: Function,
-    selectedOfficer: Number,
+    selectedOfficer: String,
     selectedUserName: String,
     showOfficersModal: Boolean,
     selectedOffice: { type: Object, default: null }

@@ -1,3 +1,22 @@
+<!--
+UserOfficeModal Component
+This component renders a modal that allows the user to be added to an office. It displays a dropdown of available offices fetched from the server and provides options to confirm or cancel the action.
+
+Props:
+- offices: Array of available offices.
+- selectedUserId: ID of the user to be added to the office.
+- showNotification: Function to display notifications.
+- currentPage: Current page number for pagination.
+- loadUsers: Function to reload the user list.
+- selectedUserRole: Current role ID of the user.
+- selectedUserName: Name of the user to be added to the office.
+- showOfficeModal: Boolean to control the visibility of the modal.
+- selectedOffice: The office currently selected for the user (default is null).
+
+Events:
+- close-modal: Emitted to close the modal.
+-->
+
 <template>
     <!-- Modal for adding user to office -->
     <div v-if="shouldRenderModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 overflow-auto z-50 px-4 py-6">
