@@ -1,3 +1,8 @@
+<!-- 
+This component displays a list of users with various actions such as adding to office, 
+assigning an admin, and deleting a user. It also includes pagination and search functionality.
+-->
+
 <template>
     <AppLayout title="Users List">
         <template #header>
@@ -43,7 +48,7 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr v-for="user in filteredUsers" :key="user.id">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    {{ user.name }}
+                                  <a :href="`/api/user/${user.id}`" class="text-blue-600 hover:underline">{{ user.name }}</a>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     {{ user.last_seen_at }}
@@ -53,7 +58,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     {{ user.admin_name }}
-                                    <button @click="setMembershipOfficer(user.id, user.name)">Add</button>
+                                    <button @click="setMembershipOfficer(user.id, user.name, user.admin_mail)">Add</button>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <button @click="addToOffice(user.id, user.name, user.role_id)">Add</button>
@@ -161,6 +166,7 @@
   const selectedOfficer = ref(null);
   const showDeleteModal = ref(false);
 
+  // Set the search query
   const setSearchQuery = (query) => {
     searchQuery.value = query;
   };
@@ -175,9 +181,9 @@
     );
   });
   
-  // Function to add user to office
-  const setMembershipOfficer = async (userId, userName) => {
-    if (offices.value.length === 0) {
+  // Function to set membership officer for a user
+  const setMembershipOfficer = async (userId, userName, officer) => {
+    if (officers.value.length === 0) {
       try {
         const response = await axios.get('/api/membership-officers');
         officers.value = response.data; // Update officers with fetched data
@@ -189,9 +195,10 @@
     if (officers.value.length > 0) {
       selectedUserId.value = userId;
       selectedUserName.value = userName;
+      selectedOfficer.value = officer;
       showOfficersModal.value = true;
     } else {
-      alert('No offices available to add user to.');
+      alert('No officers available to add user to..');
     }
   };
   
