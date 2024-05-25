@@ -28,7 +28,7 @@ const logout = () => {
 };
 
 // Define a computed property to determine whether to show the Users tab
-const showUsersTab = computed(() => {
+const showMembershipTabs = computed(() => {
     const userStatusId = props.auth.user.user_status_id;
     const membershipOfficer = props.auth.user.role_id;
   // Only show the Users tab if user_status_id is admin, super admin (7 or 8) or is a memebership officer (2)
@@ -121,11 +121,16 @@ const notification = ref(null);
                                                          :active="route().current('dashboard')">
                                                     Dashboard
                                                 </NavLink>
-                                                <NavLink v-if="showUsersTab" :href="route('users.show')"
+                                                <NavLink v-if="showMembershipTabs" :href="route('users.show')"
                                                          :active="route().current('users.show')">
                                                     Users
                                                 </NavLink>
-                                                <!-- Other navigation links here -->
+                                                <NavLink v-if="showMembershipTabs" :href="route('admins.show')" :active="route().current('admins.show')">
+                                                    Admins
+                                                </NavLink>
+                                                <NavLink v-if="showMembershipTabs" :href="route('UserSharesAndPayments')" :active="route().current('UserSharesAndPayments')">
+                                                    Payment & Reports
+                                                </NavLink>
                                             </div>
                                         </div>
                                     </div>
@@ -301,8 +306,14 @@ const notification = ref(null);
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink v-if="showUsersTab" :href="route('users.show')" :active="route().current('users.show')">
+                        <ResponsiveNavLink v-if="showMembershipTabs" :href="route('users.show')" :active="route().current('users.show')">
                             Users
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink v-if="showMembershipTabs" :href="route('admins.show')" :active="route().current('admins.show')">
+                            Admins
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink v-if="showMembershipTabs" :href="route('UserSharesAndPayments')" :active="route().current('UserSharesAndPayments')">
+                            Payment & Reports
                         </ResponsiveNavLink>
                     </div>
 
