@@ -1,3 +1,43 @@
+.notification-icon {
+    position: relative;
+    cursor: pointer;
+    display: inline-block; /* Ensure it only takes up as much space as necessary */
+  }
+  
+  .badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 10; /* Ensure it appears above other elements */
+  }
+  
+  /* Adjustments for small screens */
+  @media (max-width: 640px) {
+    .badge {
+      top: -4px;
+      right: -4px;
+      width: 18px;
+      height: 18px;
+      font-size: 10px;
+    }
+  
+    .notification-icon img {
+      height: 5rem;
+      width: 5rem;
+    }
+  }
+  
+
 #notification-container {
     position: fixed;
     top: 20px;
