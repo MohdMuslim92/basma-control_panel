@@ -22,6 +22,7 @@ use App\Http\Controllers\NotificationController;
 |
 */
 
+// Public Routes
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -31,86 +32,86 @@ Route::get('/', function () {
     ]);
 });
 
-// Dashboard Route for admin user
+// Routes that require authentication
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    // Dashboard Route for admin user
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
+    // Special Dashboard Route for role_id 11 normal user
+    Route::get('/user-dashboard', function () {
+        return Inertia::render('UserDashboard');
+    })->name('user-dashboard');
+
+    // Route for user list page
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+    // Route for fetching users related to the current logged in admin
+    Route::get('/api/users/byAdmin', [UserController::class, 'getUsersByAdmin'])->name('userByAdmin');
+
+    // Route for display the Monthly Share page that contains the users list under the current admin
+    Route::get('/api/user-shares-and-payment', [UserSharesAndPaymentsController::class, 'index'])->name('UserSharesAndPayments');
+
+    // Route for displaying the new registered user for approval
+    Route::get('/user/approval/{userId}', [UserController::class, 'approval'])->name('user.approval');
+
+    // Route for fetching the notifications
+    Route::get('/api/notifications', [NotificationController::class, 'getUserNotifications']);
+
+    // Route for updating the read status for the notification
+    Route::put('/api/mark-as-read/{notificationId}', [NotificationController::class, 'markAsRead'])->name('markAsRead');
+
+    // Route to update the user status and approve it, also update the user data if needed
+    Route::put('/api/approve-user/{id}', [UserController::class, 'approveUser'])->name('approveUser');
+
+    // Route to update the user status and reject it
+    Route::put('/api/reject-user/{id}', [UserController::class, 'rejectUser'])->name('rejectUser');
+
+    // Route to delete a user by changing its user_status_id
+    Route::delete('/api/users/{id}', [UserController::class, 'deleteUser'])->name('users.delete');
+
+    // Route for Admins list page
+    Route::get('/api/admins', [AdminController::class, 'showAdminsList'])->name('admins.show');
+
+    // Route for membership officers list data
+    Route::get('/api/membership-officers', [AdminController::class, 'index'])->name('officers');
+
+    // Route to update user data
+    Route::put('/api/user/{userId}', [UserController::class, 'update']);
+
+    // Route for updating user role
+    Route::put('/api/users/{id}', [UserController::class, 'updateRole']);
+
+    // Route for updating membership officer for a user
+    Route::put('/api/users-officers/{id}', [UserController::class, 'updateOfficer']);
+
+    // Route for user list data
+    Route::get('/api/users', [UserController::class, 'showUserList'])->name('users.show');
+
+    // Route for display a specific user data
+    Route::get('/api/user/{id}', [UserController::class, 'displayUserDetails']);
+
+    // Route to get the paid users at a specific month and year
+    Route::get('/api/paid-users', [UserSharesAndPaymentsController::class, 'getPaidUsers'])->name('paidUsers');
+
+    // Route to get the shares at a specific month and year
+    Route::get('/api/shares', [UserSharesAndPaymentsController::class, 'getSharesReport'])->name('sharesReport');
+
+    // Route to get the added and left users at a specific month
+    Route::get('/api/users/add-leave-report', [UserController::class, 'getAddAndLeaveReport']);
+
+    // Route to pay a user
+    Route::put('/api/users/{id}/pay', [UserSharesAndPaymentsController::class, 'payUser'])->name('users.pay');
 });
 
-// Special Dashboard Route for role_id 11 normal user
-Route::get('/user-dashboard', function () {
-    return Inertia::render('UserDashboard');
-})->name('user-dashboard');
-
+// Public API Routes
 // Route to fetch states
 Route::get('/api/states', [StateController::class, 'index']);
 
 // Route to fetch provinces by state ID
 Route::get('/api/provinces/{state}', [ProvinceController::class, 'show']);
-
-// Route for user list page
-Route::get('/api/users', [UserController::class, 'showUserList'])->name('users.show');
-
-// Route for updating user role
-Route::put('/api/users/{id}', [UserController::class, 'updateRole']);
-
-// Route for updating membership officer for a user
-Route::put('/api/users-officers/{id}', [UserController::class, 'updateOfficer']);
-
-// Route for user list data
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
-
-// Route for display a specific user data
-Route::get('/api/user/{id}', [UserController::class, 'displayUserDetails']);
-
-// Route for update user data
-Route::put('/api/user/{userId}', [UserController::class, 'update']);
-
-// Route for offices list data
-Route::get('/api/offices', [OfficeController::class, 'index'])->name('offices');
-
-// Route for membership officers list data
-Route::get('/api/membership-officers', [AdminController::class, 'index'])->name('officers');
-
-// Route for fetching the notifications
-Route::get('/api/notifications', [NotificationController::class, 'getUserNotifications']);
-
-// Route for displaying the new registered user for approval
-Route::get('/user/approval/{userId}', [UserController::class, 'approval'])->name('user.approval');
-
-// Route for updating the read status for the notification
-Route::put('/api/mark-as-read/{notificationId}', [NotificationController::class, 'markAsRead'])->name('markAsRead');
-
-// Route to update the user status and approve it, also update the user data if needed
-Route::put('/api/approve-user/{id}', [UserController::class, 'approveUser'])->name('approveUser');
-
-// Route to update the user status and reject it
-Route::put('/api/reject-user/{id}', [UserController::class, 'rejectUser'])->name('rejectUser');
-
-// Route for Admins list page
-Route::get('/api/admins', [AdminController::class, 'showAdminsList'])->name('admins.show');
-
-// Route for fetching users related to the current logged in admin
-Route::get('/api/users/byAdmin', [UserController::class, 'getUsersByAdmin'])->name('userByAdmin');
-
-// Route for display the Monthly Share page that contains the users list under the current admin
-Route::get('/api/user-shares-and-payment', [UserSharesAndPaymentsController::class, 'index'])->name('UserSharesAndPayments');
-
-Route::put('/api/users/{id}/pay', [UserSharesAndPaymentsController::class, 'payUser'])->name('users.pay');
-
-// Route to get the paid users at a specific month and year
-Route::get('/api/paid-users', [UserSharesAndPaymentsController::class, 'getPaidUsers'])->name('paidUsers');
-
-// Route to get the shares at a specific month and year
-Route::get('/api/shares', [UserSharesAndPaymentsController::class, 'getSharesReport'])->name('sharesReport');
-
-// Route to get the added and left users at a specific month
-Route::get('/api/users/add-leave-report', [UserController::class, 'getAddAndLeaveReport']);
-
-// Route to delete a user by changing it's user_status_id
-Route::delete('/api/users/{id}', [UserController::class, 'deleteUser'])->name('users.delete');
