@@ -8,7 +8,7 @@ import ApplicationLogo from '@/Components/ApplicationLogo.vue';
             <ApplicationLogo class="block h-12 w-auto" />
 
             <h1 class="mt-8 text-2xl font-medium text-gray-900">
-                Welcome User
+                Welcome {{ $page.props.auth.user.name }}
             </h1>
 
         </div>
