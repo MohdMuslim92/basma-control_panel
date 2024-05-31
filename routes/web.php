@@ -78,6 +78,9 @@ Route::middleware([
     // Route for Admins list page
     Route::get('/api/admins', [AdminController::class, 'showAdminsList'])->name('admins.show');
 
+    // Route to fetch Offices
+    Route::get('/api/offices', [OfficeController::class, 'index'])->name('offices');
+
     // Route for membership officers list data
     Route::get('/api/membership-officers', [AdminController::class, 'index'])->name('officers');
 
