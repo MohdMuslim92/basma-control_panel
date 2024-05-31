@@ -48,8 +48,11 @@ Route::middleware([
         return Inertia::render('UserDashboard');
     })->name('user-dashboard');
 
-    // Route for user list page
+    // Route for user list page with pagniation
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+    // Route for fetching all users together for saving as pdf purpose
+    Route::get('/api/all-users', [UserController::class, 'getAllUsers']);
 
     // Route for fetching users related to the current logged in admin
     Route::get('/api/users/byAdmin', [UserController::class, 'getUsersByAdmin'])->name('userByAdmin');
