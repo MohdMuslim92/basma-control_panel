@@ -11,7 +11,7 @@ use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -22,13 +22,39 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        // Fetch users and join with the admins table to get the admin status
-        $users = DB::table('users')
-        ->leftJoin('admins', 'users.id', '=', 'admins.user_id')
-        ->select('users.*', 'admins.admin as is_admin')
-        ->paginate(10);
+        try {
+            // Fetch users and join with the admins table to get the admin status and admin name
+            $users = DB::table('users')
+            ->leftJoin('admins', 'users.id', '=', 'admins.user_id')
+            ->leftJoin('users as admin_users', 'users.admin_mail', '=', 'admin_users.email')
+            ->select('users.*', 'admins.admin as is_admin', 'admin_users.name as admin_name')
+            ->whereIn('users.user_status_id', [2, 6, 7, 8]) // Filter active users
+            ->paginate(10);
 
-        return response()->json($users);
+            return response()->json($users);
+        } catch (\Exception $e) {
+            // Log the error
+            Log::error('Error fetching users with admin details: ' . $e->getMessage());
+    
+            // Return a generic error message
+            return response()->json(['error' => 'Internal server error'], 500);
+        }
+    }
+
+    /**
+     * Fetch all users data.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAllUsers(Request $request)
+    {
+        try {
+            $users = User::whereIn('user_status_id', [2, 6, 7, 8])->get(); // Filter active users
+            return response()->json($users);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch users data'], 500);
+        }
     }
 
     public function update(Request $request, $id)

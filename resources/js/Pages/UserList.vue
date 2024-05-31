@@ -15,7 +15,12 @@ assigning an admin, and deleting a user. It also includes pagination and search 
         <div class="search-wrapper">
             <Search @update:searchQuery="setSearchQuery" />
         </div>
-  
+
+        <!-- Save as PDF Button -->
+        <div class="flex justify-center mt-4">
+          <button @click="saveUsersAsPdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save as PDF</button>
+        </div>
+
         <!-- User Table Section -->
         <div class="overflow-x-auto flex justify-center">
             <div class="w-4/5">
@@ -157,7 +162,8 @@ assigning an admin, and deleting a user. It also includes pagination and search 
   import '../../css/Search.css'; // Importing the Search CSS file
   import '../../css/UserList.css'; // Importing the UserList CSS file
   import  { formatDate } from '../Functions.js';
-  
+  import { createPDFTemplate } from '../pdfTemplate';
+
   // Define refs and functions
   const users = ref([]);
   const currentPage = ref(1);
@@ -179,7 +185,8 @@ assigning an admin, and deleting a user. It also includes pagination and search 
   const setSearchQuery = (query) => {
     searchQuery.value = query;
   };
-  
+  const allUsers = ref([]);
+
   // Function to filter users based on search query
   const filteredUsers = computed(() => {
     if (!searchQuery.value) {
@@ -189,7 +196,17 @@ assigning an admin, and deleting a user. It also includes pagination and search 
       user.name.toLowerCase().includes(searchQuery.value.toLowerCase())
     );
   });
-  
+
+  // Function to fetch all users data
+  const loadAllUsers = async () => {
+    try {
+      const response = await axios.get(`/api/all-users`);
+      allUsers.value = response.data;
+    } catch (error) {
+      alert('Error fetching users data');
+    }
+  };
+
   // Computed property to determine if current user is an admin
   const userIsAdmin = computed(() => {
     return currentUser.value && currentUser.value.is_admin === 1;
@@ -334,6 +351,32 @@ assigning an admin, and deleting a user. It also includes pagination and search 
   } catch (error) {
     showNotification('Failed to update admin status');
   }
+};
+
+// Function to save the users list as a PDF
+const saveUsersAsPdf = () => {
+  // Fetch all users data
+  loadAllUsers().then(() => {
+    const office = "Membership Office";
+    const headline = `Users List`;
+
+    const { tableHeaders, tableBody } = getUsersBodyContent();
+
+    const pdf = createPDFTemplate(office, headline, { tableHeaders, tableBody });
+    pdf.save(`Users List.pdf`);
+  });
+};
+
+// Helper method to prepare the users data for the PDF table
+const getUsersBodyContent = () => {
+  const tableHeaders = ["#", "Name", "Last Pay", "Join Date"];
+  const tableBody = allUsers.value.map((user, index) => [
+    index + 1,
+    user.name,
+    user.last_pay ? formatDate(user.last_pay) : 'No Payment before',
+    formatDate(user.created_at)
+  ]);
+  return { tableHeaders, tableBody };
 };
 
 </script>
