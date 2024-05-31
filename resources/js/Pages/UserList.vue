@@ -33,13 +33,13 @@ assigning an admin, and deleting a user. It also includes pagination and search 
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Last Pay
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th v-if="userIsAdmin" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Admin Name
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th v-if="userIsAdmin" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Add to Office
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th v-if="userIsAdmin" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Admin Status
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -59,15 +59,15 @@ assigning an admin, and deleting a user. It also includes pagination and search 
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     {{ formatDate(user.last_pay) }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td v-if="userIsAdmin" class="px-6 py-4 whitespace-nowrap">
                                     {{ user.admin_name }}
                                     <button @click="setMembershipOfficer(user.id, user.name, user.admin_mail)">Add</button>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td v-if="userIsAdmin" class="px-6 py-4 whitespace-nowrap">
                                     <button @click="addToOffice(user.id, user.name, user.role_id)">Add</button>
                                 </td>
                                 <!-- ToggleSwitch Component for Admin Status -->
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td v-if="userIsAdmin" class="px-6 py-4 whitespace-nowrap">
                                   <ToggleSwitch v-if="user.is_admin !== null" :isAdmin="Boolean(user.is_admin)" :userId="user.id" @toggle="() => toggleAdmin(user.id)" />
                                 </td>
                                 <td>
@@ -174,7 +174,7 @@ assigning an admin, and deleting a user. It also includes pagination and search 
   const selectedOffice = ref(null);
   const selectedOfficer = ref(null);
   const showDeleteModal = ref(false);
-
+  const currentUser = ref(null);
   // Set the search query
   const setSearchQuery = (query) => {
     searchQuery.value = query;
@@ -190,6 +190,10 @@ assigning an admin, and deleting a user. It also includes pagination and search 
     );
   });
   
+  // Computed property to determine if current user is an admin
+  const userIsAdmin = computed(() => {
+    return currentUser.value && currentUser.value.is_admin === 1;
+  });
   // Function to set membership officer for a user
   const setMembershipOfficer = async (userId, userName, officer) => {
     if (officers.value.length === 0) {
@@ -268,6 +272,8 @@ assigning an admin, and deleting a user. It also includes pagination and search 
   // Fetch the initial set of users on component mount
   onMounted(async () => {
     try {
+      const response = await axios.get('/api/current-user');
+      currentUser.value = response.data;
       await loadUsers(1);
     } catch (error) {
       alert('Error fetching users, please reload the page');
