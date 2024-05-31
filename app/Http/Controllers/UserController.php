@@ -10,6 +10,8 @@ use App\Models\Admin;
 use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends Controller
 {
@@ -212,5 +214,22 @@ class UserController extends Controller
         $user->save();
 
         return response()->json(['message' => 'User deleted successfully']);
+    }
+
+    public function getCurrentUser(Request $request)
+    {
+        $userId = Auth::id();
+
+        if ($userId) {
+            $user = DB::table('users')
+                ->leftJoin('admins', 'users.id', '=', 'admins.user_id')
+                ->select('users.*', 'admins.admin as is_admin')
+                ->where('users.id', $userId)
+                ->first();
+
+            return response()->json($user);
+        } else {
+            return response()->json(['error' => 'User not authenticated'], 401);
+        }
     }
 }
