@@ -17,7 +17,7 @@ return new class extends Migration
             // The office he belongs to
             $table->unsignedBigInteger('office_id');
             // Admin is 0 means he is a member at the office, otherwise he maybe an admin or co-admin
-            $table->unsignedBigInteger('admin')->nullable();
+            $table->unsignedBigInteger('admin')->default(0);
             $table->dateTime('hired_at')->default(now()); // Automatically set the hired_at date
             $table->dateTime('ended_at')->nullable();
             $table->timestamps();

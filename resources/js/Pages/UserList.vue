@@ -40,6 +40,9 @@ assigning an admin, and deleting a user. It also includes pagination and search 
                                     Add to Office
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Admin Status
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Delete
                                 </th>
                             </tr>
@@ -62,6 +65,10 @@ assigning an admin, and deleting a user. It also includes pagination and search 
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <button @click="addToOffice(user.id, user.name, user.role_id)">Add</button>
+                                </td>
+                                <!-- ToggleSwitch Component for Admin Status -->
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                  <ToggleSwitch v-if="user.is_admin !== null" :isAdmin="Boolean(user.is_admin)" :userId="user.id" @toggle="() => toggleAdmin(user.id)" />
                                 </td>
                                 <td>
                                   <button @click="openDeleteModal(user.id, user.name)">Delete</button>
@@ -145,8 +152,10 @@ assigning an admin, and deleting a user. It also includes pagination and search 
   import DeleteUserModal from './DeleteUserModal.vue';
   import OfficersModal from './OfficersModal.vue';
   import Search from './Search.vue';
+  import ToggleSwitch from './ToggleSwitch.vue';
   import '../../css/Notification.css'; // Importing the Notification CSS file
   import '../../css/Search.css'; // Importing the Search CSS file
+  import '../../css/UserList.css'; // Importing the UserList CSS file
   import  { formatDate } from '../Functions.js';
   
   // Define refs and functions
@@ -305,4 +314,20 @@ assigning an admin, and deleting a user. It also includes pagination and search 
       }, 500); // Fading animation duration
     }, 5000); // Notification display duration
   };
-  </script>
+
+  // Function to toggle admin status
+  const toggleAdmin = async (userId) => {
+  try {
+    const response = await axios.post(`/toggle-admin/${userId}`);
+    if (response.status === 200) {
+      showNotification('Admin status updated successfully', 'success');
+      loadUsers(currentPage.value);
+    } else {
+      showNotification('Failed to update admin status', 'error');
+    }
+  } catch (error) {
+    showNotification('Failed to update admin status');
+  }
+};
+
+</script>

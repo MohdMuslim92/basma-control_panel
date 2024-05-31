@@ -9,6 +9,7 @@ use \App\Models\User;
 use App\Models\Admin;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -19,12 +20,14 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $users = User::where('user_status_id', 2)->paginate(10); // Fetch only active users with pagination (10 per page)
+        // Fetch users and join with the admins table to get the admin status
+        $users = DB::table('users')
+        ->leftJoin('admins', 'users.id', '=', 'admins.user_id')
+        ->select('users.*', 'admins.admin as is_admin')
+        ->paginate(10);
 
-        return response()->json($users); // Return users as JSON
-
+        return response()->json($users);
     }
-
 
     public function update(Request $request, $id)
     {

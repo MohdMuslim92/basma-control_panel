@@ -107,6 +107,9 @@ Route::middleware([
 
     // Route to pay a user
     Route::put('/api/users/{id}/pay', [UserSharesAndPaymentsController::class, 'payUser'])->name('users.pay');
+
+    // Route to Handle the toggling of the admin status for a user
+    Route::post('/toggle-admin/{userId}', [AdminController::class, 'toggleAdmin']);
 });
 
 // Public API Routes

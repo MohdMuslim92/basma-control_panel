@@ -26,4 +26,24 @@ class AdminController extends Controller
         return Inertia::render('Admins');
     }
 
-}
+    /**
+     * Toggle the admin status of a user.
+     *
+     * @param int $userId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function toggleAdmin($userId)
+    {
+        try {
+            // Find the admin record by user_id
+            $admin = Admin::where('user_id', $userId)->firstOrFail();
+
+            // Toggle the admin status
+            $admin->admin = $admin->admin ? 0 : 1;
+            $admin->save();
+
+            return response()->json(['message' => 'Admin status updated successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error updating admin status'], 500);
+        }
+    }}
