@@ -112,6 +112,9 @@ Route::middleware([
     Route::post('/toggle-admin/{userId}', [AdminController::class, 'toggleAdmin']);
 });
 
+// Route to get the current user and it's admin status
+Route::middleware('auth:sanctum')->get('/api/current-user', [UserController::class, 'getCurrentUser']);
+
 // Public API Routes
 // Route to fetch states
 Route::get('/api/states', [StateController::class, 'index']);
