@@ -51,6 +51,7 @@ const selectedReason = ref('');
 // List of possible reasons for deletion
 const reasons = ref([
   { name: 'Suspended', value: 3 },
+  { name: 'Inactive (Has not paid for 3 months)', value: 4 },
   { name: 'Rejected (Added by Mistake)', value: 9 },
   { name: 'Resigned', value: 11 },
 ]);
