@@ -1,0 +1,19 @@
+{
+    "welcome_page": {
+        "welcome": "Welcome to our application",
+        "welcome_message": "Welcome to Basma",
+        "welcome_slogan": "We care for orphans and community awareness"
+    },
+    "dashboard_page": {
+        "dashboard": "Dashboard",
+        "Dashboard": "Dashboard",
+        "Users": "Users",
+        "Admins": "Admins",
+        "payment_reports": "Payment & Reports",
+        "profile": "Profile",
+        "logout": "Log Out",
+        "login": "Log in",
+        "register": "Register",
+        "basma_orphans": "Basma Orphans"
+    }
+}

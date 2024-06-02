@@ -1,5 +1,8 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 defineProps({
     canLogin: Boolean,
@@ -34,7 +37,7 @@ defineProps({
 
             <div class="mt-16">
                 <div style="display: flex; justify-content: center; align-items: center;">
-                    <h1>Basma Orphans</h1>
+                    <h1>{{ t('dashboard_page.basma_orphans') }}</h1>
                 </div>
 
             </div>

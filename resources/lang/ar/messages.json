@@ -1,0 +1,19 @@
+{
+    "welcome_page": {
+        "welcome": "مرحبًا بكم في موقعنا",
+        "welcome_message": "مرحبًا بك في بصمة",
+        "welcome_slogan": "نحن نهتم بالأيتام وتوعية المجتمع"
+    },
+    "dashboard_page": {
+        "dashboard": "الرئيسية",
+        "Dashboard": "الرئيسية",
+        "Users": "الأعضاء",
+        "Admins": "شؤون الأعضاء",
+        "payment_reports": "الاشتراكات والتقارير",
+        "profile": "الملف الشخصي",
+        "logout": "تسجيل الخروج",
+        "login": "تسجيل الدخول",
+        "register": "تسجيل",
+        "basma_orphans": "منظمة بصمة لكفالة الايتام"
+    }
+}
