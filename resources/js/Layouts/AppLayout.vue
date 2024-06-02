@@ -8,6 +8,10 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import NotificationIcon from '../Pages/NotificationIcon.vue';
+import LanguageSwitcher from '@/Components/LanguageSwitcher.vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 defineProps({
     title: String,
@@ -119,17 +123,17 @@ const notification = ref(null);
                                             <div class="space-x-8">
                                                 <NavLink :href="route('dashboard')"
                                                          :active="route().current('dashboard')">
-                                                    Dashboard
+                                                    {{ t('dashboard_page.Dashboard') }}
                                                 </NavLink>
                                                 <NavLink v-if="showMembershipTabs" :href="route('users.show')"
                                                          :active="route().current('users.show')">
-                                                    Users
+                                                         {{ t('dashboard_page.Users')  }}
                                                 </NavLink>
                                                 <NavLink v-if="showMembershipTabs" :href="route('admins.show')" :active="route().current('admins.show')">
-                                                    Admins
+                                                    {{ t('dashboard_page.Admins') }}
                                                 </NavLink>
                                                 <NavLink v-if="showMembershipTabs" :href="route('UserSharesAndPayments')" :active="route().current('UserSharesAndPayments')">
-                                                    Payment & Reports
+                                                    {{ t('dashboard_page.payment_reports') }}
                                                 </NavLink>
                                             </div>
                                         </div>
@@ -211,10 +215,13 @@ const notification = ref(null);
                                 </Dropdown>
                             </div>
 
-                                    <NotificationIcon >
+                            <LanguageSwitcher />
                             
-                                    </NotificationIcon>
-                            <!-- Settings Dropdown -->
+                            <NotificationIcon >
+                            
+                            </NotificationIcon>
+
+                                    <!-- Settings Dropdown -->
                             <div class="ms-3 relative">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
@@ -247,7 +254,7 @@ const notification = ref(null);
                                         </div>
 
                                         <DropdownLink :href="route('profile.show')">
-                                            Profile
+                                            {{ t('dashboard_page.profile') }}
                                         </DropdownLink>
 
                                         <DropdownLink v-if="$page.props.jetstream.hasApiFeatures"
@@ -260,7 +267,7 @@ const notification = ref(null);
                                         <!-- Authentication -->
                                         <form @submit.prevent="logout">
                                             <DropdownLink as="button">
-                                                Log Out
+                                                {{ t('dashboard_page.logout') }}
                                             </DropdownLink>
                                         </form>
                                     </template>
@@ -304,16 +311,16 @@ const notification = ref(null);
                      class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                            {{ t('dashboard_page.Dashboard') }}
                         </ResponsiveNavLink>
                         <ResponsiveNavLink v-if="showMembershipTabs" :href="route('users.show')" :active="route().current('users.show')">
-                            Users
+                            {{ t('dashboard_page.Users') }}
                         </ResponsiveNavLink>
                         <ResponsiveNavLink v-if="showMembershipTabs" :href="route('admins.show')" :active="route().current('admins.show')">
-                            Admins
+                            {{ t('dashboard_page.Admins') }}
                         </ResponsiveNavLink>
                         <ResponsiveNavLink v-if="showMembershipTabs" :href="route('UserSharesAndPayments')" :active="route().current('UserSharesAndPayments')">
-                            Payment & Reports
+                            {{ t('dashboard_page.payment_reports') }}
                         </ResponsiveNavLink>
                     </div>
 
@@ -341,7 +348,7 @@ const notification = ref(null);
                         <div class="mt-3 space-y-1">
 
                             <ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')">
-                                Profile
+                                {{ t('dashboard_page.profile') }}
                             </ResponsiveNavLink>
 
                             <ResponsiveNavLink v-if="$page.props.jetstream.hasApiFeatures"
@@ -353,7 +360,7 @@ const notification = ref(null);
                             <!-- Authentication -->
                             <form method="POST" @submit.prevent="logout">
                                 <ResponsiveNavLink as="button">
-                                    Log Out
+                                    {{ t('dashboard_page.logout') }}
                                 </ResponsiveNavLink>
                             </form>
 
@@ -404,6 +411,9 @@ const notification = ref(null);
                                 </template>
                             </template>
                         </div>
+                    </div>
+                    <div class="py-2 border-t border-gray-200">
+                        <LanguageSwitcher />
                     </div>
                 </div>
             </nav>
