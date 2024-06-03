@@ -1,27 +1,34 @@
 <script setup>
-import { ref, reactive, nextTick } from 'vue';
+import { ref, reactive, nextTick, computed } from 'vue';
 import DialogModal from './DialogModal.vue';
 import InputError from './InputError.vue';
 import PrimaryButton from './PrimaryButton.vue';
 import SecondaryButton from './SecondaryButton.vue';
 import TextInput from './TextInput.vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const emit = defineEmits(['confirmed']);
 
-defineProps({
+const props = defineProps({
     title: {
         type: String,
-        default: 'Confirm Password',
+        default: '',
     },
     content: {
         type: String,
-        default: 'For your security, please confirm your password to continue.',
+        default: '',
     },
     button: {
         type: String,
-        default: 'Confirm',
+        default: '',
     },
 });
+
+const defaultTitle = computed(() => props.title || t('confirms_password.title'));
+const defaultContent = computed(() => props.content || t('confirms_password.content'));
+const defaultButton = computed(() => props.button || t('confirms_password.button'));
 
 const confirmingPassword = ref(false);
 
@@ -78,11 +85,11 @@ const closeModal = () => {
 
         <DialogModal :show="confirmingPassword" @close="closeModal">
             <template #title>
-                {{ title }}
+                {{ defaultTitle }}
             </template>
 
             <template #content>
-                {{ content }}
+                {{ defaultContent }}
 
                 <div class="mt-4">
                     <TextInput
@@ -90,7 +97,7 @@ const closeModal = () => {
                         v-model="form.password"
                         type="password"
                         class="mt-1 block w-3/4"
-                        placeholder="Password"
+                        :placeholder="t('confirms_password.password_placeholder')"
                         autocomplete="current-password"
                         @keyup.enter="confirmPassword"
                     />
@@ -101,7 +108,7 @@ const closeModal = () => {
 
             <template #footer>
                 <SecondaryButton @click="closeModal">
-                    Cancel
+                    {{ t('confirms_password.cancel') }}
                 </SecondaryButton>
 
                 <PrimaryButton
@@ -110,7 +117,7 @@ const closeModal = () => {
                     :disabled="form.processing"
                     @click="confirmPassword"
                 >
-                    {{ button }}
+                    {{ defaultButton }}
                 </PrimaryButton>
             </template>
         </DialogModal>

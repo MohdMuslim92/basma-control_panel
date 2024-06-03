@@ -9,6 +9,9 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import axios from 'axios';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 // Define reactive variables for states and provinces
 const states = ref([]);
@@ -143,11 +146,11 @@ const clearPhotoFileInput = () => {
 <template>
     <FormSection @submitted="updateProfileInformation">
         <template #title>
-            Profile Information
+            {{ t('profile.profile_information') }}
         </template>
 
         <template #description>
-            Update your account's profile information and email address.
+            {{ t('profile.update_your_profile') }}
         </template>
 
         <template #form>
@@ -162,7 +165,7 @@ const clearPhotoFileInput = () => {
                     @change="updatePhotoPreview"
                 >
 
-                <InputLabel for="photo" value="Photo" />
+                <InputLabel for="photo" value="t('profile.photo')" />
 
                 <!-- Current Profile Photo -->
                 <div v-show="! photoPreview" class="mt-2">
@@ -178,7 +181,7 @@ const clearPhotoFileInput = () => {
                 </div>
 
                 <SecondaryButton class="mt-2 me-2" type="button" @click.prevent="selectNewPhoto">
-                    Select A New Photo
+                    {{ t('profile.select_new_photo') }}
                 </SecondaryButton>
 
                 <SecondaryButton
@@ -187,7 +190,7 @@ const clearPhotoFileInput = () => {
                     class="mt-2"
                     @click.prevent="deletePhoto"
                 >
-                    Remove Photo
+                    {{ t('profile.remove_photo') }}
                 </SecondaryButton>
 
                 <InputError :message="form.errors.photo" class="mt-2" />
@@ -195,7 +198,7 @@ const clearPhotoFileInput = () => {
 
             <!-- Name -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="name" :value="t('profile.name')" />
                 <TextInput
                     id="name"
                     v-model="form.name"
@@ -209,7 +212,7 @@ const clearPhotoFileInput = () => {
 
             <!-- Email -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" :value="t('profile.email')" />
                 <TextInput
                     id="email"
                     v-model="form.email"
@@ -222,7 +225,7 @@ const clearPhotoFileInput = () => {
 
                 <div v-if="$page.props.jetstream.hasEmailVerification && user.email_verified_at === null">
                     <p class="text-sm mt-2">
-                        Your email address is unverified.
+                        {{ t('profile.unverified_email') }}
 
                         <Link
                             :href="route('verification.send')"
@@ -231,19 +234,19 @@ const clearPhotoFileInput = () => {
                             class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             @click.prevent="sendEmailVerification"
                         >
-                            Click here to re-send the verification email.
+                            {{ t('profile.resend_verification') }}
                         </Link>
                     </p>
 
                     <div v-show="verificationLinkSent" class="mt-2 font-medium text-sm text-green-600">
-                        A new verification link has been sent to your email address.
+                        {{ t('profile.verification_sent') }}
                     </div>
                 </div>
             </div>
 
             <!-- Gender -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel value="Gender" />
+                <InputLabel :value="t('profile.gender')" />
                 <div class="flex items-center mt-1">
                     <label for="male" class="mr-2">
                         <input
@@ -253,7 +256,7 @@ const clearPhotoFileInput = () => {
                             v-model="form.gender"
                             class="mr-1"
                         />
-                        Male
+                        {{ t('profile.male') }}
                     </label>
                     <label for="female">
                         <input
@@ -263,7 +266,7 @@ const clearPhotoFileInput = () => {
                             v-model="form.gender"
                             class="mr-1"
                         />
-                        Female
+                        {{ t('profile.female') }}
                     </label>
                 </div>
                 <InputError :message="form.errors.gender" class="mt-2" />
@@ -271,7 +274,7 @@ const clearPhotoFileInput = () => {
 
             <!-- State -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="state" value="State" />
+                <InputLabel for="state" :value="t('profile.state')" />
                 <select
                     id="state"
                     v-model="form.state_id"
@@ -279,7 +282,7 @@ const clearPhotoFileInput = () => {
                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                     required
                 >
-                    <option value="">Select State</option>
+                    <option value="">{{ t('profile.select_state') }}</option>
                     <option v-for="state in states" :key="state.id" :value="state.id">{{ state.name }}</option>
                 </select>
                 <InputError class="mt-2" :message="form.errors.state" />
@@ -287,14 +290,14 @@ const clearPhotoFileInput = () => {
 
             <!-- Province -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="province" value="Province" />
+                <InputLabel for="province" :value="t('profile.province')" />
                 <select
                     id="province"
                     v-model="form.province_id"
                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                     required
                 >
-                    <option value="">Select Province</option>
+                    <option value="">{{ t('profile.select_province') }}</option>
                     <option v-for="province in provinces" :key="province.id" :value="province.id">{{ province.name }}</option>
                 </select>
                 <InputError class="mt-2" :message="form.errors.province_id" />
@@ -302,7 +305,7 @@ const clearPhotoFileInput = () => {
 
             <!-- Address -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="address" value="Address" />
+                <InputLabel for="address" :value="t('profile.address')" />
                 <TextInput
                     id="address"
                     v-model="form.address"
@@ -316,7 +319,7 @@ const clearPhotoFileInput = () => {
 
             <!-- Phone -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="phone" value="Phone" />
+                <InputLabel for="phone" :value="t('profile.phone')" />
                 <TextInput
                     id="phone"
                     v-model="form.phone"
@@ -330,7 +333,7 @@ const clearPhotoFileInput = () => {
 
             <!-- Date of Birth -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel value="Date of Birth" />
+                <InputLabel :value="t('profile.dob')" />
                 <input
                     id="dob"
                     v-model="form.dob"
@@ -344,18 +347,18 @@ const clearPhotoFileInput = () => {
 
             <!-- Educational Level -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel value="Educational Level" />
+                <InputLabel :value="t('profile.educational_level')" />
                 <select v-model="form.educationLevel" id="educationalLevel" class="mt-1 block w-full">
-                    <option value="Elementary">Elementary</option>
-                    <option value="Secondary">Secondary</option>
-                    <option value="University">University or Above</option>
+                    <option value="Elementary">{{ t('profile.elementary') }}</option>
+                    <option value="Secondary">{{ t('profile.secondary') }}</option>
+                    <option value="University">{{ t('profile.university') }}</option>
                 </select>
                 <InputError :message="form.errors.educationLevel" class="mt-2" />
             </div>
 
             <!-- Specialization - shown only if Educational Level is University -->
             <div v-if="form.educationLevel === 'University'" class="col-span-6 sm:col-span-4">
-                <InputLabel for="specialization" value="Specialization" />
+                <InputLabel for="specialization" :value="t('profile.specialization')" />
                 <TextInput
                     id="specialization"
                     v-model="form.specialization"
@@ -369,7 +372,7 @@ const clearPhotoFileInput = () => {
 
             <!-- Skills -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="skills" value="Skills" />
+                <InputLabel for="skills" :value="t('profile.skills')" />
                 <TextInput
                     id="skills"
                     v-model="form.skills"
@@ -383,7 +386,7 @@ const clearPhotoFileInput = () => {
 
             <!-- Volunteering Experience -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel value="Volunteering Experience" />
+                <InputLabel :value="t('profile.volunteering_experience')" />
                 <div>
                     <label for="volunteeringYes">
                         <input
@@ -393,7 +396,7 @@ const clearPhotoFileInput = () => {
                             v-model="form.alreadyVolunteering"
                             class="mr-2"
                         />
-                        Yes
+                        {{ t('profile.yes') }}
                     </label>
                     <label for="volunteeringNo">
                         <input
@@ -403,7 +406,7 @@ const clearPhotoFileInput = () => {
                             v-model="form.alreadyVolunteering"
                             class="mr-2"
                         />
-                        No
+                        {{ t('profile.no') }}
                     </label>
                 </div>
                 <InputError :message="form.errors.alreadyVolunteering" class="mt-2" />
@@ -411,7 +414,7 @@ const clearPhotoFileInput = () => {
 
             <!-- Organization Name - shown only if Volunteering Experience is yes -->
             <div v-if="form.alreadyVolunteering === 'true'" class="col-span-6 sm:col-span-4">
-                <InputLabel for="organizationName" value="Organization Name" />
+                <InputLabel for="organizationName" :value="t('profile.organization_name')" />
                 <TextInput
                     id="organizationName"
                     v-model="form.organizationName"
@@ -425,7 +428,7 @@ const clearPhotoFileInput = () => {
 
             <!-- Start date of volunteering - shown only if volunteering experience is yes -->
             <div v-if="form.alreadyVolunteering === 'true'" class="col-span-6 sm:col-span-4">
-                <InputLabel value="Start date of volunteering" />
+                <InputLabel :value="t('profile.volunteering_start_date')" />
                 <input
                     id="volunteeringStartDate"
                     v-model="form.volunteeringStartDate"
@@ -438,7 +441,7 @@ const clearPhotoFileInput = () => {
 
             <!-- End date of volunteering - shown only if volunteering experience is yes -->
             <div v-if="form.alreadyVolunteering === 'true'" class="col-span-6 sm:col-span-4">
-                <InputLabel value="End date of volunteering" />
+                <InputLabel :value="t('profile.volunteering_end_date')" />
                 <input
                     id="volunteeringEndDate"
                     v-model="form.volunteeringEndDate"
@@ -451,7 +454,7 @@ const clearPhotoFileInput = () => {
 
             <!-- Monthly Share -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="monthlyShare" value="Monthly Share" />
+                <InputLabel for="monthlyShare" :value="t('profile.monthly_share')" />
                 <TextInput
                     id="monthlyShare"
                     v-model="form.monthlyShare"
@@ -464,15 +467,15 @@ const clearPhotoFileInput = () => {
 
             <!-- Meeting Day -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel value="Meeting Day" />
+                <InputLabel :value="t('profile.meeting_day')" />
                 <select v-model="form.meetingDay" id="meetingDay" class="mt-1 block w-full">
-                    <option value="Saturday">Saturday</option>
-                    <option value="Sunday">Sunday</option>
-                    <option value="Monday">Monday</option>
-                    <option value="Tuesday">Tuesday</option>
-                    <option value="Wednesday">Wednesday</option>
-                    <option value="Thursday">Thursday</option>
-                    <option value="Friday">Friday</option>
+                    <option value="Saturday">{{ t('profile.saturday') }}</option>
+                    <option value="Sunday">{{ t('profile.sunday') }}</option>
+                    <option value="Monday">{{ t('profile.monday') }}</option>
+                    <option value="Tuesday">{{ t('profile.tuesday') }}</option>
+                    <option value="Wednesday">{{ t('profile.wednesday') }}</option>
+                    <option value="Thursday">{{ t('profile.thursday') }}</option>
+                    <option value="Friday">{{ t('profile.friday') }}</option>
                 </select>
                 <InputError :message="form.errors.meetingDay" class="mt-2" />
             </div>
@@ -481,11 +484,11 @@ const clearPhotoFileInput = () => {
 
         <template #actions>
             <ActionMessage :on="form.recentlySuccessful" class="me-3">
-                Saved.
+                {{ t('profile.saved') }}
             </ActionMessage>
 
             <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Save
+                {{ t('profile.save') }}
             </PrimaryButton>
         </template>
     </FormSection>
