@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserSharesAndPaymentsController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RemovedUsers;
+use App\Http\Controllers\EmailCheckController;
 
 /*
 |--------------------------------------------------------------------------
@@ -131,10 +132,14 @@ Route::middleware([
     Route::post('/toggle-admin/{userId}', [AdminController::class, 'toggleAdmin']);
 });
 
+// Route to check email availability
+Route::post('/api/check-email', [EmailCheckController::class, 'checkEmail']);
+
 // Route to get the current user and it's admin status
 Route::middleware('auth:sanctum')->get('/api/current-user', [UserController::class, 'getCurrentUser']);
 
 // Public API Routes
+
 // Route to fetch states
 Route::get('/api/states', [StateController::class, 'index']);
 
