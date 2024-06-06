@@ -16,6 +16,9 @@ import TextInput from '@/Components/TextInput.vue';
 import { ref, computed, watch } from 'vue';
 import axios from 'axios';
 import TermsOfService from '../TermsOfService.vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 // Define reactive variables
 const isModalVisible = ref(false);
@@ -42,7 +45,7 @@ const passwordStrengthError = computed(() => {
     const password = form.password;
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(password)) {
-        return "Password must be at least 8 characters long and contain 1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character.";
+        return t('register_page.password_hint');
     }
     return '';
 });
@@ -110,7 +113,10 @@ watch(() => form.ongoing, (newVal) => {
 const submit = () => {
     if (!form.password || !form.password_confirmation || form.password !== form.password_confirmation) {
         currentStep.value = 1;
-        alert('Please enter and confirm your password.');
+        alert(t('register_page.password_fields'));
+        return;
+    } else if (!termsClicked.value || !form.terms) {
+        alert(t('register_page.terms_not_agreed'));
         return;
     }
 
@@ -130,7 +136,7 @@ const nextStep = async (event) => {
         if (!passwordStrengthError.value) {
             await checkEmail();
         } else {
-            alert('Please enter a valid password.');
+            alert(t('register_page.invalid_password'));
             return;
         }
     }
@@ -139,7 +145,7 @@ const nextStep = async (event) => {
             currentStep.value++;
         }
     } else {
-        alert('Please complete all required fields and ensure passwords match.');
+        alert(t('register_page.incomplete_fields'));
     }
 };
 
@@ -185,7 +191,7 @@ const checkEmail = async () => {
     if (form.email) {
         try {
             const response = await axios.post('/api/check-email', { email: form.email });
-            emailError.value = response.data.exists ? 'Email already exists' : '';
+            emailError.value = response.data.exists ? t('register_page.email_exists') : '';
         } catch (error) {
             console.error('Error checking email:', error);
             emailError.value = 'Error checking email';
@@ -197,7 +203,7 @@ watch(() => form.email, checkEmail);
 
 // Password match check
 const passwordMatchError = computed(() => {
-    return form.password !== form.password_confirmation ? 'Passwords do not match' : '';
+    return form.password !== form.password_confirmation ? t('register_page.password_mismatch') : '';
 });
 </script>
 
@@ -218,7 +224,7 @@ const passwordMatchError = computed(() => {
             <div v-if="currentStep === 1">
                 <!-- Step 1: Basic Information -->
                 <div class="mb-6">
-                    <InputLabel for="name" value="Name" />
+                    <InputLabel for="name" :value="t('profile.name')" />
                     <TextInput
                         id="name"
                         v-model="form.name"
@@ -232,7 +238,7 @@ const passwordMatchError = computed(() => {
                 </div>
 
                 <div class="mb-6">
-                    <InputLabel for="email" value="Email" />
+                    <InputLabel for="email" :value="t('profile.email')" />
                     <TextInput
                         id="email"
                         v-model="form.email"
@@ -245,7 +251,7 @@ const passwordMatchError = computed(() => {
                 </div>
 
                 <div class="mb-6">
-                    <InputLabel for="password" value="Password" />
+                    <InputLabel for="password" :value="t('password.password')" />
                     <TextInput
                         id="password"
                         v-model="form.password"
@@ -260,7 +266,7 @@ const passwordMatchError = computed(() => {
                 </div>
 
                 <div class="mb-6">
-                    <InputLabel for="password_confirmation" value="Confirm Password" />
+                    <InputLabel for="password_confirmation" :value="t('password.confirm_password')" />
                     <TextInput
                         id="password_confirmation"
                         v-model="form.password_confirmation"
@@ -276,7 +282,7 @@ const passwordMatchError = computed(() => {
             <div v-if="currentStep === 2">
                 <!-- Step 2: Additional Information -->
                 <div class="mb-6">
-                    <InputLabel for="gender" value="Gender" />
+                    <InputLabel for="gender" :value="t('profile.gender')" />
                     <div class="mt-2">
                         <label for="male" class="inline-flex items-center">
                             <input
@@ -288,7 +294,7 @@ const passwordMatchError = computed(() => {
                                 required
                                 class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
                             />
-                            <span class="ml-2">Male</span>
+                            <span class="ml-2">{{ t('profile.male') }}</span>
                         </label>
                         <label for="female" class="inline-flex items-center ml-6">
                             <input
@@ -300,14 +306,14 @@ const passwordMatchError = computed(() => {
                                 required
                                 class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
                             />
-                            <span class="ml-2">Female</span>
+                            <span class="ml-2">{{ t('profile.female') }}</span>
                         </label>
                         <InputError class="mt-2" :message="form.errors.gender" />
                     </div>
                 </div>
 
                 <div class="mb-6">
-                    <InputLabel for="state" value="State" />
+                    <InputLabel for="state" :value="t('profile.state')" />
                     <select
                         id="state"
                         v-model="form.state"
@@ -315,28 +321,28 @@ const passwordMatchError = computed(() => {
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                         required
                     >
-                        <option value="">Select State</option>
+                        <option value="">{{ t('profile.select_state') }}</option>
                         <option v-for="state in states" :key="state.id" :value="state.id">{{ state.name }}</option>
                     </select>
                     <InputError class="mt-2" :message="form.errors.state" />
                 </div>
 
                 <div class="mb-6">
-                    <InputLabel for="province" value="Province" />
+                    <InputLabel for="province" :value="t('profile.province')" />
                     <select
                         id="province"
                         v-model="form.province"
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                         required
                     >
-                        <option value="">Select Province</option>
+                        <option value="">{{ t('profile.select_province') }}</option>
                         <option v-for="province in provinces" :key="province.id" :value="province.id">{{ province.name }}</option>
                     </select>
                     <InputError class="mt-2" :message="form.errors.province" />
                 </div>
 
                 <div class="mb-6">
-                    <InputLabel for="address" value="Address" />
+                    <InputLabel for="address" :value="t('profile.address')" />
                     <TextInput
                         id="address"
                         v-model="form.address"
@@ -349,7 +355,7 @@ const passwordMatchError = computed(() => {
                 </div>
 
                 <div class="mb-6">
-                    <InputLabel for="phone" value="Phone" />
+                    <InputLabel for="phone" :value="t('profile.phone')" />
                     <TextInput
                         id="phone"
                         v-model="form.phone"
@@ -362,7 +368,7 @@ const passwordMatchError = computed(() => {
                 </div>
 
                 <div class="mb-6">
-                    <InputLabel for="dob" value="Date of Birth" />
+                    <InputLabel for="dob" :value="t('profile.dob')" />
                     <TextInput
                         id="dob"
                         v-model="form.dob"
@@ -378,22 +384,22 @@ const passwordMatchError = computed(() => {
             <div v-if="currentStep === 3">
                 <!-- Step 3: Education and Volunteering -->
                 <div class="mb-6">
-                    <InputLabel for="educationLevel" value="Educational Level" />
+                    <InputLabel for="educationLevel" :value="t('profile.educational_level')" />
                     <select
                         v-model="form.educationLevel"
                         required
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                        <option value="Non_formal_education">Non-formal education</option>
-                        <option value="Elementary">Elementary</option>
-                        <option value="Secondary">Secondary</option>
-                        <option value="University">University and above</option>
+                        <option value="Non_formal_education">{{ t('profile.non_formal') }}</option>
+                        <option value="Elementary">{{ t('profile.elementary') }}</option>
+                        <option value="Secondary">{{ t('profile.secondary') }}</option>
+                        <option value="University">{{ t('profile.university') }}</option>
                     </select>
                     <InputError class="mt-2" :message="form.errors.educationLevel" />
                 </div>
 
                 <!-- Conditionally display specialization field -->
                 <div class="mb-6" v-if="form.educationLevel === 'University'">
-                    <InputLabel for="specialization" value="Specialization" />
+                    <InputLabel for="specialization" :value="t('profile.specialization')" />
                     <TextInput
                         id="specialization"
                         v-model="form.specialization"
@@ -405,7 +411,7 @@ const passwordMatchError = computed(() => {
                     <InputError class="mt-2" :message="form.errors.specialization" />
                 </div>
                 <div class="mb-6">
-                    <InputLabel for="skills" value="Skills" />
+                    <InputLabel for="skills" :value="t('profile.skills')" />
                     <TextInput
                         id="skills"
                         v-model="form.skills"
@@ -418,7 +424,7 @@ const passwordMatchError = computed(() => {
                 </div>
 
                 <div class="mb-6">
-                    <InputLabel class="mb-6" for="volunteeringBefore" value="Have you volunteered before?" />
+                    <InputLabel class="mb-6" for="volunteeringBefore" :value="t('profile.volunteering_experience')" />
                     <div class="mb-6">
                         <input
                             id="volunteeringBeforeYes"
@@ -429,7 +435,7 @@ const passwordMatchError = computed(() => {
                             class="ml-3"
                             required
                         />
-                        <label for="volunteeringBeforeYes">Yes</label>
+                        <label for="volunteeringBeforeYes">{{ t('profile.yes') }}</label>
                         <input
                             id="volunteeringBeforeNo"
                             v-model="form.alreadyVolunteering"
@@ -439,10 +445,10 @@ const passwordMatchError = computed(() => {
                             class="ml-3"
                             required
                         />
-                        <label for="volunteeringBeforeNo">No</label>
+                        <label for="volunteeringBeforeNo">{{ t('profile.no') }}</label>
                     </div>
                     <div class="mb-6" v-if="form.alreadyVolunteering === 'true'">
-                        <InputLabel for="organization" value="Organization Name" />
+                        <InputLabel for="organization" :value="t('profile.organization_name')" />
                         <TextInput
                             id="organization"
                             v-model="form.organizationName"
@@ -450,7 +456,7 @@ const passwordMatchError = computed(() => {
                             class="mb-6 mt-1 block w-full"
                             required
                         />
-                        <InputLabel for="startDate" value="Start Date" />
+                        <InputLabel for="startDate" :value="t('profile.volunteering_start_date')" />
                         <input
                             id="startDate"
                             v-model="form.volunteeringStartDate"
@@ -465,10 +471,10 @@ const passwordMatchError = computed(() => {
                                 type="checkbox"
                                 class="form-checkbox h-5 w-5 text-indigo-600 transition duration-150 ease-in-out"
                             />
-                            <label for="ongoingCheckbox" class="text-gray-700">Until Now</label>
+                            <label for="ongoingCheckbox" class="text-gray-700">{{ t('profile.volunteering_till_now')}}</label>
                         </div>
                         <div class="mb-6" v-if="!form.ongoing">
-                            <InputLabel for="endDate" value="End Date" />
+                            <InputLabel for="endDate" :value="t('profile.volunteering_end_date')" />
                             <input
                                 id="endDate"
                                 v-model="form.volunteeringEndDate"
@@ -480,7 +486,7 @@ const passwordMatchError = computed(() => {
                 </div>
 
                 <div class="mb-6">
-                    <InputLabel for="monthlyShare" value="Monthly Share" />
+                    <InputLabel for="monthlyShare" :value="t('profile.monthly_share')" />
                     <TextInput
                         id="monthlyShare"
                         v-model="form.monthlyShare"
@@ -493,7 +499,7 @@ const passwordMatchError = computed(() => {
                 </div>
 
                 <div class="mb-6">
-                    <InputLabel for="meetingDay" value="Meeting Day" />
+                    <InputLabel for="meetingDay" :value="t('profile.meeting_day')" />
                     <div class="relative">
                         <select
                             id="meetingDay"
@@ -501,14 +507,14 @@ const passwordMatchError = computed(() => {
                             required
                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 z-10 relative select-dropdown-top max-h-40 overflow-y-auto"
                         >
-                            <option value="">Select Day</option>
-                            <option value="Saturday">Saturday</option>
-                            <option value="Sunday">Sunday</option>
-                            <option value="Monday">Monday</option>
-                            <option value="Tuesday">Tuesday</option>
-                            <option value="Wednesday">Wednesday</option>
-                            <option value="Thursday">Thursday</option>
-                            <option value="Friday">Friday</option>
+                            <option value="">{{ t('profile.select_day')}}</option>
+                            <option value="Saturday">{{ t('profile.saturday')}}</option>
+                            <option value="Sunday">{{ t('profile.sunday')}}</option>
+                            <option value="Monday">{{ t('profile.monday')}}</option>
+                            <option value="Tuesday">{{ t('profile.tuesday')}}</option>
+                            <option value="Wednesday">{{ t('profile.wednesday')}}</option>
+                            <option value="Thursday">{{ t('profile.thursday')}}</option>
+                            <option value="Friday">{{ t('profile.friday')}}</option>
                         </select>
                     </div>
                     <InputError class="mt-2" :message="form.errors.meetingDay" />
@@ -521,12 +527,12 @@ const passwordMatchError = computed(() => {
                             class="text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                             :disabled="!termsClicked"
                         />
-                        <span class="ml-2">I agree to the 
-                            <button @click="showModal(); termsClicked = true" class="text-indigo-600 underline">terms and conditions</button>
+                        <span class="ml-2">{{ t('register_page.terms_agreement') }} 
+                            <button type="button" @click="showModal(); termsClicked = true" class="text-indigo-600 underline">{{ t('register_page.terms_link') }}</button>
                         </span>
                     </label>
                     <InputError class="mt-2" :message="form.errors.terms" />
-                    <p v-if="!termsClicked" class="text-red-500 mt-2">You must read the terms and conditions first.</p>
+                    <p v-if="!termsClicked" class="text-red-500 mt-2">{{ t('register_page.terms_not_read') }}</p>
                 </div>
             </div>
 
@@ -536,21 +542,21 @@ const passwordMatchError = computed(() => {
                     @click="previousStep"
                     class="mr-2"
                 >
-                    Previous
+                {{ t('register_page.previous')}}
                 </PrimaryButton>
 
                 <PrimaryButton
                     v-if="currentStep < steps"
                     @click="nextStep"
                 >
-                    Next
+                {{ t('register_page.next')}}
                 </PrimaryButton>
 
                 <PrimaryButton
                     v-if="currentStep === steps"
                     type="submit"
                 >
-                    Register
+                {{ t('register_page.register')}}
                 </PrimaryButton>
             </div>
         </form>
