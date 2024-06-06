@@ -73,7 +73,7 @@ class CreateNewUser implements CreatesNewUsers
         ]);
         
         // Broadcast the event
-        broadcast(new UserRegistered($user));
+        // broadcast(new UserRegistered($user));
         
 
         return($user);
