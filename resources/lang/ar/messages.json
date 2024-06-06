@@ -7,11 +7,15 @@
         "welcome_user_slogan": "نرحب بك وبانتظار بصمتك"
     },
     "dashboard_page": {
+        "pending": "حسابك قيد الموافقة",
+        "ok": "حسنًا",
         "dashboard": "الرئيسية",
         "Dashboard": "الرئيسية",
+        "user_dashboard": "الرئيسية",
         "Users": "الأعضاء",
         "Admins": "شؤون الأعضاء",
         "payment_reports": "الاشتراكات والتقارير",
+        "manage_account": "ادارة الحساب",
         "profile": "الملف الشخصي",
         "logout": "تسجيل الخروج",
         "login": "تسجيل الدخول",
@@ -41,6 +45,7 @@
         "phone": "الهاتف",
         "dob": "تاريخ الميلاد",
         "educational_level": "المستوى التعليمي",
+        "non_formal": "تعليم غير نظامي",
         "elementary": "ابتدائي",
         "secondary": "ثانوي",
         "university": "جامعي أو أعلى",
@@ -51,9 +56,11 @@
         "no": "لا",
         "organization_name": "اسم المنظمة",
         "volunteering_start_date": "تاريخ بدء التطوع",
+        "volunteering_till_now": "حتى الان",
         "volunteering_end_date": "تاريخ انتهاء التطوع",
         "monthly_share": "المساهمة الشهرية",
         "meeting_day": "يوم الاجتماع",
+        "select_day": "اختر اليوم",
         "saturday": "السبت",
         "sunday": "الأحد",
         "monday": "الاثنين",
@@ -69,6 +76,7 @@
         "ensure_password": "تأكد من أن حسابك يستخدم كلمة مرور طويلة وعشوائية للحفاظ على الأمان.",
         "current_password": "كلمة المرور الحالية",
         "new_password": "كلمة المرور الجديدة",
+        "password": "كلمة المرور",
         "confirm_password": "تأكيد كلمة المرور",
         "saved": "تم الحفظ.",
         "save": "حفظ"
@@ -123,5 +131,20 @@
         "password_placeholder": "كلمة المرور",
         "cancel": "إلغاء",
         "modal_button": "حذف الحساب"
+    },
+    "register_page": {
+        "terms_agreement": "أوافق على الشروط والأحكام",
+        "terms_link": "الشروط والأحكام",
+        "password_hint": "يجب أن تكون كلمة المرور على الأقل 8 أحرف وتحتوي على حرف كبير واحد وحرف صغير واحد ورقم واحد وحرف خاص واحد.",
+        "password_mismatch": "كلمات المرور غير متطابقة.",
+        "incomplete_fields": "يرجى ملء جميع الحقول المطلوبة والتأكد من تطابق كلمات المرور.",
+        "password_fields": "الرجاء كتابة كلمة السر وتأكيدها.",
+        "invalid_password": "الرجاء إدخال كلمة مرور صالحة.",
+        "email_exists": "البريد الإلكتروني موجود بالفعل.",
+        "terms_not_read": "يجب عليك قراءة الشروط والأحكام أولاً.",
+        "terms_not_agreed": "يجب عليك الموافقة على الشروط والأحكام أولاً.",
+        "next": "التالي",
+        "previous": "السابق",
+        "register": "التسجيل"
     }
 }
