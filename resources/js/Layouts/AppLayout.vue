@@ -46,7 +46,7 @@ const notification = ref(null);
     switch (props.auth.user.user_status_id) {
         case 1:
             notification.value = {
-                message: 'Your account is Pending approval',
+                message: t('dashboard_page.pending'),
                 color: 'yellow',
                 dismissed: false,
             };
@@ -250,7 +250,7 @@ const notification = ref(null);
                                     <template #content>
                                         <!-- Account Management -->
                                         <div class="block px-4 py-2 text-xs text-gray-400">
-                                            Manage Account
+                                            {{ t('dashboard_page.manage_account') }}
                                         </div>
 
                                         <DropdownLink :href="route('profile.show')">
@@ -432,7 +432,7 @@ const notification = ref(null);
                 <div class="flex items-center justify-between">
                     <p class="text-lg font-semibold">{{ notification.message }}</p>
                     <button @click="dismissNotification" class="text-black hover:text-gray-200 focus:outline-none">
-                        OK
+                        {{ t('dashboard_page.ok') }}
                     </button>
                 </div>
             </div>
