@@ -560,10 +560,15 @@ const passwordMatchError = computed(() => {
                 </PrimaryButton>
             </div>
         </form>
+        <!-- Login link -->
+        <div class="mt-6 text-center">
+            <Link href="/login" class="text-sm text-indigo-600 hover:text-indigo-900">
+                {{ t('register_page.already_registered') }}
+            </Link>
+        </div>    
     </AuthenticationCard>
     <!-- Render the modal when it's visible -->
     <TermsOfService v-if="isModalVisible" :terms="terms" @close="hideModal" />
-
 </template>
 
 <style>
