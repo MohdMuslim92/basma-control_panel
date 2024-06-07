@@ -7,11 +7,15 @@
         "welcome_user_slogan": "Welcome to your dashboard"
     },
     "dashboard_page": {
+        "pending": "Your account is Pending approval",
+        "ok": "OK",
         "dashboard": "Dashboard",
         "Dashboard": "Dashboard",
+        "user_dashboard": "User Dashboard",
         "Users": "Users",
         "Admins": "Admins",
         "payment_reports": "Payment & Reports",
+        "manage_account": "Manage Account",
         "profile": "Profile",
         "logout": "Log Out",
         "login": "Log in",
@@ -41,6 +45,7 @@
         "phone": "Phone",
         "dob": "Date of Birth",
         "educational_level": "Educational Level",
+        "non_formal": "Non-Formal Education",
         "elementary": "Elementary",
         "secondary": "Secondary",
         "university": "University or Above",
@@ -51,9 +56,11 @@
         "no": "No",
         "organization_name": "Organization Name",
         "volunteering_start_date": "Start date of volunteering",
+        "volunteering_till_now": "Until Now",
         "volunteering_end_date": "End date of volunteering",
         "monthly_share": "Monthly Share",
         "meeting_day": "Meeting Day",
+        "select_day": "Select a day",
         "saturday": "Saturday",
         "sunday": "Sunday",
         "monday": "Monday",
@@ -123,5 +130,21 @@
         "password_placeholder": "Password",
         "cancel": "Cancel",
         "modal_button": "Delete Account"
+    },
+    "register_page": {
+        "terms_agreement": "I agree to the terms and conditions",
+        "terms_link": "terms and conditions",
+        "password_hint": "Password must be at least 8 characters long and contain 1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character.",
+        "password_mismatch": "Passwords do not match.",
+        "incomplete_fields": "Please complete all required fields and ensure passwords match.",
+        "password_fields": "Please enter and confirm your password.",
+        "invalid_password": "Please enter a valid password.",
+        "email_exists": "Email already exists.",
+        "terms_not_read": "You must read the terms and conditions first.",
+        "terms_not_agreed": "You must agree to the terms and conditions first.",
+        "next": "NEXT",
+        "previous": "PREVIOUS",
+        "register": "REGISTER"
+
     }
 }
