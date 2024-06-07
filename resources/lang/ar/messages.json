@@ -145,6 +145,19 @@
         "terms_not_agreed": "يجب عليك الموافقة على الشروط والأحكام أولاً.",
         "next": "التالي",
         "previous": "السابق",
-        "register": "التسجيل"
+        "register": "التسجيل",
+        "already_registered": "مسجل بالفعل؟"
+    },
+    "login_page": {
+        "title" : "تسجيل الدخول",
+        "email" : "البريد الإلكتروني",
+        "password" : "كلمة المرور",
+        "remember" : "تذكرني",
+        "forgot_password" : "هل نسيت كلمة المرور؟",
+        "login_button" : "تسجيل الدخول",
+        "no_account" : "ليس لديك حساب؟",
+        "register_here" : "سجل هنا",
+        "status" : "الحالة",
+        "invalid_credentials" : "بيانات الاعتماد غير صالحة. حاول مرة اخرى."
     }
 }

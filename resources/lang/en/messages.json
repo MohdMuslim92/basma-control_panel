@@ -144,7 +144,19 @@
         "terms_not_agreed": "You must agree to the terms and conditions first.",
         "next": "NEXT",
         "previous": "PREVIOUS",
-        "register": "REGISTER"
-
+        "register": "REGISTER",
+        "already_registered": "Already registered?"
+    },
+    "login_page": {
+        "title" : "Log in",
+        "email" : "Email",
+        "password" : "Password",
+        "remember" : "Remember me",
+        "forgot_password" : "Forgot your password?",
+        "login_button" : "Log in",
+        "no_account" : "Don't have an account?",
+        "register_here" : "Register here",
+        "status" : "Status",
+        "invalid_credentials" : "Invalid credentials. Please try again."
     }
 }
