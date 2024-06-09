@@ -5,7 +5,7 @@
         type="text"
         v-model="searchQuery"
         @input="handleSearch"
-        placeholder="Search users..."
+        :placeholder="t('user_list.search')"
         class="search-input"
         />
     </div>
@@ -14,7 +14,10 @@
 <script setup>
 import { ref } from 'vue';
 import { debounce } from 'lodash-es';
-  
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
+
 const searchQuery = ref('');
   
 // Emit search query to the parent component
