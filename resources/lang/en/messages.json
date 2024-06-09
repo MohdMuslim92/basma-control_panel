@@ -158,5 +158,51 @@
         "register_here" : "Register here",
         "status" : "Status",
         "invalid_credentials" : "Invalid credentials. Please try again."
+    },
+    "forgot_password_page": {
+        "title": "Forgot Password",
+        "description": "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.",
+        "email": "Email",
+        "email_link": "Email Password Reset Link"
+    },
+    "user_list": {
+        "title": "Users List",
+        "headers": {
+            "name": "Name",
+            "last_seen": "Last Seen",
+            "last_pay": "Last Pay",
+            "admin_name": "Admin Name",
+            "add_to_office": "Add to Office",
+            "admin_status": "Admin Status",
+            "delete": "Delete"
+        },
+        "buttons": {
+            "save_as_pdf": "Save as PDF",
+            "add": "Add",
+            "delete": "Delete",
+            "previous": "Previous",
+            "next": "Next"
+        },
+        "alerts": {
+            "users_fetch_error": "Error fetching users data, please reload the page",
+            "officers_fetch_error": "Error fetching membership officers, please reload the page",
+            "no_officers_available": "No officers available to add user to.",
+            "offices_fetch_error": "Error fetching offices, please reload the page",
+            "no_offices_available": "No offices available to add user to.",
+            "delete_success": "User Deleted Successfully",
+            "update_admin_success": "Admin status updated successfully",
+            "update_admin_fail": "Failed to update admin status",
+            "never_paid": "User has never paid before"
+        },
+        "pdf": {
+            "organization_name" : "Basma Charity Organization",
+            "membership_office": "Membership Affairs Office ",
+            "users_list": "Users List",
+            "no_payment": "User has never paid before",
+            "table": {
+                "headers": ["#", "Name", "Last Payment", "Join Date"]
+            }
+        },
+        "search" : "Search users..."
     }
 }
