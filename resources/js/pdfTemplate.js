@@ -1,17 +1,18 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import basmaLogo from '/resources/img/basma.png'; // Import the logo image
+import { amiriFontBase64 } from '../fonts/amiri-regular'; // Import the Base64 font encoding
 
 export { createPDFTemplate };
 
 // Define a function to create a PDF template
-const createPDFTemplate = (office, headline, bodyContent) => {
+const createPDFTemplate = (office, headline, bodyContent, t) => {
   const pdf = new jsPDF();
 
   const { tableHeaders, tableBody, adminSummary } = bodyContent;
 
   // Set up organization name
-  const organizationName = "Basma Charity Organization";
+  const organizationName = t('user_list.pdf.organization_name');
   const officeText = `${office}`;
 
   const leftMargin = 10;
@@ -29,6 +30,15 @@ const createPDFTemplate = (office, headline, bodyContent) => {
   // Add the second logo on the right side
   const rightMargin = pdf.internal.pageSize.width - logoWidth - 10;
   pdf.addImage(basmaLogo, 'PNG', rightMargin, topMargin, logoWidth, logoHeight);
+
+  // Define font name and style
+  const amiriFontName = 'Amiri';
+  const amiriFontStyle = 'normal';
+
+  // Add the font to jsPDF
+  pdf.addFileToVFS('Amiri-Regular.ttf', amiriFontBase64);
+  pdf.addFont('Amiri-Regular.ttf', 'Amiri', 'normal');
+  pdf.setFont(amiriFontName, amiriFontStyle); // Use the font for the entire document
 
   // Add organization name
   pdf.setFontSize(14);
@@ -54,12 +64,10 @@ const createPDFTemplate = (office, headline, bodyContent) => {
 
   // Add headline
   pdf.setFontSize(13);
-  pdf.setFont('helvetica', 'bold');
   pdf.text(headline, pdf.internal.pageSize.width / 2, dateY + 15, { align: 'center' });
 
   // Add body content
   pdf.setFontSize(12);
-  pdf.setFont('helvetica', 'normal');
 
   // Check if table data is provided
   if (tableHeaders && tableBody) {
@@ -68,6 +76,7 @@ const createPDFTemplate = (office, headline, bodyContent) => {
       head: [tableHeaders],
       body: tableBody,
       margin: { left: leftMargin },
+      styles: { font: amiriFontName } // Ensure the font is applied to the table
     });
   } else {
     pdf.text(bodyContent, leftMargin, dateY + 30);
