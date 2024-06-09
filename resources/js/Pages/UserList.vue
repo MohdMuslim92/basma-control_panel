@@ -7,7 +7,7 @@ assigning an admin, and deleting a user. It also includes pagination and search 
     <AppLayout title="Users List">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                User List
+                {{ t('user_list.title') }}
             </h2>
         </template>
 
@@ -18,7 +18,7 @@ assigning an admin, and deleting a user. It also includes pagination and search 
 
         <!-- Save as PDF Button -->
         <div class="flex justify-center mt-4">
-          <button @click="saveUsersAsPdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save as PDF</button>
+          <button @click="saveUsersAsPdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{ t('user_list.buttons.save_as_pdf') }}</button>
         </div>
 
         <!-- User Table Section -->
@@ -30,25 +30,26 @@ assigning an admin, and deleting a user. It also includes pagination and search 
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Name
+                                  {{ t('user_list.headers.name') }}
+
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Last Seen
+                                  {{ t('user_list.headers.last_seen') }}
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Last Pay
+                                  {{ t('user_list.headers.last_pay') }}
                                 </th>
                                 <th v-if="userIsAdmin" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Admin Name
+                                  {{ t('user_list.headers.admin_name') }}
                                 </th>
                                 <th v-if="userIsAdmin" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Add to Office
+                                  {{ t('user_list.headers.add_to_office') }}
                                 </th>
                                 <th v-if="userIsAdmin" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Admin Status
+                                  {{ t('user_list.headers.admin_status') }}
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Delete
+                                  {{ t('user_list.headers.delete') }}
                                 </th>
                             </tr>
                         </thead>
@@ -62,21 +63,21 @@ assigning an admin, and deleting a user. It also includes pagination and search 
                                     {{ user.last_seen_at }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    {{ formatDate(user.last_pay) }}
+                                    {{ formatDate(user.last_pay, t) }}
                                 </td>
                                 <td v-if="userIsAdmin" class="px-6 py-4 whitespace-nowrap">
                                     {{ user.admin_name }}
-                                    <button @click="setMembershipOfficer(user.id, user.name, user.admin_mail)">Add</button>
+                                    <button @click="setMembershipOfficer(user.id, user.name, user.admin_mail)">{{ t('user_list.buttons.add') }}</button>
                                 </td>
                                 <td v-if="userIsAdmin" class="px-6 py-4 whitespace-nowrap">
-                                    <button @click="addToOffice(user.id, user.name, user.role_id)">Add</button>
+                                    <button @click="addToOffice(user.id, user.name, user.role_id)">{{ t('user_list.buttons.add') }}</button>
                                 </td>
                                 <!-- ToggleSwitch Component for Admin Status -->
                                 <td v-if="userIsAdmin" class="px-6 py-4 whitespace-nowrap">
                                   <ToggleSwitch v-if="user.is_admin !== null" :isAdmin="Boolean(user.is_admin)" :userId="user.id" @toggle="() => toggleAdmin(user.id)" />
                                 </td>
                                 <td>
-                                  <button @click="openDeleteModal(user.id, user.name)">Delete</button>
+                                  <button @click="openDeleteModal(user.id, user.name)">{{ t('user_list.buttons.delete') }}</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -92,14 +93,14 @@ assigning an admin, and deleting a user. It also includes pagination and search 
           @click="prevPage"
           class="mr-2 px-4 py-2 bg-gray-200"
         >
-          Previous
+        {{ t('user_list.buttons.previous') }}
         </button>
         <button
           :disabled="currentPage === lastPage"
           @click="nextPage"
           class="ml-2 px-4 py-2 bg-gray-200"
         >
-          Next
+        {{ t('user_list.buttons.next') }}
         </button>
       </div>
   
@@ -164,6 +165,9 @@ assigning an admin, and deleting a user. It also includes pagination and search 
   import  { formatDate } from '../Functions.js';
   import  { showNotification } from '../Functions.js';
   import { createPDFTemplate } from '../pdfTemplate';
+  import { useI18n } from 'vue-i18n';
+
+  const { t } = useI18n();
 
   // Define refs and functions
   const users = ref([]);
@@ -204,7 +208,7 @@ assigning an admin, and deleting a user. It also includes pagination and search 
       const response = await axios.get(`/api/all-users`);
       allUsers.value = response.data;
     } catch (error) {
-      alert('Error fetching users data');
+      alert(t('user_list.alerts.users_fetch_error'));
     }
   };
 
@@ -219,7 +223,7 @@ assigning an admin, and deleting a user. It also includes pagination and search 
         const response = await axios.get('/api/membership-officers');
         officers.value = response.data; // Update officers with fetched data
       } catch (error) {
-        alert('Error fetching membership officers, please reload the page');
+        alert(t('user_list.alerts.officers_fetch_error'));
       }
     }
   
@@ -229,7 +233,7 @@ assigning an admin, and deleting a user. It also includes pagination and search 
       selectedOfficer.value = officer;
       showOfficersModal.value = true;
     } else {
-      alert('No officers available to add user to..');
+      alert(t('user_list.alerts.no_officers_available'));
     }
   };
   
@@ -240,7 +244,7 @@ assigning an admin, and deleting a user. It also includes pagination and search 
         const response = await axios.get('/api/offices');
         offices.value = response.data; // Update offices with fetched data
       } catch (error) {
-        alert('Error fetching offices, please reload the page');
+        alert(t('user_list.alerts.offices_fetch_error'));
       }
     }
   
@@ -250,7 +254,7 @@ assigning an admin, and deleting a user. It also includes pagination and search 
       selectedUserRole.value = userRole;
       showOfficeModal.value = true;
     } else {
-      alert('No offices available to add user to.');
+      alert(t('user_list.alerts.no_offices_available'));
     }
   };
   
@@ -269,7 +273,7 @@ assigning an admin, and deleting a user. It also includes pagination and search 
       currentPage.value = response.data.current_page;
       lastPage.value = response.data.last_page;
     } catch (error) {
-      alert('error fetching users, please reload the page');
+      alert(t('user_list.alerts.users_fetch_error'));
     }
   };
   
@@ -294,7 +298,7 @@ assigning an admin, and deleting a user. It also includes pagination and search 
       currentUser.value = response.data;
       await loadUsers(1);
     } catch (error) {
-      alert('Error fetching users, please reload the page');
+      alert(t('user_list.alerts.users_fetch_error'));
     }
   });
   
@@ -310,7 +314,7 @@ assigning an admin, and deleting a user. It also includes pagination and search 
   const handleUserDeleted = async () => {
     showDeleteModal.value = false;
     await loadUsers(currentPage.value);
-    showNotification('User Deleted Successfully'); // Display notification
+    showNotification(t('user_list.alerts.delete_success')); // Display notification
   };
   
   // Function to toggle admin status
@@ -318,13 +322,13 @@ assigning an admin, and deleting a user. It also includes pagination and search 
   try {
     const response = await axios.post(`/toggle-admin/${userId}`);
     if (response.status === 200) {
-      showNotification('Admin status updated successfully', 'success');
+      showNotification(t('user_list.alerts.update_admin_success'), 'success');
       loadUsers(currentPage.value);
     } else {
-      showNotification('Failed to update admin status', 'error');
+      showNotification(t('user_list.alerts.update_admin_fail'), 'error');
     }
   } catch (error) {
-    showNotification('Failed to update admin status');
+    showNotification(t('user_list.alerts.update_admin_fail'));
   }
 };
 
@@ -332,23 +336,28 @@ assigning an admin, and deleting a user. It also includes pagination and search 
 const saveUsersAsPdf = () => {
   // Fetch all users data
   loadAllUsers().then(() => {
-    const office = "Membership Office";
-    const headline = `Users List`;
+    const office = t('user_list.pdf.membership_office');
+    const headline = t('user_list.pdf.users_list');
 
     const { tableHeaders, tableBody } = getUsersBodyContent();
 
-    const pdf = createPDFTemplate(office, headline, { tableHeaders, tableBody });
+    const pdf = createPDFTemplate(office, headline, { tableHeaders, tableBody }, t);
     pdf.save(`Users List.pdf`);
   });
 };
 
 // Helper method to prepare the users data for the PDF table
 const getUsersBodyContent = () => {
-  const tableHeaders = ["#", "Name", "Last Pay", "Join Date"];
+  const tableHeaders = [
+        t('user_list.pdf.table.headers.0'),
+        t('user_list.pdf.table.headers.1'),
+        t('user_list.pdf.table.headers.2'),
+        t('user_list.pdf.table.headers.3')
+    ];
   const tableBody = allUsers.value.map((user, index) => [
     index + 1,
     user.name,
-    user.last_pay ? formatDate(user.last_pay) : 'No Payment before',
+    formatDate(user.last_pay, t),
     formatDate(user.created_at)
   ]);
   return { tableHeaders, tableBody };
