@@ -18,7 +18,7 @@ assigning an admin, and deleting a user. It also includes pagination and search 
 
         <!-- Save as PDF Button -->
         <div class="flex justify-center mt-4">
-          <button @click="saveUsersAsPdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{ t('user_list.buttons.save_as_pdf') }}</button>
+          <button @click="saveUsersAsPdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{ t('buttons.save_as_pdf') }}</button>
         </div>
 
         <!-- User Table Section -->
@@ -67,17 +67,17 @@ assigning an admin, and deleting a user. It also includes pagination and search 
                                 </td>
                                 <td v-if="userIsAdmin" class="px-6 py-4 whitespace-nowrap">
                                     {{ user.admin_name }}
-                                    <button @click="setMembershipOfficer(user.id, user.name, user.admin_mail)">{{ t('user_list.buttons.add') }}</button>
+                                    <button @click="setMembershipOfficer(user.id, user.name, user.admin_mail)">{{ t('buttons.add') }}</button>
                                 </td>
                                 <td v-if="userIsAdmin" class="px-6 py-4 whitespace-nowrap">
-                                    <button @click="addToOffice(user.id, user.name, user.role_id)">{{ t('user_list.buttons.add') }}</button>
+                                    <button @click="addToOffice(user.id, user.name, user.role_id)">{{ t('buttons.add') }}</button>
                                 </td>
                                 <!-- ToggleSwitch Component for Admin Status -->
                                 <td v-if="userIsAdmin" class="px-6 py-4 whitespace-nowrap">
                                   <ToggleSwitch v-if="user.is_admin !== null" :isAdmin="Boolean(user.is_admin)" :userId="user.id" @toggle="() => toggleAdmin(user.id)" />
                                 </td>
                                 <td>
-                                  <button @click="openDeleteModal(user.id, user.name)">{{ t('user_list.buttons.delete') }}</button>
+                                  <button @click="openDeleteModal(user.id, user.name)">{{ t('buttons.delete') }}</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -93,14 +93,14 @@ assigning an admin, and deleting a user. It also includes pagination and search 
           @click="prevPage"
           class="mr-2 px-4 py-2 bg-gray-200"
         >
-        {{ t('user_list.buttons.previous') }}
+        {{ t('buttons.previous') }}
         </button>
         <button
           :disabled="currentPage === lastPage"
           @click="nextPage"
           class="ml-2 px-4 py-2 bg-gray-200"
         >
-        {{ t('user_list.buttons.next') }}
+        {{ t('buttons.next') }}
         </button>
       </div>
   
