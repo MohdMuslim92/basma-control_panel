@@ -22,21 +22,21 @@ Events:
     <div v-if="shouldRenderModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 overflow-auto z-50 px-4 py-6">
         <div class="bg-white rounded-lg shadow-md mx-auto w-full max-w-md p-6">
             <!-- Modal title -->
-            <h3 class="text-xl font-medium mb-4">Set Membership Officer to the user {{ selectedUserName }}</h3>
+            <h3 class="text-xl font-medium mb-4">{{ t('officers_modal.title') }} {{ selectedUserName }}</h3>
             <!-- Office selection dropdown -->
             <div class="mb-4">
-                <label for="officer" class="block text-sm font-medium mb-2">Officer:</label>
+                <label for="officer" class="block text-sm font-medium mb-2">{{ t('officers_modal.officer_label') }}</label>
                 <select id="officer" v-model="selectedOfficer" class="border border-gray-300 rounded-md w-full px-3 py-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                     <!-- Loop through offices to populate dropdown options -->
                     <option v-for="officer in officers" :key="officer.id" :value="officer.user.email">{{ officer.user.name }}</option>
                     <!-- Display message if no offices available -->
-                    <option v-if="!officers.length" disabled>No officers available</option>
+                    <option v-if="!officers.length" disabled>{{ t('officers_modal.no_officers_available') }}</option>
                 </select>
             </div>
             <!-- Buttons for cancel and confirm actions -->
             <div class="flex justify-end">
-                <button @click="emitCancel" class="bg-white hover:bg-gray-100 text-gray-700 font-medium py-2 px-4 border border-gray-300 rounded-md shadow-sm">Cancel</button>
-                <button @click="emitConfirm(selectedOfficer)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 border border-indigo-500 rounded-md shadow-sm ml-2">Confirm</button>
+                <button @click="emitCancel" class="bg-white hover:bg-gray-100 text-gray-700 font-medium py-2 px-4 border border-gray-300 rounded-md shadow-sm">{{ t('buttons.cancel') }}</button>
+                <button @click="emitConfirm(selectedOfficer)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 border border-indigo-500 rounded-md shadow-sm ml-2">{{ t('buttons.confirm') }}</button>
             </div>
         </div>
     </div>
@@ -44,6 +44,9 @@ Events:
 
 <script setup>
 import { ref, defineProps, getCurrentInstance, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const instance = getCurrentInstance(); // Get the current component instance
 
@@ -78,13 +81,13 @@ const emitConfirm = async (officerMail) => {
         const response = await axios.put(`/api/users-officers/${props.selectedUserId}`, {
             officerMail: officerMail
         });
-        props.showNotification('Membership officer set successfully');
+        props.showNotification(t('officers_modal.success_message'));
         emitCancel();
         setTimeout(() => {
             props.loadUsers(props.currentPage); // Reload users after closing the modal
         }, 1000);
     } catch (error) {
-        alert('Error updating membershop officer, please try again');
+        alert(t('officers_modal.error_message'));
     }
 };
 
@@ -98,7 +101,7 @@ onMounted(async () => {
         // Set the selectedOfficer
         selectedOfficer.value = props.selectedOfficer;
     } catch (error) {
-        alert('Error fetching officers, please reload the page');
+        alert(t('officers_modal.fetch_error_message'));
     }
 });
 
