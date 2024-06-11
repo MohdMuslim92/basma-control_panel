@@ -8,7 +8,6 @@
     },
     "dashboard_page": {
         "pending": "Your account is Pending approval",
-        "ok": "OK",
         "dashboard": "Dashboard",
         "Dashboard": "Dashboard",
         "user_dashboard": "User Dashboard",
@@ -92,19 +91,13 @@
         "setup_key": "Setup Key: ",
         "code": "Code",
         "recovery_codes_instructions": "Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost.",
-        "enable": "Enable",
-        "confirm": "Confirm",
         "regenerate_recovery_codes": "Regenerate Recovery Codes",
-        "show_recovery_codes": "Show Recovery Codes",
-        "cancel": "Cancel",
-        "disable": "Disable"
+        "show_recovery_codes": "Show Recovery Codes"
     },
     "confirms_password": {
         "title": "Confirm Password",
         "content": "For your security, please confirm your password to continue.",
-        "button": "Confirm",
-        "password_placeholder": "Password",
-        "cancel": "Cancel"
+        "password_placeholder": "Password"
     },
     "logout_other_browser_sessions": {
         "title": "Browser Sessions",
@@ -117,7 +110,6 @@
         "modal_title": "Log Out Other Browser Sessions",
         "modal_content": "Please enter your password to confirm you would like to log out of your other browser sessions across all of your devices.",
         "password_placeholder": "Password",
-        "cancel": "Cancel",
         "modal_button": "Log Out Other Browser Sessions"
     },
     "delete_user_form": {
@@ -128,7 +120,6 @@
         "modal_title": "Delete Account",
         "modal_content": "Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.",
         "password_placeholder": "Password",
-        "cancel": "Cancel",
         "modal_button": "Delete Account"
     },
     "register_page": {
@@ -176,13 +167,6 @@
             "admin_status": "Admin Status",
             "delete": "Delete"
         },
-        "buttons": {
-            "save_as_pdf": "Save as PDF",
-            "add": "Add",
-            "delete": "Delete",
-            "previous": "Previous",
-            "next": "Next"
-        },
         "alerts": {
             "users_fetch_error": "Error fetching users data, please reload the page",
             "officers_fetch_error": "Error fetching membership officers, please reload the page",
@@ -204,5 +188,57 @@
             }
         },
         "search" : "Search users..."
+    },
+    "buttons": {
+        "save_as_pdf": "Save as PDF",
+        "add": "Add",
+        "delete": "Delete",
+        "previous": "Previous",
+        "next": "Next",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "ok": "OK",
+        "enable": "Enable",
+        "disable": "Disable"
+    },
+    "officers_modal": {
+        "title": "Set Membership Affairs Officer to the member : ",
+        "officer_label": "Officer:",
+        "no_officers_available": "No officers available",
+        "success_message": "Membership Affairs officer set successfully",
+        "error_message": "Error updating membership affairs officer, please try again",
+        "fetch_error_message": "Error fetching officers, please reload the page"
+    },
+    "user_office_modal": {
+        "title": "Add %{selectedUserName} to Office",
+        "office_label": "Office:",
+        "no_offices_available": "No offices available",
+        "success_message": "User role updated successfully",
+        "error_message": "Error updating user role, please try again",
+        "fetch_error_message": "Error fetching offices, please reload the page"
+    },
+    "offices": {
+        "User": "User",
+        "Membership Affairs": "Membership Affairs",
+        "IT": "IT",
+        "Orphans Affairs": "Orphans Affairs",
+        "Foreign Affairs": "Foreign Affairs",
+        "Executive": "Executive",
+        "Awareness": "Awareness",
+        "General Secretariat": "General Secretariat",
+        "Portsudan Sub Office": "Portsudan Sub Office",
+        "Wad Rawah Sub Office": "Wad Rawah Sub Office",
+        "Financial": "Financial"
+    },
+    "delete_user_modal": {
+        "title": "Delete User ",
+        "reason_label": "Select Reason:",
+        "reason_placeholder": "Choose reason",
+        "suspended": "Suspended",
+        "inactive": "Inactive (Has not paid for 3 months)",
+        "rejected": "Rejected (Added by Mistake)",
+        "resigned": "Resigned",
+        "no_reason_selected": "Please select a reason",
+        "delete_error": "Error deleting user"
     }
 }

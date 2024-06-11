@@ -87,7 +87,7 @@ const closeModal = () => {
 
                 <template #footer>
                     <SecondaryButton @click="closeModal">
-                        {{ t('delete_user_form.cancel') }}
+                        {{ t('buttons.cancel') }}
                     </SecondaryButton>
 
                     <DangerButton

@@ -28,7 +28,7 @@ const props = defineProps({
 
 const defaultTitle = computed(() => props.title || t('confirms_password.title'));
 const defaultContent = computed(() => props.content || t('confirms_password.content'));
-const defaultButton = computed(() => props.button || t('confirms_password.button'));
+const defaultButton = computed(() => props.button || t('buttons.confirm'));
 
 const confirmingPassword = ref(false);
 
@@ -108,7 +108,7 @@ const closeModal = () => {
 
             <template #footer>
                 <SecondaryButton @click="closeModal">
-                    {{ t('confirms_password.cancel') }}
+                    {{ t('buttons.cancel') }}
                 </SecondaryButton>
 
                 <PrimaryButton

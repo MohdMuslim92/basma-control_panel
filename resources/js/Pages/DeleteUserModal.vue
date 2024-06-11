@@ -10,12 +10,12 @@
   <div class="modal-wrapper">
     <div class="modal">
       <!-- Modal Header -->
-      <h3 class="text-lg font-semibold mb-4">Delete User {{ userName }}</h3>
+      <h3 class="text-lg font-semibold mb-4">{{ t('delete_user_modal.title') }} {{ userName }}</h3>
 
       <!-- Reason Selection -->
-      <label for="reason" class="block mb-2">Select Reason:</label>
+      <label for="reason" class="block mb-2">{{ t('delete_user_modal.reason_label') }}</label>
       <select id="reason" v-model="selectedReason" class="mb-4 p-2 border border-gray-300 rounded">
-        <option disabled value="">Choose reason</option>
+        <option disabled value="">{{ t('delete_user_modal.reason_placeholder') }}</option>
         <option v-for="reason in reasons" :key="reason.value" :value="reason.value">
           {{ reason.name }}
         </option>
@@ -23,8 +23,8 @@
 
       <!-- Action Buttons -->
       <div class="flex justify-end">
-        <button @click="$emit('close-modal')" class="mr-2 px-4 py-2 bg-gray-200">Cancel</button>
-        <button @click="confirmDelete" class="px-4 py-2 bg-red-600 text-white">Confirm</button>
+        <button @click="$emit('close-modal')" class="mr-2 px-4 py-2 bg-gray-200">{{ t('buttons.cancel') }}</button>
+        <button @click="confirmDelete" class="px-4 py-2 bg-red-600 text-white">{{ t('buttons.confirm') }}</button>
       </div>
     </div>
   </div>
@@ -34,6 +34,9 @@
 import { ref, defineProps, defineEmits } from 'vue';
 import axios from 'axios';
 import '../../css/DeleteUser.css';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 // Define the props that this component accepts
 const props = defineProps({
@@ -50,17 +53,17 @@ const selectedReason = ref('');
 
 // List of possible reasons for deletion
 const reasons = ref([
-  { name: 'Suspended', value: 3 },
-  { name: 'Inactive (Has not paid for 3 months)', value: 4 },
-  { name: 'Rejected (Added by Mistake)', value: 9 },
-  { name: 'Resigned', value: 11 },
+  { name: t('delete_user_modal.suspended'), value: 3 },
+  { name: t('delete_user_modal.inactive'), value: 4 },
+  { name: t('delete_user_modal.rejected'), value: 9 },
+  { name: t('delete_user_modal.resigned'), value: 11 },
 ]);
 
 // Function to confirm deletion
 const confirmDelete = async () => {
   // Check if a reason is selected
   if (!selectedReason.value) {
-    alert('Please select a reason');
+    alert(t('delete_user_modal.no_reason_selected'));
     return;
   }
   
@@ -72,7 +75,7 @@ const confirmDelete = async () => {
     emit('user-deleted'); // Emit user-deleted event
     emit('close-modal');  // Emit close-modal event
   } catch (error) {
-    alert('Error deleting user'); // Display error message
+    alert(t('delete_user_modal.delete_error')); // Display error message
   }
 };
 </script>
