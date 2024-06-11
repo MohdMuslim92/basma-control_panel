@@ -8,7 +8,6 @@
     },
     "dashboard_page": {
         "pending": "حسابك قيد الموافقة",
-        "ok": "حسنًا",
         "dashboard": "الرئيسية",
         "Dashboard": "الرئيسية",
         "user_dashboard": "الرئيسية",
@@ -93,19 +92,13 @@
         "setup_key": "مفتاح الإعداد: ",
         "code": "الرمز",
         "recovery_codes_instructions": "احفظ رموز الاسترداد هذه في مدير كلمات مرور آمن. يمكن استخدامها لاستعادة الوصول إلى حسابك إذا فقدت جهاز المصادقة الثنائية الخاص بك.",
-        "enable": "تفعيل",
-        "confirm": "تأكيد",
         "regenerate_recovery_codes": "إعادة إنشاء رموز الاسترداد",
-        "show_recovery_codes": "عرض رموز الاسترداد",
-        "cancel": "إلغاء",
-        "disable": "تعطيل"
+        "show_recovery_codes": "عرض رموز الاسترداد"
     },
     "confirms_password": {
         "title": "تأكيد كلمة المرور",
         "content": "لأمان حسابك، يرجى تأكيد كلمة المرور للمتابعة.",
-        "button": "تأكيد",
-        "password_placeholder": "كلمة المرور",
-        "cancel": "إلغاء"
+        "password_placeholder": "كلمة المرور"
     },
     "logout_other_browser_sessions": {
         "title": "جلسات المتصفح",
@@ -118,7 +111,6 @@
         "modal_title": "تسجيل الخروج من جلسات المتصفح الأخرى",
         "modal_content": "يرجى إدخال كلمة المرور الخاصة بك لتأكيد أنك ترغب في تسجيل الخروج من جلسات المتصفح الأخرى عبر جميع أجهزتك.",
         "password_placeholder": "كلمة المرور",
-        "cancel": "إلغاء",
         "modal_button": "تسجيل الخروج من جلسات المتصفح الأخرى"
     },
     "delete_user_form": {
@@ -129,7 +121,6 @@
         "modal_title": "حذف الحساب",
         "modal_content": "هل أنت متأكد أنك تريد حذف حسابك؟ بمجرد حذف حسابك، سيتم حذف جميع موارده وبياناته بشكل دائم. يرجى إدخال كلمة المرور الخاصة بك لتأكيد أنك تريد حذف حسابك بشكل دائم.",
         "password_placeholder": "كلمة المرور",
-        "cancel": "إلغاء",
         "modal_button": "حذف الحساب"
     },
     "register_page": {
@@ -177,13 +168,6 @@
             "admin_status": "حالة المشرف",
             "delete": "حذف"
         },
-        "buttons": {
-            "save_as_pdf": "حفظ كملف PDF",
-            "add": "إضافة",
-            "delete": "حذف",
-            "previous": "السابق",
-            "next": "التالي"
-        },
         "alerts": {
             "users_fetch_error": "خطأ في جلب بيانات المستخدمين، يرجى إعادة تحميل الصفحة",
             "officers_fetch_error": "خطأ في جلب بيانات المشرفين، يرجى إعادة تحميل الصفحة",
@@ -205,6 +189,57 @@
             }
         },
         "search" : "البحث عن عضو..."
-
+    },
+    "buttons": {
+        "save_as_pdf": "حفظ كملف PDF",
+        "add": "إضافة",
+        "delete": "حذف",
+        "previous": "السابق",
+        "next": "التالي",
+        "cancel": "إلغاء",
+        "confirm": "تأكيد",
+        "ok": "حسنًا",
+        "enable": "تفعيل",
+        "disable": "تعطيل"
+    },
+    "officers_modal": {
+        "title": "تعيين مسؤزل شؤون العضوية للعضو : ",
+        "officer_label": "المشرف:",
+        "no_officers_available": "لا يوجد مشرفين متاحين",
+        "success_message": "تم تعيين المشرف بنجاح",
+        "error_message": "حدث خطأ في تعيين المشرف، يرجى المحاولة مرة أخرى",
+        "fetch_error_message": "حدث خطأ في جلب المشرفين، يرجى إعادة تحميل الصفحة"
+    },
+    "user_office_modal": {
+        "title": "إضافة %{selectedUserName} إلى المكتب",
+        "office_label": "المكتب:",
+        "no_offices_available": "لا توجد مكاتب متاحة",
+        "success_message": "تم تحديث وظيفة المستخدم بنجاح",
+        "error_message": "حدث خطأ في تحديث دور المستخدم، يرجى المحاولة مرة أخرى",
+        "fetch_error_message": "حدث خطأ في جلب المكاتب، يرجى إعادة تحميل الصفحة"
+    },
+    "offices": {
+        "User": "مستخدم",
+        "Membership Affairs": "شؤون العضوية",
+        "IT": "تكنولوجيا المعلومات",
+        "Orphans Affairs": "شؤون الأيتام",
+        "Foreign Affairs": "الشؤون الخارجية",
+        "Executive": "التنفيذي",
+        "Awareness": "التوعية",
+        "General Secretariat": "الأمانة العامة",
+        "Portsudan Sub Office": "مكتب بورتسودان الفرعي",
+        "Wad Rawah Sub Office": "مكتب واد راوه الفرعي",
+        "Financial": "المالية"
+    },
+    "delete_user_modal": {
+        "title": "حذف المستخدم {userName}",
+        "reason_label": "اختر السبب:",
+        "reason_placeholder": "اختر السبب",
+        "suspended": "موقوف",
+        "inactive": "غير نشط (لم يدفع إشتراك لمدة 3 أشهر)",
+        "rejected": "مرفوض (أضيف عن طريق الخطأ)",
+        "resigned": "استقال",
+        "no_reason_selected": "يرجى اختيار السبب",
+        "delete_error": "خطأ في حذف المستخدم"
     }
 }
