@@ -17,38 +17,38 @@
 <template>
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold mb-4">Paying monthly share for user {{ userName }}</h2>
-        <p class="mb-2">Last Pay: {{ formatDate(lastPay) }}</p>
-        <p class="mb-4">Monthly Share: {{ monthlyShare }}</p>
+        <h2 class="text-xl font-semibold mb-4">{{ t('payment_modal.title', { userName: userName }) }}</h2>
+        <p class="mb-2">{{ t('payment_modal.last_pay', { lastPay: formatDate(lastPay, t) }) }}</p>
+        <p class="mb-4">{{ t('payment_modal.monthly_share', { monthlyShare: monthlyShare }) }}</p>
   
         <!-- Dropdown to select number of months -->
-        <label for="months" class="block mb-2">Select number of months:</label>
+        <label for="months" class="block mb-2">{{ t('payment_modal.select_months') }}</label>
         <select id="months" v-model="selectedMonths" @change="calculateAmount"
                 class="block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
           <option v-for="month in months" :key="month">{{ month }}</option>
         </select>
   
         <!-- Dropdown to select payment type -->
-        <label for="paymentType" class="block mb-2">Select payment type:</label>
+        <label for="paymentType" class="block mb-2">{{ t('payment_modal.select_payment_type') }}</label>
         <select id="paymentType" v-model="selectedPaymentType"
                 class="block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
-          <option value="Cash">Cash</option>
-          <option value="Bank Transfer">Bank Transfer</option>
-          <option value="Mobile Balance">Mobile Balance</option>
+          <option value="Cash">{{ t('payment_modal.payment_types.cash') }}</option>
+          <option value="Bank Transfer">{{ t('payment_modal.payment_types.bank_transfer') }}</option>
+          <option value="Mobile Balance">{{ t('payment_modal.payment_types.mobile_balance') }}</option>
         </select>
   
         <!-- Display the calculated amount to be paid -->
-        <p v-if="selectedMonths > 0" class="text-sm font-semibold text-red-600 mt-2">Paying amount of {{ selectedMonths * monthlyShare }}</p>
+        <p v-if="selectedMonths > 0" class="text-sm font-semibold text-red-600 mt-2">{{ t('payment_modal.paying_amount', { amount: selectedMonths * monthlyShare }) }}</p>
   
         <!-- Buttons to confirm or cancel the payment -->
         <div class="mt-4 flex justify-end">
           <button @click="confirmPayment"
                   class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 mr-2 focus:outline-none focus:bg-blue-600">
-            Confirm
+            {{ t('buttons.confirm') }}
           </button>
           <button @click="closeModal"
                   class="px-4 py-2 bg-gray-300 text-gray-800 font-semibold rounded-md hover:bg-gray-400 focus:outline-none focus:bg-gray-400">
-            Cancel
+                  {{ t('buttons.cancel') }}
           </button>
         </div>
       </div>
@@ -59,6 +59,9 @@
   import { defineProps, getCurrentInstance, ref } from 'vue';
   import axios from 'axios';
   import  { formatDate } from '../Functions.js';
+  import { useI18n } from 'vue-i18n';
+
+  const { t } = useI18n();
 
   // Get the current component instance
   const instance = getCurrentInstance();
@@ -108,11 +111,11 @@
         paymentAmount: paymentAmount // Add payment amount to the request payload
       });
   
-      alert('Amount paid successfully');
+      alert(t('payment_modal.alerts.payment_successful'));
       // Emit event to notify parent component about successful payment
       instance.emit('payment-successful');
     } catch (error) {
-      alert('Error paying the amount, Please try again');
+      alert(t('payment_modal.alerts.payment_error'));
     }
   
     // Close the modal
