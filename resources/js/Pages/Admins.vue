@@ -22,10 +22,10 @@
   -->
   
   <template>
-  <AppLayout title="Users By Admins">
+  <AppLayout :title="t('admins_page.title')">
       <template #header>
           <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-              Users By Admins
+              {{ t('admins_page.header') }}
           </h2>
       </template>
 
@@ -37,7 +37,7 @@
                     <div @click="toggleUsers(admin.id)" class="cursor-pointer bg-gray-200 p-4 mb-2">
                         <span class="font-semibold">{{ admin.user.name }}</span>
                         <span v-if="admin.users.length > 0" class="text-xs text-gray-500 ml-2 cursor-pointer">
-                            {{ isOpen[admin.id] ? 'Hide Users' : 'Show Users' }}
+                            {{ isOpen[admin.id] ? t('admins_page.toggle_members.hide') : t('admins_page.toggle_members.show') }}
                         </span>
                     </div>
                     <!-- Toggleable user list -->
@@ -47,7 +47,7 @@
                             <div class="text-gray-600">
                                 <!-- Display last_pay date -->
                                 <p v-if="user.last_pay">{{ formatDate(user.last_pay) }}</p>
-                                <p v-else>User has never paid before</p>
+                                <p v-else>{{ t('admins_page.no_payment') }}</p>
                             </div>
                             <!-- Pay button -->
                             <button @click="openPaymentModal(user)" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 mt-2">Pay</button>
@@ -59,7 +59,7 @@
             <!-- Save as PDF button -->
             <div class="flex justify-center mb-4">
                 <button @click="saveAsPdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Save as PDF
+                    {{ t('buttons.save_as_pdf') }}
                 </button>
             </div>
         </div>
@@ -83,6 +83,9 @@ import { ref } from 'vue';
 import { createPDFTemplate } from '../pdfTemplate';
 import PaymentModal from './PaymentModal.vue';
 import { formatDate } from '../Functions.js';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const admins = ref([]); // Array to hold admin data
 const isOpen = ref({}); // Object to track whether the users are open for each admin
@@ -100,7 +103,7 @@ const fetchAdmins = async () => {
           isOpen.value[admin.id] = false;
       });
   } catch (error) {
-      alert('Error fetching admins');
+      alert(t('admins_page.fetch_admins_error'));
   }
 };
 
@@ -115,14 +118,14 @@ fetchAdmins();
 // Method to generate and download PDF
 const saveAsPdf = () => {
     // Specify the office name
-    const office = "Memebership Office";
-    const headline = "List of Users by Admins";
+    const office = t('admins_page.pdf.office');
+    const headline = t('admins_page.pdf.headline');
     
     // Call function to get the body content
     const bodyContent = getBodyContent();
     
     // Create a PDF using the template
-    const pdf = createPDFTemplate(office, headline, bodyContent);
+    const pdf = createPDFTemplate(office, headline, bodyContent, t);
     
     // Save or download the PDF
     pdf.save("Users_by_Admins.pdf");
@@ -132,18 +135,14 @@ const saveAsPdf = () => {
 const getBodyContent = () => {
     let bodyContent = '';
 
-    // Add headline
-    bodyContent += '\n\nList of Users by Admins\n\n';
-
     // Loop through admins and their users
     admins.value.forEach((admin, index) => {
-        // Set font for admin name
-        bodyContent += `Admin: ${admin.user.name}\n`;
+        bodyContent += `${t('admins_page.pdf.admin')}${admin.user.name}\n`;
 
         // Loop through users
         admin.users.forEach((user, idx) => {
             // Add user details
-            bodyContent += `User: ${user.name} (${user.monthlyShare})\n`;
+            bodyContent += `${user.name} (${user.monthlyShare})` + formatDate(user.last_pay, t) + `\n`;
         });
 
         // Add padding between admins

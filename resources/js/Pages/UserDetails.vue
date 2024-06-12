@@ -6,9 +6,11 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import FormSection from '@/Components/FormSection.vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps(['user']);
 
@@ -48,7 +50,7 @@ const fetchUserData = async () => {
             }
         });
     } catch (error) {
-        alert('Error fetching user data:', error);
+        alert(t('user_details.alerts.fetch_user_error'));
     }
 };
 
@@ -58,7 +60,7 @@ axios.get('/api/states')
         states.value = response.data;
     })
     .catch(error => {
-        alert('Error fetching states, Please reloat the page');
+        alert(t('user_details.alerts.fetch_states_error'));
     });
 
 // Fetch provinces based on the selected state
@@ -68,7 +70,7 @@ const fetchProvinces = async () => {
             const response = await axios.get(`/api/provinces/${form.state_id}`);
             provinces.value = response.data; // Update provinces data
         } catch (error) {
-            alert('Error fetching provinces, Please reload the page');
+            alert(t('user_details.alerts.fetch_provinces_error'));
         }
     }
 };
@@ -80,7 +82,7 @@ const fetchProvincesOnLoad = async () => {
             const response = await axios.get(`/api/provinces/${form.state_id}`);
             provinces.value = response.data; // Update provinces data
         } catch (error) {
-            alert('Error fetching provinces, Please reload the page');
+            alert(t('user_details.alerts.fetch_provinces_error'));
         }
     }
 };
@@ -103,30 +105,30 @@ const updateProfileInformation = async () => {
         await axios.put(`/api/user/${props.user.id}`, form.data());
         
         // If the update is successful, display a success message as alert
-        alert('User data updated successfully');
+        alert(t('user_details.alerts.update_success'));
     } catch (error) {
         // Dispalay error message as alert
-        alert('Error updating user data');
+        alert(t('user_details.alerts.update_error'));
     }
 };
 </script>
 
 <template>
-  <AppLayout title="User data">
+  <AppLayout :title="t('user_details.title')">
       <template #header>
           <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-              User data
+              {{ t('user_details.header') }}
           </h2>
       </template>
     <FormSection @submitted="updateProfileInformation">
         <template #form>
             <div class="col-span-6 sm:col-span-4 text-center mb-4">
-                Update user data.
+                {{ t('user_details.update_user_data') }}
             </div>
 
             <!-- Name -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="name" :value="t('profile.name')" />
                 <TextInput
                     id="name"
                     v-model="form.name"
@@ -140,7 +142,7 @@ const updateProfileInformation = async () => {
 
             <!-- Gender -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel value="Gender" />
+                <InputLabel :value="t('profile.gender')" />
                 <div class="flex items-center mt-1">
                     <label for="male" class="mr-2">
                         <input
@@ -150,7 +152,7 @@ const updateProfileInformation = async () => {
                             v-model="form.gender"
                             class="mr-1"
                         />
-                        Male
+                        {{ t('profile.male') }}
                     </label>
                     <label for="female">
                         <input
@@ -160,7 +162,7 @@ const updateProfileInformation = async () => {
                             v-model="form.gender"
                             class="mr-1"
                         />
-                        Female
+                        {{ t('profile.female') }}
                     </label>
                 </div>
                 <InputError :message="form.errors.gender" class="mt-2" />
@@ -168,7 +170,7 @@ const updateProfileInformation = async () => {
 
             <!-- State -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="state" value="State" />
+                <InputLabel for="state" :value="t('profile.state')" />
                 <select
                     id="state"
                     v-model="form.state_id"
@@ -176,7 +178,7 @@ const updateProfileInformation = async () => {
                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                     required
                 >
-                    <option value="">Select State</option>
+                    <option value="">{{ t('profile.select_state') }}</option>
                     <option v-for="state in states" :key="state.id" :value="state.id">{{ state.name }}</option>
                 </select>
                 <InputError class="mt-2" :message="form.errors.state" />
@@ -184,14 +186,14 @@ const updateProfileInformation = async () => {
 
             <!-- Province -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="province" value="Province" />
+                <InputLabel for="province" :value="t('profile.province')" />
                 <select
                     id="province"
                     v-model="form.province_id"
                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                     required
                 >
-                    <option value="">Select Province</option>
+                    <option value="">{{ t('profile.select_province') }}</option>
                     <option v-for="province in provinces" :key="province.id" :value="province.id">{{ province.name }}</option>
                 </select>
                 <InputError class="mt-2" :message="form.errors.province_id" />
@@ -199,7 +201,7 @@ const updateProfileInformation = async () => {
 
             <!-- Address -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="address" value="Address" />
+                <InputLabel for="address" :value="t('profile.address')" />
                 <TextInput
                     id="address"
                     v-model="form.address"
@@ -213,7 +215,7 @@ const updateProfileInformation = async () => {
 
             <!-- Phone -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="phone" value="Phone" />
+                <InputLabel for="phone" :value="t('profile.phone')" />
                 <TextInput
                     id="phone"
                     v-model="form.phone"
@@ -227,7 +229,7 @@ const updateProfileInformation = async () => {
 
             <!-- Date of Birth -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel value="Date of Birth" />
+                <InputLabel :value="t('profile.dob')" />
                 <input
                     id="dob"
                     v-model="form.dob"
@@ -241,18 +243,18 @@ const updateProfileInformation = async () => {
 
             <!-- Educational Level -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel value="Educational Level" />
+                <InputLabel :value="t('profile.educational_level')" />
                 <select v-model="form.educationLevel" id="educationalLevel" class="mt-1 block w-full">
-                    <option value="Elementary">Elementary</option>
-                    <option value="Secondary">Secondary</option>
-                    <option value="University">University or Above</option>
+                    <option value="Elementary">{{ t('profile.elementary') }}</option>
+                    <option value="Secondary">{{ t('profile.secondary') }}</option>
+                    <option value="University">{{ t('profile.university') }}</option>
                 </select>
                 <InputError :message="form.errors.educationLevel" class="mt-2" />
             </div>
 
             <!-- Specialization - shown only if Educational Level is University -->
             <div v-if="form.educationLevel === 'University'" class="col-span-6 sm:col-span-4">
-                <InputLabel for="specialization" value="Specialization" />
+                <InputLabel for="specialization" :value="t('profile.specialization')" />
                 <TextInput
                     id="specialization"
                     v-model="form.specialization"
@@ -266,7 +268,7 @@ const updateProfileInformation = async () => {
 
             <!-- Skills -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="skills" value="Skills" />
+                <InputLabel for="skills" :value="t('profile.skills')" />
                 <TextInput
                     id="skills"
                     v-model="form.skills"
@@ -280,7 +282,7 @@ const updateProfileInformation = async () => {
 
             <!-- Volunteering Experience -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel value="Volunteering Experience" />
+                <InputLabel :value="t('profile.volunteering_experience')" />
                 <div>
                     <label for="volunteeringYes">
                         <input
@@ -290,7 +292,7 @@ const updateProfileInformation = async () => {
                             v-model="form.alreadyVolunteering"
                             class="mr-2"
                         />
-                        Yes
+                        {{ t('profile.yes') }}
                     </label>
                     <label for="volunteeringNo">
                         <input
@@ -300,7 +302,7 @@ const updateProfileInformation = async () => {
                             v-model="form.alreadyVolunteering"
                             class="mr-2"
                         />
-                        No
+                        {{ t('profile.no') }}
                     </label>
                 </div>
                 <InputError :message="form.errors.alreadyVolunteering" class="mt-2" />
@@ -308,7 +310,7 @@ const updateProfileInformation = async () => {
 
             <!-- Organization Name - shown only if Volunteering Experience is yes -->
             <div v-if="form.alreadyVolunteering === 'true'" class="col-span-6 sm:col-span-4">
-                <InputLabel for="organizationName" value="Organization Name" />
+                <InputLabel for="organizationName" :value="t('profile.organization_name')" />
                 <TextInput
                     id="organizationName"
                     v-model="form.organizationName"
@@ -322,7 +324,7 @@ const updateProfileInformation = async () => {
 
             <!-- Start date of volunteering - shown only if volunteering experience is yes -->
             <div v-if="form.alreadyVolunteering === 'true'" class="col-span-6 sm:col-span-4">
-                <InputLabel value="Start date of volunteering" />
+                <InputLabel :value="t('profile.volunteering_start_date')" />
                 <input
                     id="volunteeringStartDate"
                     v-model="form.volunteeringStartDate"
@@ -335,7 +337,7 @@ const updateProfileInformation = async () => {
 
             <!-- End date of volunteering - shown only if volunteering experience is yes -->
             <div v-if="form.alreadyVolunteering === 'true'" class="col-span-6 sm:col-span-4">
-                <InputLabel value="End date of volunteering" />
+                <InputLabel :value="t('profile.volunteering_end_date')" />
                 <input
                     id="volunteeringEndDate"
                     v-model="form.volunteeringEndDate"
@@ -348,7 +350,7 @@ const updateProfileInformation = async () => {
 
             <!-- Monthly Share -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="monthlyShare" value="Monthly Share" />
+                <InputLabel for="monthlyShare" :value="t('profile.monthly_share')" />
                 <TextInput
                     id="monthlyShare"
                     v-model="form.monthlyShare"
@@ -361,21 +363,21 @@ const updateProfileInformation = async () => {
 
             <!-- Meeting Day -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel value="Meeting Day" />
+                <InputLabel :value="t('profile.meeting_day')" />
                 <select v-model="form.meetingDay" id="meetingDay" class="mt-1 block w-full">
-                    <option value="Saturday">Saturday</option>
-                    <option value="Sunday">Sunday</option>
-                    <option value="Monday">Monday</option>
-                    <option value="Tuesday">Tuesday</option>
-                    <option value="Wednesday">Wednesday</option>
-                    <option value="Thursday">Thursday</option>
-                    <option value="Friday">Friday</option>
+                    <option value="Saturday">{{ t('profile.saturday') }}</option>
+                    <option value="Sunday">{{ t('profile.sunday') }}</option>
+                    <option value="Monday">{{ t('profile.monday') }}</option>
+                    <option value="Tuesday">{{ t('profile.tuesday') }}</option>
+                    <option value="Wednesday">{{ t('profile.wednesday') }}</option>
+                    <option value="Thursday">{{ t('profile.thursday') }}</option>
+                    <option value="Friday">{{ t('profile.friday') }}</option>
                 </select>
                 <InputError :message="form.errors.meetingDay" class="mt-2" />
 
                 <!-- 'Update' button -->
                 <PrimaryButton type="submit">
-                    Update
+                    {{ t('buttons.update') }}
                 </PrimaryButton>
             </div>
         </template>

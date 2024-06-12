@@ -200,7 +200,8 @@
         "confirm": "تأكيد",
         "ok": "حسنًا",
         "enable": "تفعيل",
-        "disable": "تعطيل"
+        "disable": "تعطيل",
+        "update": "تحديث"
     },
     "officers_modal": {
         "title": "تعيين مسؤزل شؤون العضوية للعضو : ",
@@ -241,5 +242,53 @@
         "resigned": "استقال",
         "no_reason_selected": "يرجى اختيار السبب",
         "delete_error": "خطأ في حذف المستخدم"
+    },
+    "user_details": {
+        "title": "بيانات المستخدم",
+        "header": "بيانات المستخدم",
+        "update_user_data": "تحديث بيانات المستخدم.",
+        "alerts": {
+            "fetch_user_error": "خطأ في جلب بيانات المستخدم",
+            "fetch_states_error": "خطأ في جلب الولايات، يرجى إعادة تحميل الصفحة",
+            "fetch_provinces_error": "خطأ في جلب المقاطعات، يرجى إعادة تحميل الصفحة",
+            "update_success": "تم تحديث بيانات المستخدم بنجاح",
+            "update_error": "خطأ في تحديث بيانات المستخدم"
+        }
+    },
+    "admins_page": {
+        "title": "الأعضاء حسب المسؤولين",
+        "header": "الأعضاء حسب المسؤولين",
+        "toggle_members": {
+            "show": "عرض الأعضاء",
+            "hide": "إخفاء الأعضاء"
+        },
+        "no_payment": "العضو لم يدفع من قبل",
+        "pay_button": "دفع",
+        "alerts": {
+            "fetch_admins_error": "خطأ في جلب المسؤولين"
+        },
+        "pdf": {
+            "office": "مكتب شؤون الأعضاء",
+            "headline": "قائمة الأعضاء حسب المسؤولين",
+            "admin": "المسؤول: ",
+            "member": "العضو: "
+        }
+    },
+    "payment_modal": {
+        "title": "دفع الاشتراك الشهري للمستخدم %{userName}",
+        "last_pay": "آخر دفع: %{lastPay}",
+        "monthly_share": "الاشتراك الشهري: %{monthlyShare}",
+        "select_months": "اختر عدد الأشهر:",
+        "select_payment_type": "اختر نوع الدفع:",
+        "payment_types": {
+            "cash": "نقدا",
+            "bank_transfer": "تحويل بنكي",
+            "mobile_balance": "رصيد جوال"
+        },
+        "paying_amount": "المبلغ المراد دفعه: %{amount}",
+        "alerts": {
+            "payment_successful": "تم دفع المبلغ بنجاح",
+            "payment_error": "خطأ في دفع المبلغ، يرجى المحاولة مرة أخرى"
+        }
     }
 }
