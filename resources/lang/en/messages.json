@@ -199,7 +199,8 @@
         "confirm": "Confirm",
         "ok": "OK",
         "enable": "Enable",
-        "disable": "Disable"
+        "disable": "Disable",
+        "update": "Update"
     },
     "officers_modal": {
         "title": "Set Membership Affairs Officer to the member : ",
@@ -240,5 +241,53 @@
         "resigned": "Resigned",
         "no_reason_selected": "Please select a reason",
         "delete_error": "Error deleting user"
+    },
+    "user_details": {
+        "title": "User Data",
+        "header": "User Data",
+        "update_user_data": "Update user data.",
+        "alerts": {
+            "fetch_user_error": "Error fetching user data",
+            "fetch_states_error": "Error fetching states, Please reload the page",
+            "fetch_provinces_error": "Error fetching provinces, Please reload the page",
+            "update_success": "User data updated successfully",
+            "update_error": "Error updating user data"
+        }
+    },
+    "admins_page": {
+        "title": "Members By Admins",
+        "header": "Members By Admins",
+        "toggle_members": {
+            "show": "Show Members",
+            "hide": "Hide Members"
+        },
+        "no_payment": "Member has never paid before",
+        "pay_button": "Pay",
+        "alerts": {
+            "fetch_admins_error": "Error fetching admins"
+        },
+        "pdf": {
+            "office": "Membership Affairs Office",
+            "headline": "List of Members by Admins",
+            "admin": "Admin: ",
+            "member": "Memberer: "
+        }
+    },
+    "payment_modal": {
+        "title": "Paying monthly share for user %{userName}",
+        "last_pay": "Last Pay: %{lastPay}",
+        "monthly_share": "Monthly Share: %{monthlyShare}",
+        "select_months": "Select number of months:",
+        "select_payment_type": "Select payment type:",
+        "payment_types": {
+            "cash": "Cash",
+            "bank_transfer": "Bank Transfer",
+            "mobile_balance": "Mobile Balance"
+        },
+        "paying_amount": "Paying amount of %{amount}",
+        "alerts": {
+            "payment_successful": "Amount paid successfully",
+            "payment_error": "Error paying the amount, Please try again"
+        }
     }
 }
