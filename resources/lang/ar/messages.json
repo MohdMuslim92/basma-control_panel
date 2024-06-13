@@ -290,5 +290,14 @@
             "payment_successful": "تم دفع المبلغ بنجاح",
             "payment_error": "خطأ في دفع المبلغ، يرجى المحاولة مرة أخرى"
         }
-    }
+    },
+    "UserPaying": {
+        "title": "الأعضاء",
+        "last_pay": "آخر اشتراك: ",
+        "monthly_share": "الاشتراك الشهري: ",
+        "sdg": "جنيه",
+        "pay_button": "دفع",
+        "page_info": "الصفحة %{currentPage} من %{totalPages}",
+        "fetch_users_error": "خطأ في جلب بيانات المستخدمين"
+      }
 }
