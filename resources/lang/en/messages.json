@@ -289,5 +289,14 @@
             "payment_successful": "Amount paid successfully",
             "payment_error": "Error paying the amount, Please try again"
         }
-    }
+    },
+    "UserPaying": {
+        "title": "Your Members",
+        "last_pay": "Last Pay: ",
+        "monthly_share": "Monthly Share: ",
+        "sdg": "SDG",
+        "pay_button": "Pay",
+        "page_info": "Page %{currentPage} of %{totalPages}",
+        "fetch_users_error": "Error fetching users data"
+      }
 }
