@@ -19,7 +19,7 @@
     <div class="flex flex-wrap items-center space-x-2 mb-4">
       <label>{{ t('UsersReport.choose_month_year') }}</label>
       <select v-model="selectedMonth" class="mr-2">
-        <option v-for="(month, index) in months" :key="index" :value="index + 1">{{ month }}</option>
+        <option v-for="(month, index) in localizedMonths" :key="index" :value="index + 1">{{ month }}</option>
       </select>
       <select v-model="selectedYear" class="mr-2">
         <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
@@ -86,6 +86,7 @@ import { ref, computed, watch } from 'vue';
 import axios from 'axios';
 import { createPDFTemplate } from '../pdfTemplate';
 import { useI18n } from 'vue-i18n';
+import months from '../months';
 
 const { t, locale } = useI18n();
 
@@ -99,36 +100,13 @@ const showReportHeader = ref(false);
 const isShowingPaidUsers = ref(true);
 const currentPage = ref(1);
 const pageSize = 10;
-const months = ref([
-  t('months.january'),
-  t('months.february'),
-  t('months.march'),
-  t('months.april'),
-  t('months.may'),
-  t('months.june'),
-  t('months.july'),
-  t('months.august'),
-  t('months.september'),
-  t('months.october'),
-  t('months.november'),
-  t('months.december')
-]);
+
+const localizedMonths = computed(() => {
+  return months.map(month => month[locale.value]);
+});
 
 watch(locale, () => {
-  months.value = [
-    t('months.january'),
-    t('months.february'),
-    t('months.march'),
-    t('months.april'),
-    t('months.may'),
-    t('months.june'),
-    t('months.july'),
-    t('months.august'),
-    t('months.september'),
-    t('months.october'),
-    t('months.november'),
-    t('months.december')
-  ];
+  localizedMonths.value = months.map(month => month[locale.value]);
 });
 
 const years = Array.from({ length: 21 }, (_, i) => new Date().getFullYear() - 7 + i);
@@ -185,7 +163,7 @@ const prevPage = () => {
 
 // Computed property to get the selected month's name
 const selectedMonthName = computed(() => {
-  return months.value[selectedMonth.value - 1];
+  return localizedMonths.value[selectedMonth.value - 1];
 });
 
 // Computed property to generate report title
