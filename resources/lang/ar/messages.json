@@ -201,7 +201,8 @@
         "ok": "حسنًا",
         "enable": "تفعيل",
         "disable": "تعطيل",
-        "update": "تحديث"
+        "update": "تحديث",
+        "show": "عرض"
     },
     "officers_modal": {
         "title": "تعيين مسؤزل شؤون العضوية للعضو : ",
@@ -290,5 +291,81 @@
             "payment_successful": "تم دفع المبلغ بنجاح",
             "payment_error": "خطأ في دفع المبلغ، يرجى المحاولة مرة أخرى"
         }
-    }
+    },
+    "UserPaying": {
+        "title": "الأعضاء",
+        "last_pay": "آخر اشتراك: ",
+        "monthly_share": "الاشتراك الشهري: ",
+        "sdg": "جنيه",
+        "pay_button": "دفع",
+        "page_info": "الصفحة %{currentPage} من %{totalPages}",
+        "fetch_users_error": "خطأ في جلب بيانات الأعضاء، الرجاء اعادة تحميل الصفحة"
+      },
+      "user_share_payment": {
+        "page_title": "اشتراكات الأعضاء والتقارير",
+        "title": "اشتراكات الأعضاء والتقارير"
+
+      },
+      "UsersReport": {
+        "title": "تقرير الأعضاء المسددين",
+        "choose_month_year": "اختر الشهر والسنة لعرض الأعضاء:",
+        "report_header": {
+          "paid_users": "الأعضاء المسددين: ",
+          "unpaid_users": "الأعضاء غير المسددين: ",
+          "report_for": "لشهر"
+        },
+        "show_paid_members": "عرض الأعضاء المسددين",
+        "show_unpaid_members": "عرض الأعضاء غير المسددين",
+        "no_data_message": "لم يتم العثور على أعضاء للشهر والسنة المحددين.",
+        "table": {
+            "number": "#",
+            "name": "الاسم",
+            "payment_type": "نوع الدفع",
+            "admin": "المسؤول"
+          },
+        "pagination": {
+          "page_info": "الصفحة %{currentPage} من %{totalPages}"
+        },
+        "fetch_users_error": "خطأ في جلب بيانات المستخدمين"
+      },
+    "months": {
+        "january": "يناير",
+        "february": "فبراير",
+        "march": "مارس",
+        "april": "أبريل",
+        "may": "مايو",
+        "june": "يونيو",
+        "july": "يوليو",
+        "august": "أغسطس",
+        "september": "سبتمبر",
+        "october": "أكتوبر",
+        "november": "نوفمبر",
+        "december": "ديسمبر"
+    },
+    "shares_report": {
+        "header": "تقرير الاشتراكات الشهريه",
+        "choose_month_year": "اختر الشهر والسنة لعرض الاشتراكات:",
+        "report_header": "تفاصيل الاشتراكات الشهريه لشهر ",
+        "users_count": "عدد الاعضاء",
+        "cash": "النقد",
+        "bank_transfer": "التحويل البنكي",
+        "mobile_balance": "رصيد جوال",
+        "total": "المجموع",
+        "fetch_error": "خطأ في جلب تقرير الاشتراكات",
+        "pdf_headline": "تقرير الاشتراكات لشهر %{month} %{year}"
+    },
+    "add_leave_report": {
+        "fetch_error": "خطأ في جلب بيانات الأعضاء.",
+        "report_header": "تقرير الأعضاء المضافين والمغادرين",
+        "pdf_filename": "تقرير_الأعضاء_المضافين_والمغادرين_%{month}_%{year}",
+        "table": {
+          "added_users": "الأعضاء المضافون",
+          "left_users": "الأعضاء المغادرون"
+        },
+        "choose_month_year": "اختر الشهر والسنة لعرض الأعضاء:",
+        "added_users_count": "عدد الأعضاء المضافين: %{count}",
+        "left_users_count": "عدد الأعضاء المغادرين: %{count}",
+        "no_users_found": "لم يتم العثور على أعضاء للشهر والسنة المحددين.",
+        "page_info": "الصفحة %{current} من %{total}"
+    }    
 }

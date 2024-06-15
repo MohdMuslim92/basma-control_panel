@@ -15,16 +15,16 @@
 <template>
   <div class="report-section p-4">
     <!-- First Section: Users Report -->
-    <h3 class="font-bold text-lg mb-2">Paid Users Report</h3>
+    <h3 class="font-bold text-lg mb-2">{{ t('UsersReport.title') }}</h3>
     <div class="flex flex-wrap items-center space-x-2 mb-4">
-      <label>Choose month and year to display users:</label>
+      <label>{{ t('UsersReport.choose_month_year') }}</label>
       <select v-model="selectedMonth" class="mr-2">
-        <option v-for="(month, index) in months" :key="index" :value="index + 1">{{ month }}</option>
+        <option v-for="(month, index) in localizedMonths" :key="index" :value="index + 1">{{ month }}</option>
       </select>
       <select v-model="selectedYear" class="mr-2">
         <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
       </select>
-      <button @click="showUsers" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600">Show</button>
+      <button @click="showUsers" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600">{{ t('buttons.show') }}</button>
     </div>
     <!-- Display users report -->
     <div v-if="showReportHeader" class="users-report">
@@ -34,41 +34,47 @@
       </h2>
       <div class="flex justify-between items-center mb-4">
         <div>
-          <p>Paid users: {{ paidUsers.length }}</p>
-          <p>Unpaid users: {{ unpaidUsers.length }}</p>
+          <p>{{ t('UsersReport.report_header.paid_users') }} {{ paidUsers.length }}</p>
+          <p>{{ t('UsersReport.report_header.unpaid_users') }} {{ unpaidUsers.length }}</p>
         </div>
         <div class="flex justify-center mb-4">
-          <button @click="saveAsPdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save as PDF</button>
+          <button @click="saveAsPdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            {{ t('buttons.save_as_pdf') }}
+          </button>
         </div>
         <button @click="toggleUserType" class="px-4 py-2 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600">
-          Show {{ isShowingPaidUsers ? 'Unpaid' : 'Paid' }} Users
+          {{ isShowingPaidUsers ? t('UsersReport.show_unpaid_members') : t('UsersReport.show_paid_members') }}
         </button>
       </div>
       <div v-if="showNoDataMessage">
-        <p>No users found for the selected month and year.</p>
+        <p>{{ t('UsersReport.no_data_message') }}</p>
       </div>
       <div v-else>
         <table class="table-auto w-full border-collapse">
           <thead>
             <tr class="text-center">
-              <th class="border px-4 py-2">#</th>
-              <th class="border px-4 py-2">Name</th>
-              <th class="border px-4 py-2">{{ isShowingPaidUsers ? 'Payment Type' : 'Admin' }}</th>
+              <th class="border px-4 py-2">{{ t('UsersReport.table.number') }}</th>
+              <th class="border px-4 py-2">{{ t('UsersReport.table.name') }}</th>
+              <th class="border px-4 py-2">{{ isShowingPaidUsers ? t('UsersReport.table.payment_type') : t('UsersReport.table.admin') }}</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(user, index) in paginatedUsers" :key="user.id">
               <td class="border px-4 py-2">{{ (currentPage - 1) * pageSize + index + 1 }}</td>
               <td class="border px-4 py-2">{{ user.name }}</td>
-              <td class="border px-4 py-2">{{ isShowingPaidUsers ? user.last_payment_type : user.admin_name }}</td>
+              <td class="border px-4 py-2">{{ isShowingPaidUsers ? t(`payment_modal.payment_types.${user.last_payment_type.toLowerCase().replace(' ', '_')}`) : user.admin_name }}</td>
             </tr>
           </tbody>
         </table>
         <!-- Pagination Controls -->
         <div class="pagination-controls mt-4 flex justify-between items-center">
-          <button @click="prevPage" :disabled="currentPage === 1" class="px-4 py-2 bg-gray-300 text-black font-semibold rounded-md hover:bg-gray-400">Prev</button>
-          <span>Page {{ currentPage }} of {{ totalPages }}</span>
-          <button @click="nextPage" :disabled="currentPage === totalPages" class="px-4 py-2 bg-gray-300 text-black font-semibold rounded-md hover:bg-gray-400">Next</button>
+          <button @click="prevPage" :disabled="currentPage === 1" class="px-4 py-2 bg-gray-300 text-black font-semibold rounded-md hover:bg-gray-400">
+          {{ t('buttons.previous') }}
+        </button>
+          <span>{{ t('UsersReport.pagination.page_info', { currentPage: currentPage, totalPages: totalPages }) }}</span>
+          <button @click="nextPage" :disabled="currentPage === totalPages" class="px-4 py-2 bg-gray-300 text-black font-semibold rounded-md hover:bg-gray-400">
+            {{ t('buttons.next') }}
+          </button>
         </div>
       </div>
     </div>
@@ -76,9 +82,13 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, watch } from 'vue';
 import axios from 'axios';
 import { createPDFTemplate } from '../pdfTemplate';
+import { useI18n } from 'vue-i18n';
+import months from '../months';
+
+const { t, locale } = useI18n();
 
 // Data properties
 const paidUsers = ref([]);
@@ -90,7 +100,15 @@ const showReportHeader = ref(false);
 const isShowingPaidUsers = ref(true);
 const currentPage = ref(1);
 const pageSize = 10;
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+const localizedMonths = computed(() => {
+  return months.map(month => month[locale.value]);
+});
+
+watch(locale, () => {
+  localizedMonths.value = months.map(month => month[locale.value]);
+});
+
 const years = Array.from({ length: 21 }, (_, i) => new Date().getFullYear() - 7 + i);
 
 // Method to fetch and display users based on selected month and year
@@ -105,7 +123,7 @@ const showUsers = async () => {
     showReportHeader.value = true;
     currentPage.value = 1; // Reset the current page to 1
   } catch (error) {
-    alert('Error fetching users data');
+    alert(t('UsersReport.fetch_users_error'));
   }
 };
 
@@ -143,23 +161,28 @@ const prevPage = () => {
   }
 };
 
+// Computed property to get the selected month's name
+const selectedMonthName = computed(() => {
+  return localizedMonths.value[selectedMonth.value - 1];
+});
+
 // Computed property to generate report title
 const reportTitle = computed(() => {
-  return `${isShowingPaidUsers.value ? 'Paid' : 'Unpaid'} Users Report For ${selectedMonthName.value} ${selectedYear.value}`;
+  return `${isShowingPaidUsers.value ? t('UsersReport.report_header.paid_users') : t('UsersReport.report_header.unpaid_users')} ${t('UsersReport.report_header.report_for')} ${selectedMonthName.value} ${selectedYear.value}`;
 });
 
 // Method to save the report as a PDF
 const saveAsPdf = () => {
-  const office = "Membership Office";
+  const office = t('admins_page.pdf.office');
   const headline = isShowingPaidUsers.value 
-    ? `List of Paid Users For ${selectedMonthName.value} ${selectedYear.value}`
-    : `List of Unpaid Users For ${selectedMonthName.value} ${selectedYear.value}`;
+    ? t('UsersReport.report_header.paid_users', { month: selectedMonthName.value, year: selectedYear.value })
+    : t('UsersReport.report_header.unpaid_users', { month: selectedMonthName.value, year: selectedYear.value });
 
   const { tableHeaders, tableBody, adminSummary } = getBodyContent();
 
-  const pdf = createPDFTemplate(office, headline, { tableHeaders, tableBody, adminSummary });
+  const pdf = createPDFTemplate(office, headline, { tableHeaders, tableBody, adminSummary }, t);
 
-  pdf.save(`Users Shares For ${selectedMonthName.value} ${selectedYear.value}.pdf`);
+  pdf.save(`${t('UsersReport.pdf_filename', { month: selectedMonthName.value, year: selectedYear.value })}.pdf`);
 };
 
 // Method to hide the report
@@ -167,20 +190,15 @@ const hideReport = () => {
   showReportHeader.value = false;
 };
 
-// Computed property to get the selected month's name
-const selectedMonthName = computed(() => {
-  return months[selectedMonth.value - 1];
-});
-
 // Helper method to get the content for the PDF
 const getBodyContent = () => {
   const tableHeaders = isShowingPaidUsers.value
-    ? ['Name', 'Payment Type']
-    : ['Name', 'Admin Name'];
+    ? [t('UsersReport.table.name'), t('UsersReport.table.payment_type')]
+    : [t('UsersReport.table.name'), t('UsersReport.table.admin')];
 
   const tableBody = displayedUsers.value.map((user) => {
     return isShowingPaidUsers.value
-      ? [user.name, user.last_payment_type]
+      ? [user.name, t(`payment_modal.payment_types.${user.last_payment_type.toLowerCase().replace(' ', '_')}`)]
       : [user.name, user.admin_name];
   });
 

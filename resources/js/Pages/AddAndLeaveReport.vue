@@ -14,15 +14,15 @@
   - createPDFTemplate for generating the PDF report.
 -->
 
-<template>
+  <template>
     <div class="add-leave-report-section p-4">
       <!-- Add and Leave Users Report -->
-      <h3 class="font-bold text-lg mb-2">Add and Leave Users Report</h3>
+      <h3 class="font-bold text-lg mb-2">{{ t('add_leave_report.report_header') }}</h3>
       <div class="flex flex-wrap items-center space-x-2 mb-4">
         <!-- Controls to select month and year -->
-        <label>Choose month and year to display users:</label>
+        <label>{{ t('add_leave_report.choose_month_year') }}</label>
         <select v-model="selectedMonth" class="mr-2">
-          <option v-for="(month, index) in months" :key="index" :value="index + 1">{{ month }}</option>
+          <option v-for="(month, index) in localizedMonths" :key="index" :value="index + 1">{{ month }}</option>
         </select>
         <select v-model="selectedYear" class="mr-2">
           <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
@@ -40,25 +40,25 @@
         <div class="flex justify-between items-center mb-4">
           <div>
             <!-- Display count of added and left users -->
-            <p>Added users: {{ addedUsers.length }}</p>
-            <p>Left users: {{ leftUsers.length }}</p>
+            <p>{{ t('add_leave_report.table.added_users') }} {{ addedUsers.length }}</p>
+            <p>{{ t('add_leave_report.table.left_users') }} {{ leftUsers.length }}</p>
           </div>
           <!-- Save as PDF button -->
           <div class="flex justify-center mb-4">
-            <button @click="saveAsPdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save as PDF</button>
+            <button @click="saveAsPdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{ t('buttons.save_as_pdf') }}</button>
           </div>
         </div>
         <div v-if="showNoDataMessage">
           <!-- Message when no data is available -->
-          <p>No users found for the selected month and year.</p>
+          <p>{{ t('add_leave_report.no_users_found') }}</p>
         </div>
         <div v-else>
           <table class="table-auto w-full border-collapse">
             <thead>
               <tr>
                 <th class="border px-4 py-2 text-center">#</th>
-                <th class="border px-4 py-2 text-center">Added Users</th>
-                <th class="border px-4 py-2 text-center">Left Users</th>
+                <th class="border px-4 py-2 text-center">{{ t('add_leave_report.table.added_users') }}</th>
+                <th class="border px-4 py-2 text-center">{{ t('add_leave_report.table.left_users') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -70,26 +70,34 @@
               </tr>
             </tbody>
           </table>
-         
-            <!-- Pagination Controls -->
+
+          <!-- Pagination Controls -->
           <div class="pagination-controls mt-4">
             <!-- Button to go to the previous page -->
-            <button @click="prevPage" :disabled="currentPage === 1" class="px-4 py-2 bg-gray-300 text-black font-semibold rounded-md hover:bg-gray-400">Prev</button>
+            <button @click="prevPage" :disabled="currentPage === 1" class="px-4 py-2 bg-gray-300 text-black font-semibold rounded-md hover:bg-gray-400">
+              {{ t('buttons.previous') }}
+            </button>
             <!-- Display the current page and total pages -->
-            <span>Page {{ currentPage }} of {{ totalPages }}</span>
+            <span>{{ t('add_leave_report.page_info', { current: currentPage, total: totalPages }) }}</span>
             <!-- Button to go to the next page -->
-            <button @click="nextPage" :disabled="currentPage === totalPages" class="px-4 py-2 bg-gray-300 text-black font-semibold rounded-md hover:bg-gray-400">Next</button>
+            <button @click="nextPage" :disabled="currentPage === totalPages" class="px-4 py-2 bg-gray-300 text-black font-semibold rounded-md hover:bg-gray-400">
+              {{ t('buttons.next') }}
+            </button>
           </div>
         </div>
       </div>
     </div>
   </template>
-  
+
   <script setup>
-  import { ref, computed } from 'vue';
+  import { ref, computed, watch } from 'vue';
   import axios from 'axios';
   import { createPDFTemplate } from '../pdfTemplate';
-  
+  import months from '../months';
+  import { useI18n } from 'vue-i18n';
+
+  const { t, locale } = useI18n();
+
   // Arrays to hold the added and left users
   const addedUsers = ref([]);
   const leftUsers = ref([]);
@@ -102,10 +110,17 @@
   // Variables for pagination
   const currentPage = ref(1);
   const pageSize = 10;
-  // Arrays for months and years to select from
-  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  // Arrays for years to select from
   const years = Array.from({ length: 21 }, (_, i) => new Date().getFullYear() - 7 + i);
-  
+
+  const localizedMonths = computed(() => {
+    return months.map(month => month[locale.value]);
+  });
+
+  watch(locale, () => {
+    localizedMonths.value = months.map(month => month[locale.value]);
+  });
+
   // Function to fetch and display users for the selected month and year
   const showUsers = async () => {
     try {
@@ -118,10 +133,10 @@
       showReportHeader.value = true;
       currentPage.value = 1;
     } catch (error) {
-      alert('Error fetching users data');
+      alert(t('shares_report.fetch_error'));
     }
   };
-  
+
   // Computed property to get the combined list of added and left users
   const displayedUsers = computed(() => {
     const maxLength = Math.max(addedUsers.value.length, leftUsers.value.length);
@@ -134,61 +149,61 @@
     }
     return users;
   });
-  
+
   // Computed property to get the paginated list of users
   const paginatedUsers = computed(() => {
     const start = (currentPage.value - 1) * pageSize;
     const end = start + pageSize;
     return displayedUsers.value.slice(start, end);
   });
-  
+
   // Computed property to calculate the total number of pages
   const totalPages = computed(() => {
     return Math.ceil(displayedUsers.value.length / pageSize);
   });
-  
+
   // Function to go to the next page
   const nextPage = () => {
     if (currentPage.value < totalPages.value) {
       currentPage.value++;
     }
   };
-  
+
   // Function to go to the previous page
   const prevPage = () => {
     if (currentPage.value > 1) {
       currentPage.value--;
     }
   };
-  
+
   // Computed property to generate the report title
   const reportTitle = computed(() => {
-    return `Added and Left Users Report For ${selectedMonthName.value} ${selectedYear.value}`;
+    return `${t('add_leave_report.report_header')} ${selectedMonthName.value} ${selectedYear.value}`;
   });
-  
+
   // Function to save the report as a PDF
   const saveAsPdf = () => {
-    const office = "Membership Office";
-    const headline = `Added and Left Users For ${selectedMonthName.value} ${selectedYear.value}`;
+    const office = t('user_list.pdf.membership_office');
+    const headline = reportTitle.value;
     const { tableHeaders, tableBody } = getBodyContent();
-  
-    const pdf = createPDFTemplate(office, headline, { tableHeaders, tableBody });
-    pdf.save(`Added_And_Left_Users_For_${selectedMonthName.value}_${selectedYear.value}.pdf`);
+
+    const pdf = createPDFTemplate(office, headline, { tableHeaders, tableBody }, t);
+    pdf.save(`${t('add_leave_report.pdf_filename', { month: selectedMonthName.value, year: selectedYear.value })}.pdf`);
   };
-  
+
   // Function to hide the report
   const hideReport = () => {
     showReportHeader.value = false;
   };
-  
+
   // Computed property to get the selected month's name
   const selectedMonthName = computed(() => {
-    return months[selectedMonth.value - 1];
+    return localizedMonths.value[selectedMonth.value - 1];
   });
-  
+
   // Function to generate the content for the PDF
   const getBodyContent = () => {
-    const tableHeaders = ['Added Users', 'Left Users'];
+    const tableHeaders = [t('add_leave_report.table.added_users'), t('add_leave_report.table.left_users')];
     const tableBody = displayedUsers.value.map((user) => {
       return [user.addedName, user.leftName];
     });

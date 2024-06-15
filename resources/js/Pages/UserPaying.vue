@@ -16,7 +16,7 @@
 
 <template>
   <div>
-    <h2 class="text-2xl font-bold mb-4 text-center">Your Users</h2>
+    <h2 class="text-2xl font-bold mb-4 text-center">{{ t('UserPaying.title') }}</h2>
     <div class="max-w-4xl mx-auto">
       <!-- Search Component -->
       <div class="search-wrapper">
@@ -28,23 +28,29 @@
           <!-- Display user name -->
           <h3 class="text-lg font-semibold">{{ user.name }}</h3>
           <!-- Display the last payment date formatted -->
-          <p class="text-gray-600">Last Pay: {{ formatDate(user.last_pay) }}</p>
+          <p class="text-gray-600">{{ t('UserPaying.last_pay') }} {{ formatDate(user.last_pay, t) }}</p>
           <!-- Display the monthly share -->
-          <p class="text-gray-600">Monthly Share: {{ user.monthlyShare }} SDG</p>
+          <p class="text-gray-600">{{ t('UserPaying.monthly_share') }} {{ user.monthlyShare }} {{ t('UserPaying.sdg') }}</p>
         </div>
         <div class="flex justify-end p-4">
           <!-- Button to open the payment modal for the user -->
-          <button @click="openPaymentModal(user)" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600">Pay</button>
+          <button @click="openPaymentModal(user)" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600">
+            {{ t('UserPaying.pay_button') }}
+          </button>
         </div>
       </div>
       <!-- Pagination Controls -->
       <div class="flex justify-center mt-4 space-x-4">
         <!-- Button to go to the previous page -->
-        <button @click="prevUserListPage" :disabled="userListCurrentPage === 1" class="px-4 py-2 bg-gray-300 text-black font-semibold rounded-md hover:bg-gray-400">Prev</button>
+        <button @click="prevUserListPage" :disabled="userListCurrentPage === 1" class="px-4 py-2 bg-gray-300 text-black font-semibold rounded-md hover:bg-gray-400">
+          {{ t('buttons.previous') }}
+        </button>
         <!-- Display the current page and total pages -->
-        <span>Page {{ userListCurrentPage }} of {{ userListTotalPages }}</span>
+        <span>          {{ t('UserPaying.page_info', { currentPage: userListCurrentPage, totalPages: userListTotalPages }) }}</span>
         <!-- Button to go to the next page -->
-        <button @click="nextUserListPage" :disabled="userListCurrentPage === userListTotalPages" class="px-4 py-2 bg-gray-300 text-black font-semibold rounded-md hover:bg-gray-400">Next</button>
+        <button @click="nextUserListPage" :disabled="userListCurrentPage === userListTotalPages" class="px-4 py-2 bg-gray-300 text-black font-semibold rounded-md hover:bg-gray-400">
+          {{ t('buttons.next') }}
+        </button>
       </div>
     </div>
     <!-- Include PaymentModal component -->
@@ -66,6 +72,9 @@ import  { formatDate } from '../Functions.js';
 import PaymentModal from './PaymentModal.vue';
 import Search from './Search.vue';
 import axios from 'axios';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 // Array to hold user data
 const users = ref([]);
@@ -90,7 +99,7 @@ const fetchUsersData = async () => {
     const response = await axios.get('/api/users/byAdmin');
     userList.value = response.data;
   } catch (error) {
-    alert('Error fetching users data');
+    alert(t('UserPaying.fetch_users_error'));
   }
 };
 

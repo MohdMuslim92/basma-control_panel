@@ -18,11 +18,11 @@
 -->
 
 <template>
-  <AppLayout title="Users Shares">
+  <AppLayout :title="t('user_share_payment.page_title')">
     <!-- Page Header -->
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Monthly Shares
+        {{ t('user_share_payment.title') }}
       </h2>
     </template>
     <div class="mt-8 container mx-auto px-4 lg:px-8">
@@ -55,4 +55,7 @@ import SharesReport from './SharesReport.vue';
 import AddAndLeaveReport from './AddAndLeaveReport.vue';
 import UserPaying from './UserPaying.vue';
 import '../../css/UserSharesAndPayments.css'; // Importing the CSS file
+import { useI18n } from 'vue-i18n';
+
+const { t, locale } = useI18n();
 </script>

@@ -200,7 +200,8 @@
         "ok": "OK",
         "enable": "Enable",
         "disable": "Disable",
-        "update": "Update"
+        "update": "Update",
+        "show": "Show"
     },
     "officers_modal": {
         "title": "Set Membership Affairs Officer to the member : ",
@@ -289,5 +290,84 @@
             "payment_successful": "Amount paid successfully",
             "payment_error": "Error paying the amount, Please try again"
         }
-    }
+    },
+    "UserPaying": {
+        "title": "Your Members",
+        "last_pay": "Last Pay: ",
+        "monthly_share": "Monthly Share: ",
+        "sdg": "SDG",
+        "pay_button": "Pay",
+        "page_info": "Page %{currentPage} of %{totalPages}",
+        "fetch_users_error": "Error fetching members data, please reload the page"
+      },
+      "user_share_payment": {
+        "page_title": "Users Shares and Reports",
+        "title": "Users Shares and Reports"
+
+      },
+      "UsersReport": {
+        "title": "Paid Members Report",
+        "choose_month_year": "Choose month and year to display Members:",
+        "show_button": "Show",
+        "report_header": {
+          "paid_users": "Paid members: ",
+          "unpaid_users": "Unpaid members: ",
+          "report_for": "For"
+        },
+        "show_paid_members": "Show paid members",
+        "show_unpaid_members": "Show unpaid members",
+        "no_data_message": "No members found for the selected month and year.",
+        "table": {
+            "number": "#",
+            "name": "Name",
+            "payment_type": "Payment Type",
+            "admin": "Admin"
+          },
+        
+        "pagination": {
+            "page_info": "Page %{currentPage} of %{totalPages}"
+        },
+        "fetch_users_error": "Error fetching members data, please reload the page"
+    },
+    "months": {
+        "january": "January",
+        "february": "February",
+        "march": "March",
+        "april": "April",
+        "may": "May",
+        "june": "June",
+        "july": "July",
+        "august": "August",
+        "september": "September",
+        "october": "October",
+        "november": "November",
+        "december": "December"
+    },
+    "shares_report": {
+        "header": "Monthly Shares Report",
+        "choose_month_year": "Choose month and year to display monthly shares:",
+        "report_header": "Monthly Share details For: ",
+        "users_count": "Members Count",
+        "cash": "Cash",
+        "bank_transfer": "Bank Transfer",
+        "mobile_balance": "Mobile Balance",
+        "total": "Total",
+        "fetch_error": "Error fetching monthly shares report",
+        "pdf_headline": "Monthly Shares Report For %{month} %{year}"
+      },
+      "add_leave_report": {
+        "fetch_error": "Error fetching members data.",
+        "report_header": "Add and Leave Members Report",
+        "pdf_filename": "AddAndLeaveMembersReport_%{month}_%{year}",
+        "table": {
+          "added_users": "Added Members",
+          "left_users": "Left Members"
+        },
+        "choose_month_year": "Choose month and year to display Members:",
+        "added_users_count": "Added members: %{count}",
+        "left_users_count": "Left members: %{count}",
+        "no_users_found": "No members found for the selected month and year.",
+        "page_info": "Page %{current} of %{total}"
+      }
+    
 }
