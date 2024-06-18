@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('dob');
             $table->string('educationLevel');
             $table->string('specialization')->nullable();
-            $table->string('skills');
+            $table->text('skills');
             $table->string('alreadyVolunteering');
             $table->string('organizationName')->nullable();
             $table->string('volunteeringStartDate')->nullable();
