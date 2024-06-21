@@ -368,6 +368,16 @@
         "left_users_count": "Left members: %{count}",
         "no_users_found": "No members found for the selected month and year.",
         "page_info": "Page %{current} of %{total}"
+      },
+      "certificate": {
+        "header": "Volunteer Certificate",
+        "language_label": "Language",
+        "language_en": "English",
+        "language_ar": "Arabic",
+        "language_description": "Choose the language of your certificate",
+        "full_name_en_label": "Full Name (English)",
+        "submit_button": "Submit Request",
+        "approval_note": "Your certificate will be sent to your email upon approval."
       }
     
 }
