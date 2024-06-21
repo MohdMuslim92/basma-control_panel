@@ -367,5 +367,15 @@
         "left_users_count": "عدد الأعضاء المغادرين: %{count}",
         "no_users_found": "لم يتم العثور على أعضاء للشهر والسنة المحددين.",
         "page_info": "الصفحة %{current} من %{total}"
-    }    
+    },
+    "certificate": {
+        "header": "شهادة التطوع",
+        "language_label": "اللغة",
+        "language_en": "الإنجليزية",
+        "language_ar": "العربية",
+        "language_description": "اختر لغة الشهادة",
+        "full_name_en_label": "الاسم الكامل (الإنجليزية)",
+        "submit_button": "إرسال الطلب",
+        "approval_note": "سيتم إرسال الشهادة إلى بريدك الإلكتروني بمجرد الموافقة."
+      }
 }
