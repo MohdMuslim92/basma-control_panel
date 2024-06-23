@@ -377,7 +377,11 @@
         "language_description": "Choose the language of your certificate",
         "full_name_en_label": "Full Name (English)",
         "submit_button": "Submit Request",
-        "approval_note": "Your certificate will be sent to your email upon approval."
+        "approval_note": "Your certificate will be sent to your email upon approval.",
+        "request_submitted": "Certificate request submitted successfully.",
+        "request_already_exists": "You have already requested a certificate, please wait for approval.",
+        "loading": "Loading...",
+        "check_alert": "an error occurred, Please reload the page"
       }
     
 }
