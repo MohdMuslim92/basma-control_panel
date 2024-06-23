@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        /*
+        
         for ($i = 1; $i <= 30; $i++) {
             User::create([
                 'name' => "John Doe{$i}",
@@ -39,8 +39,9 @@ class UserSeeder extends Seeder
                 'terms' => true,
             ]);
         }
-        */
         
+        
+        /*
         // Fetch all users from the old_users table
         $oldUsers = DB::table('old_users')->get();
 
@@ -80,5 +81,6 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ]);
         }
+        */
     }
 }
