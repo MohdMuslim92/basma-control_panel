@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use App\Events\CertificateRequested;
+use App\Listeners\NotifyAdminOfCertificateRequest;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\UserRegistered' => [
             'App\Listeners\UserRegisteredNotification',
+        ],
+        CertificateRequested::class => [
+            NotifyAdminOfCertificateRequest::class,
         ],
     ];
 

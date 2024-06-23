@@ -12,6 +12,7 @@ use App\Http\Controllers\UserSharesAndPaymentsController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RemovedUsers;
 use App\Http\Controllers\EmailCheckController;
+use App\Http\Controllers\CertificateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -130,6 +131,18 @@ Route::middleware([
 
     // Route to Handle the toggling of the admin status for a user
     Route::post('/toggle-admin/{userId}', [AdminController::class, 'toggleAdmin']);
+
+    // Route to display the certificate request form
+    Route::get('/certificates/request', [CertificateController::class, 'showRequestForm'])->name('certificates.request');
+
+    // Route to request a new certificate
+    Route::post('/certificates/request', [CertificateController::class, 'submitRequest'])->name('certificates.submit');
+
+    // Route to check if the user has requested a certificate already
+    Route::get('/certificates/check', [CertificateController::class, 'checkExistingRequest']);
+
+    // Route for displaying the new certificate request for approval
+    Route::get('/certificates/approval/{certificateId}', [CertificateController::class, 'approval'])->name('certificates.approval');
 });
 
 // Route to check email availability
