@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Notification;
 
 class Certificate extends Model
 {
@@ -28,5 +29,12 @@ class Certificate extends Model
     public function admin()
     {
         return $this->belongsTo(User::class, 'admin_id');
+    }
+
+    public function notifications()
+    {
+        return $this->belongsToMany(Notification::class)
+        ->withPivot('read')
+        ->withTimestamps();
     }
 }
