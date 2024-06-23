@@ -131,6 +131,18 @@ Route::middleware([
 
     // Route to Handle the toggling of the admin status for a user
     Route::post('/toggle-admin/{userId}', [AdminController::class, 'toggleAdmin']);
+
+    // Route to display the certificate request form
+    Route::get('/certificates/request', [CertificateController::class, 'showRequestForm'])->name('certificates.request');
+
+    // Route to request a new certificate
+    Route::post('/certificates/request', [CertificateController::class, 'submitRequest'])->name('certificates.submit');
+
+    // Route to check if the user has requested a certificate already
+    Route::get('/certificates/check', [CertificateController::class, 'checkExistingRequest']);
+
+    // Route for displaying the new certificate request for approval
+    Route::get('/certificates/approval/{certificateId}', [CertificateController::class, 'approval'])->name('certificates.approval');
 });
 
 // Route to check email availability
@@ -146,9 +158,3 @@ Route::get('/api/states', [StateController::class, 'index']);
 
 // Route to fetch provinces by state ID
 Route::get('/api/provinces/{state}', [ProvinceController::class, 'show']);
-
-// Route to display the certificate request form
-Route::get('/certificates/request', [CertificateController::class, 'showRequestForm'])->name('certificates.request');
-
-// Route to request a new certificate
-Route::post('/certificates/request', [CertificateController::class, 'submitRequest'])->name('certificates.submit');
