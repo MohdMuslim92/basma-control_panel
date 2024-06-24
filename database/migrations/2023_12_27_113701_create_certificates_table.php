@@ -19,13 +19,16 @@ return new class extends Migration
             $table->string('language');
             $table->string('code');
             $table->unsignedBigInteger('status');
-            $table->string('approve1')->nullable();
-            $table->string('approve2')->nullable();
-            $table->string('approve3')->nullable();
+            $table->unsignedBigInteger('approve1')->nullable();
+            $table->unsignedBigInteger('approve2')->nullable();
+            $table->unsignedBigInteger('approve3')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('admin_id')->references('id')->on('admins');
+            $table->foreign('approve1')->references('id')->on('users');
+            $table->foreign('approve2')->references('id')->on('users');
+            $table->foreign('approve3')->references('id')->on('users');
         });
     }
 
