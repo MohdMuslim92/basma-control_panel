@@ -31,6 +31,21 @@ class Certificate extends Model
         return $this->belongsTo(User::class, 'admin_id');
     }
 
+    public function approvedByFirst()
+    {
+        return $this->belongsTo(User::class, 'approve1');
+    }
+
+    public function approvedBySecond()
+    {
+        return $this->belongsTo(User::class, 'approve2');
+    }
+
+    public function approvedByThird()
+    {
+        return $this->belongsTo(User::class, 'approve3');
+    }
+    
     public function notifications()
     {
         return $this->belongsToMany(Notification::class)
