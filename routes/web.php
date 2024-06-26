@@ -152,6 +152,9 @@ Route::middleware([
     // Route to perform approving for the certificate
     Route::post('/api/certificates/approve/{id}', [CertificateController::class, 'approveCertificate']);
 
+    // Route for viewing certificate and downloading it
+    Route::get('/certificates/{certificateId}/view', [CertificateController::class, 'viewCertificate'])
+    ->name('certificate.view');
 });
 
 // Route to check email availability
