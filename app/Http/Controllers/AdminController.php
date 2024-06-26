@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\User;
+use Carbon\Carbon;
 use Inertia\Inertia;
 
 class AdminController extends Controller
@@ -38,6 +39,11 @@ class AdminController extends Controller
             // Find the admin record by user_id
             $admin = Admin::where('user_id', $userId)->firstOrFail();
 
+            // Update the ended_at field to the current time only when admin is 1 to indicate the time the admin left
+            if ($admin->admin == 1) {
+                $admin->ended_at = Carbon::now();
+            }
+            
             // Toggle the admin status
             $admin->admin = $admin->admin ? 0 : 1;
             $admin->save();
@@ -46,4 +52,5 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error updating admin status'], 500);
         }
-    }}
+    }
+}
