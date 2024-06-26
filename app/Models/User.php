@@ -95,6 +95,11 @@ class User extends Authenticatable
         return $this->hasOne(Admin::class);
     }
 
+    public function adminData()
+    {
+        return $this->belongsTo(User::class, 'admin_mail', 'email');
+    }
+
     public function state()
     {
         return $this->belongsTo(State::class, 'state_id');
@@ -105,9 +110,16 @@ class User extends Authenticatable
         return $this->belongsTo(Province::class, 'province_id');
     }
 
+    // Define relationship to UserStatus
     public function userStatus()
     {
         return $this->belongsTo(UserStatus::class, 'user_status_id');
+    }
+
+    // Define relationship to Certificate
+    public function certificates()
+    {
+        return $this->hasMany(Certificate::class);
     }
 
     public function notifications()

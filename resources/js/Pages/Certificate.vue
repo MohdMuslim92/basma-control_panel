@@ -1,9 +1,17 @@
 <!--
-  This Vue component represents the certificate request page.
-  It allows users to submit a request for a certificate, specifying the language preference
-  and optionally providing their name in English if the language is set to English.
+This Vue component handles the certificate request functionality for users. It includes the following features:
+- Header Section: Displays the header with the certificate title.
+- Main Content Section: Contains the logic and UI for submitting a certificate request.
+  - Loading Overlay: Shown while checking if the user has an existing certificate request.
+  - Existing Request Message: Displays a message if the user already has a certificate request.
+  - Certificate Request Form: Allows the user to submit a new certificate request.
+    - Language Selection: Dropdown to select the language for the certificate.
+    - Full Name Input: Input field for the user's full name (shown only if the selected language is English).
+    - Submit Button: Button to submit the certificate request form.
+  - Approval Note: Displays a note about certificate approval.
+- Notification Container: Container for displaying notifications.
+- Redirecting Loading Overlay: Shown loading message while redirecting to the dashboard.
 -->
-
 <template>
   <AppLayout :title="t('certificate.header')">
     <!-- Header section -->
@@ -16,7 +24,11 @@
     <!-- Main content section -->
     <div class="py-12 mx-auto max-w-lg">
       <div v-if="loading">
-        <p>{{ t('certificate.loading') }}</p> <!-- Display loading message when fetching existing request status -->
+        <!-- Loading overlay for initial page load -->
+        <div class="loading-overlay">
+          <div class="spinner"></div>
+          <p>{{ t('loading') }}</p> <!-- Display loading message when fetching existing request status -->
+        </div>
       </div>
       <div v-else>
         <!-- Display message if user already has an existing certificate request -->
@@ -63,6 +75,12 @@
 
     <!-- Notification container -->
     <div id="notification-container"></div>
+
+    <!-- Redirecting overlay after form submission -->
+    <div v-if="submitting" class="loading-overlay">
+      <div class="spinner"></div>
+      <p>{{ t('redirecting') }}</p>
+    </div>
   </AppLayout>
 </template>
 
@@ -73,6 +91,7 @@ import { Inertia } from '@inertiajs/inertia';
 import { showNotification } from '../Functions'; // Import function to display notifications
 import { useI18n } from 'vue-i18n'; // Import internationalization functions
 import axios from 'axios'; // Import Axios for HTTP requests
+import '../../css/loading-overlay.css';
 
 const { t } = useI18n(); // Access translation function
 
@@ -80,6 +99,7 @@ const language = ref('ar'); // Default to Arabic language
 const full_name_en = ref(''); // Store full name in English
 const existingRequest = ref(false); // Flag to indicate if user has an existing certificate request
 const loading = ref(true); // Flag to indicate loading state
+const submitting = ref(false); // Flag to indicate submission state
 
 onMounted(async () => {
   try {
@@ -94,6 +114,7 @@ onMounted(async () => {
 });
 
 function submitRequest() {
+  submitting.value = true; // Show the loading overlay
   // Submit certificate request using Inertia.js
   Inertia.post('/certificates/request', {
     language: language.value,
@@ -101,6 +122,9 @@ function submitRequest() {
   });
 
   showNotification(t('certificate.request_submitted')); // Display notification after submitting request
+  // Redirect to the dashboard route after 5 seconds
+  setTimeout(() => {
+    window.location.href = '/user-dashboard';
+  }, 5000); // 5000 milliseconds = 5 seconds
 }
-
 </script>

@@ -117,6 +117,8 @@ Route::middleware([
     // Route for display a specific user data
     Route::get('/api/user/{id}', [UserController::class, 'displayUserDetails']);
 
+    // Route to get user data
+    Route::get('api/users/{userId}', [UserController::class, 'getUserById']);
     // Route to get the paid users at a specific month and year
     Route::get('/api/paid-users', [UserSharesAndPaymentsController::class, 'getPaidUsers'])->name('paidUsers');
 
@@ -141,8 +143,18 @@ Route::middleware([
     // Route to check if the user has requested a certificate already
     Route::get('/certificates/check', [CertificateController::class, 'checkExistingRequest']);
 
+    // Route to get certificate details
+    Route::get('/certificates/{id}', [CertificateController::class, 'getCertificate']);
+
     // Route for displaying the new certificate request for approval
     Route::get('/certificates/approval/{certificateId}', [CertificateController::class, 'approval'])->name('certificates.approval');
+
+    // Route to perform approving for the certificate
+    Route::post('/api/certificates/approve/{id}', [CertificateController::class, 'approveCertificate']);
+
+    // Route for viewing certificate and downloading it
+    Route::get('/certificates/{certificateId}/view', [CertificateController::class, 'viewCertificate'])
+    ->name('certificate.view');
 });
 
 // Route to check email availability

@@ -1,4 +1,6 @@
 {
+    "loading": "Loading...",
+    "redirecting": "Redirecting to the dashboard...",
     "welcome_page": {
         "welcome": "Welcome to our application",
         "welcome_message": "Welcome to Basma",
@@ -380,8 +382,23 @@
         "approval_note": "Your certificate will be sent to your email upon approval.",
         "request_submitted": "Certificate request submitted successfully.",
         "request_already_exists": "You have already requested a certificate, please wait for approval.",
-        "loading": "Loading...",
-        "check_alert": "an error occurred, Please reload the page"
+        "check_alert": "an error occurred, Please reload the page",
+        "approve": {
+            "header": "Approve Certificate",
+            "details": "Certificate Details",
+            "english_name": "Name in English : ",
+            "request_info": "Member %{name} has requested a certificate from %{dateJoined} to %{requestDate} and the admin following up is %{adminName}.",
+            "button": "Approve Certificate",
+            "fetch_error": "Error fetching additional data, Please reload the page",
+            "approve_error": "Error approving certificate, Please try again",
+            "approve_notification": "Certificate has been approved successfully",
+            "error_not_found": "Certificate not found.",
+            "error_already_approved": "Certificate already approved.",
+            "error_cannot_approve_own": "You cannot approve your own certificate.",
+            "error_not_authorized": "You are not authorized to approve.",
+            "error_not_eligible": "User is not eligible to approve.",
+            "error_invalid_status": "Invalid certificate status."
+          }
       }
     
 }
