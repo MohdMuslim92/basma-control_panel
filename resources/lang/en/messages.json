@@ -398,7 +398,18 @@
             "error_not_authorized": "You are not authorized to approve.",
             "error_not_eligible": "User is not eligible to approve.",
             "error_invalid_status": "Invalid certificate status."
-          }
-      }
-    
+          },
+          "view": {
+            "header": "View Volunteer Certificate",
+            "volunteer_certificate": "Voluneer Certificate",
+            "details": "Certificate Details",
+            "verify": "Verify at",
+            "organization": "Basma Charity Organization",
+            "certificate_text": "Basma Charity Organization attests that the member {userName} was a member of the organization since {joinDate} till {goneDate}.",
+            "recognizes_service": "This certificate recognizes the outstanding volunteer service of the individual."
+          },
+        "download": {
+            "button": "Download Certificate"
+        }
+    }
 }

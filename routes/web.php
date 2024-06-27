@@ -155,6 +155,12 @@ Route::middleware([
     // Route for viewing certificate and downloading it
     Route::get('/certificates/{certificateId}/view', [CertificateController::class, 'viewCertificate'])
     ->name('certificate.view');
+
+    // Route to view approved certificate
+    Route::get('/certificates/{id}/view', [CertificateController::class, 'viewCertificate'])->name('certificates.view');
+
+    // Route to verify the certificate
+    Route::get('/certificates/verify/{code}', [CertificateController::class, 'verify'])->name('certificates.verify');
 });
 
 // Route to check email availability

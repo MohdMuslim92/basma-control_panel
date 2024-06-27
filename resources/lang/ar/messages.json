@@ -397,6 +397,18 @@
             "error_not_authorized": "أنت غير مخول بالموافقة.",
             "error_not_eligible": "المستخدم غير مؤهل للموافقة.",
             "error_invalid_status": "حالة الشهادة غير صالحة."
-          }
-      }
+        },
+        "view": {
+            "header": "شهادة المتطوع",
+            "details": "تفاصيل الشهادة",
+            "volunteer_certificate": "شهادة تطوع",
+            "verify": "تحقق من الشهادة",
+            "organization": "منظمة بصمة الخيرية",
+            "certificate_text": "تشهد منظمة بصمة الخيرية أن العضو %{userName} كان عضوًا في المنظمة منذ {joinDate} حتى {goneDate}.",
+            "recognizes_service": "تتشهد المنظمة بالخدمة التطوعية المتميزة للعضو."
+          },
+        "download": {
+            "button": "تحميل الشهادة"
+        }
+    }
 }
