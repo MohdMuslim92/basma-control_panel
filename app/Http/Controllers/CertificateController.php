@@ -208,8 +208,46 @@ class CertificateController extends Controller
         return response()->json(['error' => 'certificate.approve.error_invalid_status'], 400);
     }
 
+    /**
+     * Display the specified certificate details.
+     *
+     * @param int $id The ID of the certificate to be viewed.
+     * @return \Inertia\Response
+    */
     public function viewCertificate($id)
     {
-        // To be implemented later
+        // Retrieve certificate details using the provided ID, or fail if not found
+        $certificate = Certificate::findOrFail($id);
+
+        // Check if the authenticated user is the owner of the certificate
+        if (Auth::id() !== $certificate->user_id) {
+            // If the user is not authorized, return a 403 Unauthorized error
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Retrieve user details associated with the certificate, or fail if not found
+        $user = User::findOrFail($certificate->user_id);
+
+        // Generate a verification link for the certificate
+        $verificationLink = route('certificates.verify', ['code' => $certificate->code]);
+
+        // Prepare the data to be passed to the view
+        $certificateData = [
+            'language' => $certificate->language,
+            'created_at' => $certificate->created_at,
+            'updated_at' => $certificate->updated_at,
+            'code' => $certificate->code,
+            'verification_link' => $verificationLink, // Include verification link
+            'user' => [
+                'name' => $user->name,
+                'join_date' => $user->email_verified_at,
+                'gone_at' => $user->gone_at,
+            ]
+        ];
+
+        // Render the certificate view page using Inertia with the prepared data
+        return Inertia::render('CertificateView', [
+            'certificate' => $certificateData,
+        ]);
     }
 }
