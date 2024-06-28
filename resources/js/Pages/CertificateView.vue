@@ -54,6 +54,8 @@ import { useI18n } from 'vue-i18n';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Certificate from '@/Components/Certificate.vue';
 import '../../css/loading-overlay.css';
+import { createPDFTemplate } from '../certificatePDFTemplate';
+import { formatDate } from '../Functions';
 
 // Setup internationalization
 const { t } = useI18n();
@@ -67,7 +69,14 @@ const certificate = ref(props.certificate);
 
 // Function to handle certificate download
 const downloadCertificate = () => {
-  // Implement certificate download logic here
+  // Retrieve the translated head of organization's name from i18n messages
+  const bossName = t('boss_name');
+  
+  // Generate a PDF certificate using the createPDFTemplate function
+  const pdf = createPDFTemplate(props.certificate, props.certificate.user, t, bossName);
+  
+  // Save the generated PDF with a filename formatted using the user's name
+  pdf.save(`Certificate_${props.certificate.user.name}.pdf`);
 };
 
 </script>
