@@ -1,6 +1,8 @@
 {
     "loading": "جار التحميل...",
     "redirecting": "سيتم اعادة توجيهك للصفحة الرئيسية...",
+    "organization_boss": "رئيس المنظمة",
+    "boss_name": "وائل أحمد الشين",
     "welcome_page": {
         "welcome": "مرحبًا بكم في موقعنا",
         "welcome_message": "مرحبًا بك في بصمة",

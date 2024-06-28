@@ -1,6 +1,8 @@
 {
     "loading": "Loading...",
     "redirecting": "Redirecting to the dashboard...",
+    "organization_boss": "Head of Organization",
+    "boss_name": "Wael Ahmed Elsheen",
     "welcome_page": {
         "welcome": "Welcome to our application",
         "welcome_message": "Welcome to Basma",
