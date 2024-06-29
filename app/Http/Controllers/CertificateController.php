@@ -250,4 +250,52 @@ class CertificateController extends Controller
             'certificate' => $certificateData,
         ]);
     }
+
+    /**
+     * Verify a certificate by its verification code.
+     *
+     * This method queries the certificates table using the provided verification code.
+     * If a certificate with the given code is found, it renders the VerifyCertificate view
+     * with the certificate data. If the certificate is not found, it renders the same
+     * view with an error message.
+     *
+     * @param string $code The verification code of the certificate.
+     * @return \Inertia\Response The Inertia response to render the VerifyCertificate view.
+    */
+    public function verify($code)
+    {
+        // Query the certificates table using the code
+        $certificate = Certificate::where('code', $code)->first();
+
+        // Check if the certificate was found
+        if ($certificate) {
+        // Retrieve user details associated with the certificate, or fail if not found
+        $user = User::findOrFail($certificate->user_id);
+
+        // Generate a verification link for the certificate
+        $verificationLink = route('certificates.verify', ['code' => $certificate->code]);
+
+        // Prepare the data to be passed to the view
+        $certificateData = [
+            'language' => $certificate->language,
+            'created_at' => $certificate->created_at,
+            'updated_at' => $certificate->updated_at,
+            'code' => $certificate->code,
+            'verification_link' => $verificationLink, // Include verification link
+            'user' => [
+                'name' => $user->name,
+                'join_date' => $user->email_verified_at,
+                'gone_at' => $user->gone_at,
+            ]
+        ];
+
+        // Render the certificate view page using Inertia with the prepared data
+        return Inertia::render('CertificateVerify', [
+            'certificate' => $certificateData,
+        ]);
+        } else {
+            // Render the VerifyCertificate view with an error message
+            return Inertia::render('CertificateVerify', ['error' => 'Certificate not found.']);
+        }
+    }
 }
