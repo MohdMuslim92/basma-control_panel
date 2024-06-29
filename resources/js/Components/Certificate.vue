@@ -33,7 +33,8 @@
     </p>
 
     <!-- Verification link -->
-    <p class="text-gray-700 mt-4">
+    <!-- Verification link (conditionally displayed) -->
+    <p v-if="showVerificationLink" class="text-gray-700 mt-4">
       {{ t('certificate.view.verify') }} <a :href="certificate.verification_link" class="text-indigo-600 hover:text-indigo-800">{{ certificate.verification_link }}</a>
     </p>
   </div>
@@ -45,7 +46,13 @@ import { useI18n } from 'vue-i18n';
 import { formatDate } from '../Functions';
 
 const { t } = useI18n();
-const props = defineProps(['certificate']);
+const props = defineProps({
+  certificate: Object,
+  showVerificationLink: {
+    type: Boolean,
+    default: true,
+  },
+});
 
 // Reactive references to the certificate and user data
 const user = ref(props.certificate.user);
