@@ -57,17 +57,17 @@ Route::middleware([
     // Route for fetching all users together for saving as pdf purpose
     Route::get('/api/all-users', [UserController::class, 'getAllUsers']);
 
-    // Route for displaying removed users
-    Route::get('/removed-users', [RemovedUsers::class, 'index']);
+    // Route for displaying removed users page
+    Route::get('/removed-users', [RemovedUsers::class, 'index'])->name('users.removed');
 
     // Route for fetching removed users
     Route::get('/api/removed-users', [RemovedUsers::class, 'getRemovedUsers']);
 
-    // routes/web.php or routes/api.php
+    // Route to get the removed users for saving as PDF
     Route::get('/api/removed-users/all', [RemovedUsers::class, 'getAllRemovedUsers']);
 
     // Route to retrieve a user
-    Route::post('/api/retrieve-user/{id}', [RemovedUsers::class, 'retrieveUser']);    // Route for fetching users related to the current logged in admin
+    Route::post('/api/retrieve-user/{id}', [RemovedUsers::class, 'retrieveUser']);
     
     // Route for fetching users related to the current logged in admin
     Route::get('/api/users/byAdmin', [UserController::class, 'getUsersByAdmin'])->name('userByAdmin');
